@@ -1,11 +1,13 @@
-function BodyItem(){
-  return(
+import { Link } from "react-router-dom";
 
-    <section class="hero is-primary is-fullheight">
+function Login(){
+  return(
+    <section class="hero is-primary is-fullheight is-link">
     <div class="hero-body">
       <div class="container">
         <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <div class="column is-5-tablet is-4-desktop is-4-widescreen">
+          <h1 class="is-2">Welcome</h1>
             <form action="" class="box">
               <div class="field">
                 <label for="" class="label">Email</label>
@@ -32,9 +34,9 @@ function BodyItem(){
                 </label>
               </div>
               <div class="field">
-                <button class="button is-success">
+                  <Link class="button is-success" to="/dashboard">
                   Login
-                </button>
+                  </Link>                
               </div>
             </form>
           </div>
@@ -42,9 +44,7 @@ function BodyItem(){
       </div>
     </div>
   </section>
-
   );
-
 }
 
-export default BodyItem;
+export default Login;
