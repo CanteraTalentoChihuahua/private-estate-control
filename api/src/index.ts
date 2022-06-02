@@ -2,12 +2,13 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth";
 import usersRoutes from "./routes/users";
+import dotenv from "dotenv"
+dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 2000;
 
 app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.all('*', function (req, res, next) {
@@ -21,7 +22,7 @@ app.all('*', function (req, res, next) {
 app.use('/api', usersRoutes);
 app.use('/api/login', authRoutes);
 
-app.listen(port, () => {
-    console.log(`Server running on ${port}`
+app.listen(process.env.SVPORT, () => {
+    console.log(`Server running on port ${process.env.SVPORT}`
     )
 });

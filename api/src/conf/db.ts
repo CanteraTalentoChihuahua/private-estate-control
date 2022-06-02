@@ -1,18 +1,20 @@
 import sql from "mssql";
+import dotenv from "dotenv";
+dotenv.config();
 
 const connectionString = {
-    user: 'sa',
-    password: 'FraccionamientoBootcamp*1',
-    server: '50.21.186.23',
-    port: 1433,
-    database: 'ResDevDB',
-    options:{
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    server: process.env.SERVER,
+    port: process.env.DBPORT,
+    database: process.env.DATABASE,
+    options: {
         encrypt: false,
         trustServerCertificate: false // True when local dev
     }
 }
 
-export async function getConnection(){
+export async function getConnection() {
     try {
         const pool = await sql.connect(connectionString);
         return pool;
