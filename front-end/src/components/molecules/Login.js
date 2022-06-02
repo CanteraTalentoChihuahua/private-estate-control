@@ -1,6 +1,6 @@
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../atoms/button";
-
+import './Login.css';
 
 function Login(){
   return(
@@ -32,7 +32,7 @@ function Login(){
               <div class="field">
                 <label for="" class="checkbox">
                   <input type="checkbox"/>
-                 Remember me
+                  Remember me
                 </label>
               </div>
               <Button/>
