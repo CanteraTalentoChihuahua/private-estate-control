@@ -1,18 +1,23 @@
-//import mssql from 'mssql';
-/*
-const pool = new mssql.ConnectionPool({
-    user: process.env.DB_USER || "a",
-    password: process.env.DB_PASS || "a",
-    server: process.env.DB_SERVER || "a",
-    port: process.env.DB_PORT || "a",
-    database: process.env.DB_NAME || "a",
-    options: {
+import sql from "mssql";
+
+const connectionString = {
+    user: 'sa',
+    password: 'FraccionamientoBootcamp*1',
+    server: '50.21.186.23',
+    port: 1433,
+    database: 'ResDevDB',
+    options:{
         encrypt: false,
-        trustServiceCertificate: false
+        trustServerCertificate: false // True when local dev
     }
-}).connect;
+}
 
-//const pool = new mssql.ConnectionPool(connectionString).connect;
+export async function getConnection(){
+    try {
+        const pool = await sql.connect(connectionString);
+        return pool;
+    } catch (error) {
+        console.log(error);
+    }
 
-export default pool;
-*/
+}

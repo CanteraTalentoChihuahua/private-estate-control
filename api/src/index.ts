@@ -1,10 +1,13 @@
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
+import authRoutes from "./routes/auth";
+import usersRoutes from "./routes/users";
 
 const app = express();
 const port = process.env.PORT || 2000;
 
 app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: false}));
 app.use(cors());
 
 app.all('*', function (req, res, next) {
@@ -14,29 +17,9 @@ app.all('*', function (req, res, next) {
     next();
 });
 
-// Endpoints - test
-
-app.get('/endpoint', function (req, res) {
-
-    let usrs = {
-        "items": [
-            { "id": 1, "name": "Juan" },
-            { "id": 2, "name": "John" }
-        ]
-    }
-    
-    res.send(usrs);
-
-    console.log('endpoint works');
-});
-
-app.get('/ee', (req, res) => {
-    //qu = 'SELECT * FROM TEmployee';
-    //poolFinal(req, res, qu);
-    console.log("db ee early yay");
-});
-
-///////////////////////
+// Routers declarations
+app.use('/api', usersRoutes);
+app.use('/api/login', authRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on ${port}`
