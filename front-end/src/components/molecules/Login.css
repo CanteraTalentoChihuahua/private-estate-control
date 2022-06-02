@@ -2,3 +2,24 @@
 {
     background-color: #8FBDD3;
 }
+
+label.checkbox.forgotPassword
+{
+    text-align: center;
+    cursor: pointer;
+}
+
+label.checkbox
+{
+    cursor: auto;
+}
+
+.hero.is-link .title {
+    text-align: center;
+}
+
+.password
+{
+    text-align: center;
+    margin-bottom: 5%;
+}

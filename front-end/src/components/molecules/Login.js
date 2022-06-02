@@ -35,6 +35,11 @@ function Login(){
                   Remember me
                 </label>
               </div>
+              <div class="password">
+                <label for="" class="checkbox forgotPassword">
+                  Forgot Password?
+                </label>
+              </div>
               <Button/>
             </form>
           </div>
