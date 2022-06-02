@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Button from "../atoms/button";
 
 function Login(){
   return(
@@ -33,11 +34,7 @@ function Login(){
                  Remember me
                 </label>
               </div>
-              <div class="field">
-                  <Link class="button is-success" to="/dashboard">
-                  Login
-                  </Link>                
-              </div>
+              <Button/>
             </form>
           </div>
         </div>
