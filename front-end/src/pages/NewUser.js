@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 
-
-
 function NewUser(){
   return(
     <section class="hero is-primary is-fullheight is-link">
