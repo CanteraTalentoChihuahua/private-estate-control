@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap/js/src/collapse.js';
 
 function App() {
-// JSX with just one parent
+// JSX with just one parentss
 
   return (
     <div>
