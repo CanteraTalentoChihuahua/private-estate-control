@@ -1,21 +1,21 @@
-// A component in React is a function
-import NavItem from "./components/NavItem";
-import BodyItem from "./components/BodyItem";
-import BottomItem from "./components/BottomItem";
-import EndpointItem from "./components/EndpointItem";
-// Better to have just the ones used AND in a component lol
-import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/js/src/collapse.js';
+import { Route, Switch } from 'react-router-dom';
+import Navbar  from   "./components/molecules/Navbar";
+import Login from "./components/molecules/Login";
+import NewUser from "./pages/NewUser";
+import Users from "./pages/Users";
+import Sidebar from "./components/molecules/Sidebar";
+import 'bulma/css/bulma.min.css';
 
 function App() {
-// JSX with just one parentss
-
   return (
     <div>
-      <NavItem />
-      <BodyItem />    
-      <EndpointItem />
-      <BottomItem /> 
+      <Switch>
+      <Route path="/Api/login" component={Login} exact/>
+      <Route path="/Api/user"  component={NewUser} exact/>
+      <Route path="/Api/users" component={Users} exact/>
+      <Route path="/navbar"    component={Navbar} exact />
+      <Route path="/Api/sidebar" component={Sidebar} exact/>
+      </Switch>
     </div>
   );
 }
