@@ -12,8 +12,5 @@ function Button()
             </button>
         </div>
     );
-  
 }
-  
-  export default Button;
-  
+export default Button;  
