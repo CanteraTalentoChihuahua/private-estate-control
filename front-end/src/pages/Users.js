@@ -1,24 +1,24 @@
 //import { Link } from "react-router-dom"
 import axios from "axios"
 import React, {Component} from "react"
-//import axios from "axios"
 
 export default class Users extends Component {
     state={
-        users:[{username:"Arnold",lastname:"Valdez",phoneNumber:"6141909090",email:"tut@tut.tut",active:1},{username:"Nono",lastname:"Valdez",phoneNumber:"6141234567",email:"tut@tut.tut",active:0}]
-    }
-    /*async componentDidMount(){
-        getUsers();
-        console.log(this.state.users);
+        users:[]
     }
     async getUsers(){
-        const res = await axios.get('http://localhost:2000/users');
-        this.setState({users:res.data});
+        const res = await axios.get('http://localhost:2000/endpoint');
+        this.setState({users:res.data.items});
+        console.log(res.data.items)
+    }
+    async componentDidMount(){
+        this.getUsers();
+        console.log(this.state.users);
     }
     deleteUser= async (id)=>{
         await axios.delete('http://localhost:2000/users'+id)
         this.getUsers();
-    }*/
+    }
     render() {
         return(
     <section class="hero is-primary is-fullheight is-link">
