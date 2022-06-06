@@ -3,10 +3,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const connectionString = {
+
     user: process.env.USER,
     password: process.env.PASSWORD,
     server: process.env.SERVER,
-    port: process.env.DBPORT,
+    port: Number(process.env.DBPORT),
     database: process.env.DATABASE,
     options: {
         encrypt: false,

@@ -2,7 +2,8 @@ import path from "path";
 import dotenv from "dotenv";
 
 // Parsing the env file.
-dotenv.config({ path: path.resolve(__dirname, "../config/config.env") });
+//C:\Users\almef\OneDrive\Escritorio\private-estate-control\api\src\config.ts
+dotenv.config({ path: path.resolve("../.env") });
 
 // Interface to load env variables
 // Note these variables can possibly be undefined

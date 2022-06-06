@@ -1,6 +1,6 @@
 import { getConnection } from "../conf/db";
 import sql from "mssql";
-import queries from "../models/users"
+import queries from "../models/userstests"
 
 export const getUsers = async (req: any, res: any) => {
     try {
@@ -18,35 +18,32 @@ export const getUsers = async (req: any, res: any) => {
 
 export const createUser = async (req: any, res: any) => {
 
-    const { idResDev, firstName, lastName, phoneNumber, email, password, active = 1, facialId } = req.body;
+    const { firstName, lastName, password, info } = req.body;
 
-    if (idResDev == null || firstName == null || lastName == null || email == null || password == null) {
+    if (firstName == null || lastName == null || password == null) {
         console.log("User not created");
-        return res.status(400).json({ msg: 'Bad request. Fill required fields (IdResDev, FirstName, LastName, Email, Password)' });
+        return res.status(400).json({ msg: 'Bad request. Fill required fields' });
     }
 
-    if (phoneNumber == null) {
-        let phoneNumber = "";
-    }
-    if (facialId == null) {
-        let facialId = "";
+    if (info == null) {
+        let info = "";
     }
 
     try {
         const pool = await getConnection();
 
         const result = await pool?.request()
-            .input('idResDev', sql.Int, idResDev)
             .input('firstName', sql.VarChar, firstName)
             .input('lastName', sql.VarChar, lastName)
-            .input('phoneNumber', sql.VarChar, phoneNumber)
-            .input('email', sql.VarChar, email)
             .input('password', sql.VarChar, password)
-            .input('active', sql.Bit, active)
-            .input('facialId', sql.VarChar, facialId)
+            .input('info', sql.VarChar, info)
             .query(queries.createNewUser);
+        // "browser nav - type - name in db"
 
-        return res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email, password, active, facialId });
+        //console.log(result);
+
+        // NO DEBERIA MOSTRAR EL PASSWORD, SOLO ES PARA TESTEAR XD
+        return res.status(200).json({ firstName, lastName, password, info });
 
     } catch (error) {
         res.status(500);

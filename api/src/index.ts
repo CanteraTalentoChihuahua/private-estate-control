@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth";
 import usersRoutes from "./routes/users";
 import dotenv from "dotenv"
+import { type } from "os";
 dotenv.config();
 
 const app = express();
@@ -25,4 +26,9 @@ app.use('/api/login', authRoutes);
 app.listen(process.env.SVPORT, () => {
     console.log(`Server running on port ${process.env.SVPORT}`
     )
+    console.log(typeof (process.env.USER),
+        typeof (process.env.PASSWORD),
+        typeof (process.env.SERVER),
+        typeof (Number(process.env.DBPORT)),
+        typeof (process.env.DATABASE));
 });
