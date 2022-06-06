@@ -14,6 +14,7 @@ interface ENV {
     SVPORT: Number | undefined;
     USER: String | undefined;
     PASSWORD: String | undefined;
+    DBPORT: Number | undefined;
     SERVER: String | undefined;
     DATABASE: String | undefined;
 }
@@ -23,6 +24,7 @@ interface Config {
     SVPORT: Number;
     USER: String;
     PASSWORD: String;
+    DBPORT: Number;
     SERVER: String;
     DATABASE: String;
 }
@@ -35,6 +37,7 @@ const getConfig = (): ENV => {
         SVPORT: process.env.SVPORT ? Number(process.env.SVPORT) : undefined,
         USER: process.env.USER ? String(process.env.USER) : undefined,
         PASSWORD: process.env.PASSWORD ? String(process.env.SVPORPASSWORDT) : undefined,
+        DBPORT: process.env.DBPORT ? Number(process.env.DBPORT) : undefined,
         SERVER: process.env.SERVER ? String(process.env.SERVER) : undefined,
         DATABASE: process.env.DATABASE ? String(process.env.DATABASE) : undefined
     };
