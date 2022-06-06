@@ -1,4 +1,5 @@
 //import { Link } from "react-router-dom"
+import axios from "axios"
 import React, {Component} from "react"
 //import axios from "axios"
 
@@ -7,9 +8,16 @@ export default class Users extends Component {
         users:[{username:"Arnold",lastname:"Valdez",phoneNumber:"6141909090",email:"tut@tut.tut",active:1},{username:"Nono",lastname:"Valdez",phoneNumber:"6141234567",email:"tut@tut.tut",active:0}]
     }
     /*async componentDidMount(){
-        const res = await axios.get('http://localhost:4000/api/users');
-        this.setState({users:res.data});
+        getUsers();
         console.log(this.state.users);
+    }
+    async getUsers(){
+        const res = await axios.get('http://localhost:2000/users');
+        this.setState({users:res.data});
+    }
+    deleteUser= async (id)=>{
+        await axios.delete('http://localhost:2000/users'+id)
+        this.getUsers();
     }*/
     render() {
         return(
@@ -31,7 +39,7 @@ export default class Users extends Component {
                 </thead>
                 <tbody>
                     {
-                        this.state.users.map(user => <tr>
+                        this.state.users.map(user => <tr key={user.id} onDoubleClick={()=> this.deleteUser(user.id)}>
                             <td>{user.username}</td><td>{user.lastname}</td><td>{user.phoneNumber}</td><td>{user.email}</td><td>{user.active}</td>
                             </tr>)
                     }
