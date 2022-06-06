@@ -10,23 +10,21 @@ dotenv.config({ path: path.resolve("../.env") });
 // as someone could skip these varibales or not setup a .env file at all
 
 interface ENV {
-    NODE_ENV: string | undefined;
-    SVPORT: number | undefined;
-    USER: string | undefined;
-    PASSWORD: string | undefined;
-    SERVER: string | undefined;
-    DBPORT: number | undefined;
-    DATABASE: string | undefined;
+    NODE_ENV: String | undefined;
+    SVPORT: Number | undefined;
+    USER: String | undefined;
+    PASSWORD: String | undefined;
+    SERVER: String | undefined;
+    DATABASE: String | undefined;
 }
 
 interface Config {
-    NODE_ENV: string;
-    SVPORT: number;
-    USER: string;
-    PASSWORD: string;
-    SERVER: string;
-    DBPORT: number;
-    DATABASE: string;
+    NODE_ENV: String;
+    SVPORT: Number;
+    USER: String;
+    PASSWORD: String;
+    SERVER: String;
+    DATABASE: String;
 }
 
 // Loading process.env as ENV interface
@@ -38,7 +36,6 @@ const getConfig = (): ENV => {
         USER: process.env.USER ? String(process.env.USER) : undefined,
         PASSWORD: process.env.PASSWORD ? String(process.env.SVPORPASSWORDT) : undefined,
         SERVER: process.env.SERVER ? String(process.env.SERVER) : undefined,
-        DBPORT: process.env.DBPORT ? Number(process.env.DBPORT) : undefined,
         DATABASE: process.env.DATABASE ? String(process.env.DATABASE) : undefined
     };
 };
