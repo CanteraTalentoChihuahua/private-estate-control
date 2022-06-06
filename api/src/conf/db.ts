@@ -3,11 +3,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const connectionString = {
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    server: process.env.SERVER,
-    port: process.env.DBPORT,
-    database: process.env.DATABASE,
+    user: "sa",
+    password: "FraccionamientoBootcamp*1",
+    server: "50.21.186.23",
+    port: 1433,
+    database: "ResDevDB",
     options: {
         encrypt: false,
         trustServerCertificate: false // True when local dev

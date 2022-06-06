@@ -3,7 +3,6 @@ namespace NodeJS {
         USER: any
         PASSWORD: any
         SERVER: string
-        DBPORT: number
         DATABASE: any
     }
 }

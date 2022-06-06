@@ -22,7 +22,7 @@ app.all('*', (req, res, next) => {
 app.use('/api', usersRoutes);
 app.use('/api/login', authRoutes);
 
-app.listen(process.env.SVPORT, () => {
-    console.log(`Server running on port ${process.env.SVPORT}`
+app.listen(2000, () => {
+    console.log(`Server running on port ${2000}`
     )
 });
