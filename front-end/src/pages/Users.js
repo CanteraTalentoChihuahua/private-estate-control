@@ -7,16 +7,16 @@ export default class Users extends Component {
         users:[]
     }
     async getUsers(){
-        const res = await axios.get('http://localhost:2000/endpoint');
-        this.setState({users:res.data.items});
-        console.log(res.data.items)
+        const res = await axios.get('http://gestion-fraccionamiento.herokuapp.com/api/users');
+        this.setState({users:res.data});
+        console.log(res.data);
     }
     async componentDidMount(){
         this.getUsers();
         console.log(this.state.users);
     }
     deleteUser= async (id)=>{
-        await axios.delete('http://localhost:2000/users'+id)
+        await axios.delete('http://gestion-fraccionamiento.herokuapp.com/api/users'+id)
         this.getUsers();
     }
     render() {
@@ -39,8 +39,8 @@ export default class Users extends Component {
                 </thead>
                 <tbody>
                     {
-                        this.state.users.map(user => <tr key={user.id} onDoubleClick={()=> this.deleteUser(user.id)}>
-                            <td>{user.username}</td><td>{user.lastname}</td><td>{user.phoneNumber}</td><td>{user.email}</td><td>{user.active}</td>
+                        this.state.users.map(user => <tr key={user.id} onDoubleClick={()=> this.deleteUser(user.IdUser)}>
+                            <td>{user.FirstName}</td><td>{user.LastName}</td><td>{user.PhoneNumber}</td><td>{user.Email}</td><td>{user.Active}</td>
                             </tr>)
                     }
                 </tbody>
