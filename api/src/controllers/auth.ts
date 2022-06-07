@@ -6,7 +6,7 @@ import { generateAccessToken } from "../middlewares/jwt";
 export const testGet = async (req: any, res: any) => {
 
     //res.send(usrs);
-    res.json({username: req.user}); // El username que guardamos
+    res.json({ username: req.user }); // El username que guardamos
 }
 
 export const getLogin = async (req: any, res: any) => {
@@ -24,9 +24,9 @@ export const getLogin = async (req: any, res: any) => {
 }
 
 export const authLogin = async (req: any, res: any) => {
-    const {username} = req.body;
+    const { username } = req.body;
     //consulta y validacion
-    const user = {username: username}; // se puede guardar cualquier tipo de dato
+    const user = { username: username }; // se puede guardar cualquier tipo de dato
     const accessToken = generateAccessToken(user);
 
 <<<<<<< Updated upstream
