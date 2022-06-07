@@ -3,7 +3,7 @@ import React, {Component} from "react"
 //import axios from "axios"
 import './Sidebar.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMoneyCheckAlt, faSwimmer, faUsers, faHome} from '@fortawesome/free-solid-svg-icons';
+import {faMoneyCheckAlt, faSwimmer, faUsers, faHome, faExclamation, faCar, faChild, faPlus, faEdit} from '@fortawesome/free-solid-svg-icons';
 
 export default class Users extends Component {
     
@@ -63,12 +63,12 @@ export default class Users extends Component {
                         <ul>
                             <li>
                                 <a href="#">
-                                    <span class="icon is-small"><i class="fa fa-link"></i></span> Register
+                                    <span class="icon is-small"><FontAwesomeIcon icon={faPlus}/></span> Register
                                 </a>
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="icon is-small"><i class="fa fa-link"></i></span> Edit
+                                    <span class="icon is-small"><FontAwesomeIcon icon={faEdit}/></span> Edit
                                 </a>
                             </li>
                         </ul>
@@ -85,7 +85,7 @@ export default class Users extends Component {
                     </li>
                     <li>
                         <a href="#" class="">
-                            <span class="icon"><i class="fa fa-info"></i></span> Requests
+                            <span class="icon"><FontAwesomeIcon icon={faExclamation}/></span> Requests
                         </a>
                     </li>
                     <li>
@@ -100,12 +100,12 @@ export default class Users extends Component {
                     </li>
                     <li>
                         <a href="#" class="">
-                            <span class="icon"><i class="fa fa-info"></i></span> Vehicles
+                            <span class="icon"><FontAwesomeIcon icon={faCar}/></span> Vehicles
                         </a>
                     </li>
                     <li>
                         <a href="#" class="">
-                            <span class="icon"><i class="fa fa-info"></i></span> Visitors
+                            <span class="icon"><FontAwesomeIcon icon={faChild}/></span> Visitors
                         </a>
                     </li>
                 </ul>

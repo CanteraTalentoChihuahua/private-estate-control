@@ -1,16 +1,16 @@
 //import { Link } from "react-router-dom"
 import React, {Component} from "react"
-//import axios from "axios"
+import axios from "axios"
 
 export default class Users extends Component {
     state={
         users:[{username:"Arnold",lastname:"Valdez",phoneNumber:"6141909090",email:"tut@tut.tut",active:1},{username:"Nono",lastname:"Valdez",phoneNumber:"6141234567",email:"tut@tut.tut",active:0}]
     }
-    /*async componentDidMount(){
-        const res = await axios.get('http://localhost:4000/api/users');
+    async componentDidMount(){
+        const res = await axios.get('https://gestion-fraccionamiento.herokuapp.com/api/login');
         this.setState({users:res.data});
         console.log(this.state.users);
-    }*/
+    }
     render() {
         return(
     <section class="hero is-primary is-fullheight is-link">
