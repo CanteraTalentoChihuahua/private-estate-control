@@ -16,6 +16,12 @@ flex-direction: column;*/
 margin-top: -12px;
 }
 
+.container {
+    width: 100%;
+    float: left;
+    margin-right: 0;
+}
+
 @media screen and (max-width: 768px) {
 #menu-toggle:checked + .nav-menu {
     display: block;
