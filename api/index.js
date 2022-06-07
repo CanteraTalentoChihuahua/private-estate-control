@@ -16,49 +16,27 @@ app.all('*', function (req, res, next) {
     next();
 });
 
-main().catch(err => console.log(err));
+app.get('/test', function (req, res) {
 
-// Console err cuz no db existent lol
-//async function main() {
-//    await mongoose.connect('mongodb://localhost27017/ResidentialDev');
-//}
+    let nameVar = "Javi"
 
-/*
-const usersSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    phoneNumber: String,
-    emailAddress: String,
-    password: String,
-    activeObject: Boolean
+    res.json({name: nameVar});
+    console.log('endpoint works');
 });
-
-//module.exports = mongoose.model("Users", usersSchema);
-
-const Thing = mongoose.model("Users", usersSchema);
-
-const m = new Thing;
-m.firstName = "John";
-m.lastName = "Johnson";
-m.phoneNumber = "6141234567";
-m.emailAddress = "yes@a.com";
-m.password = "password1";
-m.activeObject = true;
-*/
 
 app.get('/endpoint', function (req, res) {
 
-    let usrs = {
+    let users = {
         "items": [
-            { "id": 1, "name": "Juan" },
-            { "id": 2, "name": "John" },
+            {id:"1",username:"Arnold",lastname:"Valdez",phoneNumber:"6141909090",email:"tut@tut.tut",active:1},
+            {id:"2",username:"Nono",lastname:"Valdez",phoneNumber:"6141234567",email:"tut@tut.tut",active:0}
             //{ "id": 3, "name": m.lastName }
         ]
     }
 
 
     res.send(
-        usrs
+        users
     );
     console.log('endpoint works');
 });
