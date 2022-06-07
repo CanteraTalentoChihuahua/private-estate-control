@@ -29,8 +29,19 @@ export const authLogin = async (req: any, res: any) => {
     const user = {username: username}; // se puede guardar cualquier tipo de dato
     const accessToken = generateAccessToken(user);
 
+<<<<<<< Updated upstream
     res.header('authorization', accessToken).json({
         message: 'User auth completed',
         token: accessToken
     });
+=======
+    // res.header('authorization', accessToken).json({
+    //     message: 'User auth completed',
+    //     token: accessToken,
+    //     email: user.email,
+    //     password: user.password
+    // });
+
+    //SELECT * FROM T_Users WHERE Email = @email AND Password = @password
+>>>>>>> Stashed changes
 }
