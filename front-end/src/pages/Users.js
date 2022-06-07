@@ -1,25 +1,33 @@
 //import { Link } from "react-router-dom"
-import React, {Component} from "react"
 import axios from "axios"
+import React, {Component} from "react"
 
 export default class Users extends Component {
     state={
-        users:[{username:"Arnold",lastname:"Valdez",phoneNumber:"6141909090",email:"tut@tut.tut",active:1},{username:"Nono",lastname:"Valdez",phoneNumber:"6141234567",email:"tut@tut.tut",active:0}]
+        users:[]
+    }
+    async getUsers(){
+        const res = await axios.get('http://gestion-fraccionamiento.herokuapp.com/api/users');
+        this.setState({users:res.data});
+        console.log(res.data);
     }
     async componentDidMount(){
-        const res = await axios.get('https://gestion-fraccionamiento.herokuapp.com/api/login');
-        this.setState({users:res.data});
+        this.getUsers();
         console.log(this.state.users);
+    }
+    deleteUser= async (id)=>{
+        await axios.delete('http://gestion-fraccionamiento.herokuapp.com/api/users'+id)
+        this.getUsers();
     }
     render() {
         return(
-    <section class="hero is-primary is-fullheight is-link">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-5-widescreen">
-          <h1 class="title is-2">Users</h1>
-            <table class="table is-striped">
+    <section className="hero is-primary is-fullheight is-link">
+    <div className="hero-body">
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-5-tablet is-4-desktop is-5-widescreen">
+          <h1 className="title is-2">Users</h1>
+            <table className="table is-striped">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -31,8 +39,8 @@ export default class Users extends Component {
                 </thead>
                 <tbody>
                     {
-                        this.state.users.map(user => <tr>
-                            <td>{user.username}</td><td>{user.lastname}</td><td>{user.phoneNumber}</td><td>{user.email}</td><td>{user.active}</td>
+                        this.state.users.map(user => <tr key={user.id} onDoubleClick={()=> this.deleteUser(user.IdUser)}>
+                            <td>{user.FirstName}</td><td>{user.LastName}</td><td>{user.PhoneNumber}</td><td>{user.Email}</td><td>{user.Active}</td>
                             </tr>)
                     }
                 </tbody>
