@@ -1,47 +1,50 @@
 //import axios from "axios";
-import { Link } from "react-router-dom";
 import React, {Component} from "react"
 
 export default class NewUser extends Component {
-
-  /*onChangeUsername = (e) => {
+  
+  state= {
+    users:[]
+  }
+  /*
+  onChangeFirstName = (e) => {
     this.setState({
-      username: e.target.value
-      
+      FirstName: e.target.value
     })
   }
   onChangeLastname = (e) => {
     this.setState({
-      lastname: e.target.value
-      
+      LastName: e.target.value
     })
   }
   onChangePhone = (e) => {
     this.setState({
-      phone: e.target.value
-      
+      PhoneNumber: e.target.value
     })
   }
   onChangeEmail = (e) => {
     this.setState({
-      email: e.target.value
-      
+      Email: e.target.value
     })
   }
   onChangePassword = (e) => {
     this.setState({
-      password: e.target.value
-      
+      Password: e.target.value
     })
   }
 
   onSubmit = async e => {
     e.preventDefault();
-    await axios.post('http://localhost:2000/users',{
-      username:this.state.username
-    })
-    this.setState({username:''});
+    const res = await axios.post('http://http://gestion-fraccionamiento.herokuapp.com/api/users',{
+      FirstName:this.state.FirstName,
+      LastName:this.state.LastName,
+      PhoneNumber:this.state.PhoneNumber,
+      Email:this.state.Email,
+      Password:this.state.Password
+    });
+    this.setState({FirstName:'',LastName:'',PhoneNumber:'',Email:'',Password:''});
     console.log(res);
+    console.log("State:", this.state.users);
   }*/
 
   render() {
@@ -56,7 +59,7 @@ export default class NewUser extends Component {
             <div className="field">
                 <label for="" className="label">Name</label>
                 <div className="control has-icons-left">
-                  <input type="text" placeholder="Bob" className="input" required value={this.state.username} onChange={this.onChangeUsername}/>
+                  <input type="text" placeholder="Bob" className="input" required value={this.state.FirstName} onChange={this.onChangeFirstName}/>
                   <span className="icon is-small is-left">
                     <i className="fa fa-user"></i>
                   </span>
@@ -65,7 +68,7 @@ export default class NewUser extends Component {
               <div className="field">
                 <label for="" className="label">Lastname</label>
                 <div className="control has-icons-left">
-                  <input type="text" placeholder="Smith" className="input" required value={this.state.lastname} onChange={this.onChangeLastname} />
+                  <input type="text" placeholder="Smith" className="input" required value={this.state.LastName} onChange={this.onChangeLastname} />
                   <span className="icon is-small is-left">
                     <i className="fa fa-user"></i>
                   </span>
@@ -74,7 +77,7 @@ export default class NewUser extends Component {
               <div className="field">
                 <label for="" className="label">Phone number</label>
                 <div className="control has-icons-left">
-                  <input type="text" placeholder="6141234567" className="input" required value={this.state.phone} onChange={this.onChangePhone} />
+                  <input type="text" placeholder="6141234567" className="input" required value={this.state.PhoneNumber} onChange={this.onChangePhone} />
                   <span className="icon is-small is-left">
                     <i className="fa fa-mobile"></i>
                   </span>
@@ -83,7 +86,7 @@ export default class NewUser extends Component {
               <div className="field">
                 <label for="" className="label">Email</label>
                 <div className="control has-icons-left">
-                  <input type="email" placeholder="e.g. bobsmith@gmail.com" className="input" required value={this.state.email} onChange={this.onChangeEmail} />
+                  <input type="email" placeholder="e.g. bobsmith@gmail.com" className="input" required value={this.state.Email} onChange={this.onChangeEmail} />
                   <span className="icon is-small is-left">
                     <i className="fa fa-envelope"></i>
                   </span>
@@ -92,16 +95,14 @@ export default class NewUser extends Component {
               <div className="field">
                 <label for="" className="label">Password</label>
                 <div className="control has-icons-left">
-                  <input type="password" placeholder="*******" className="input" required value={this.state.password} onChange={this.onChangePassword} />
+                  <input type="password" placeholder="*******" className="input" required value={this.state.Password} onChange={this.onChangePassword} />
                   <span className="icon is-small is-left">
                     <i className="fa fa-lock"></i>
                   </span>
                 </div>
               </div>
               <div className="field">
-                  <Link type="submit" class="button is-success" to="/login">
-                    New user
-                  </Link>                
+                    <button type="submit" className="button is-success">New user</button>
               </div>
             </form>
           </div>
