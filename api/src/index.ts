@@ -23,8 +23,8 @@ app.all('*', function (req, res, next) {
 app.use('/api', usersRoutes);
 app.use('/api/login', authRoutes);
 
-app.listen(process.env.SVPORT, () => {
-    console.log(`Server running on port ${process.env.SVPORT}`
+app.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT}`
     )
     console.log(typeof (process.env.USER),
         typeof (process.env.PASSWORD),

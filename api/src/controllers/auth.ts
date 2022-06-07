@@ -6,7 +6,7 @@ import { generateAccessToken } from "../middlewares/jwt";
 export const testGet = async (req: any, res: any) => {
 
     //res.send(usrs);
-    res.json({ username: req.user }); // El username que guardamos
+    res.json({ email: req.email, password: req.password }); // El username que guardamos
 }
 
 export const getLogin = async (req: any, res: any) => {
@@ -14,8 +14,8 @@ export const getLogin = async (req: any, res: any) => {
         <html>
             <body>
                 <form method="POST" action="/api/login/auth">
-                Username: <input type="text" name="username" id="username"><br>
-                Pass: <input type="password" name="password" id="password"><br>
+                Email: <input type="text" name="email" id="email"><br>
+                Password: <input type="password" name="password" id="password"><br>
                 <input type="submit" value="Log in">
                 </form>
             </body>
@@ -24,24 +24,25 @@ export const getLogin = async (req: any, res: any) => {
 }
 
 export const authLogin = async (req: any, res: any) => {
-    const { username } = req.body;
+    const { email } = req.body;
+    const { password } = req.body;
+    console.log(email);
+    console.log(password);
     //consulta y validacion
-    const user = { username: username }; // se puede guardar cualquier tipo de dato
+    const user = { email: email, password: password }; // se puede guardar cualquier tipo de dato
     const accessToken = generateAccessToken(user);
 
-<<<<<<< Updated upstream
-    res.header('authorization', accessToken).json({
-        message: 'User auth completed',
-        token: accessToken
-    });
-=======
-    // res.header('authorization', accessToken).json({
-    //     message: 'User auth completed',
-    //     token: accessToken,
-    //     email: user.email,
-    //     password: user.password
-    // });
+    //const pool = await getConnection();
 
-    //SELECT * FROM T_Users WHERE Email = @email AND Password = @password
->>>>>>> Stashed changes
+    /*const result = await pool?.request()
+        .input('email', sql.Int, user.email)
+        .input('password', sql.VarChar, password)
+        .query(queries.matchUser);*/
+
+    res.header('authorization', accessToken).json({
+        message: 'Auth completed',
+        token: accessToken,
+        email: user.email,
+        password: user.password
+    });
 }
