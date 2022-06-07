@@ -1,4 +1,4 @@
-import axios from "axios";
+//import axios from "axios";
 import { Link } from "react-router-dom";
 import React, {Component} from "react"
 
@@ -46,59 +46,59 @@ export default class NewUser extends Component {
 
   render() {
     return (
-    <section class="hero is-primary is-fullheight is-link">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-4-widescreen">
-          <h1 class="title is-2">New User</h1>
-            <form class="box" onSubmit={this.onSubmit}>
-            <div class="field">
-                <label for="" class="label">Name</label>
-                <div class="control has-icons-left">
-                  <input type="text" placeholder="Bob" class="input" required value={this.state.username} onChange={this.onChangeUsername}/>
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-user"></i>
+    <section className="hero is-primary is-fullheight is-link">
+    <div className="hero-body">
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-5-tablet is-4-desktop is-4-widescreen">
+          <h1 className="title is-2">New User</h1>
+            <form className="box" onSubmit={this.onSubmit}>
+            <div className="field">
+                <label for="" className="label">Name</label>
+                <div className="control has-icons-left">
+                  <input type="text" placeholder="Bob" className="input" required value={this.state.username} onChange={this.onChangeUsername}/>
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-user"></i>
                   </span>
                 </div>
               </div>
-              <div class="field">
-                <label for="" class="label">Lastname</label>
-                <div class="control has-icons-left">
-                  <input type="text" placeholder="Smith" class="input" required value={this.state.lastname} onChange={this.onChangeLastname} />
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-user"></i>
+              <div className="field">
+                <label for="" className="label">Lastname</label>
+                <div className="control has-icons-left">
+                  <input type="text" placeholder="Smith" className="input" required value={this.state.lastname} onChange={this.onChangeLastname} />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-user"></i>
                   </span>
                 </div>
               </div>
-              <div class="field">
-                <label for="" class="label">Phone number</label>
-                <div class="control has-icons-left">
-                  <input type="text" placeholder="6141234567" class="input" required value={this.state.phone} onChange={this.onChangePhone} />
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-mobile"></i>
+              <div className="field">
+                <label for="" className="label">Phone number</label>
+                <div className="control has-icons-left">
+                  <input type="text" placeholder="6141234567" className="input" required value={this.state.phone} onChange={this.onChangePhone} />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-mobile"></i>
                   </span>
                 </div>
               </div>
-              <div class="field">
-                <label for="" class="label">Email</label>
-                <div class="control has-icons-left">
-                  <input type="email" placeholder="e.g. bobsmith@gmail.com" class="input" required value={this.state.email} onChange={this.onChangeEmail} />
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-envelope"></i>
+              <div className="field">
+                <label for="" className="label">Email</label>
+                <div className="control has-icons-left">
+                  <input type="email" placeholder="e.g. bobsmith@gmail.com" className="input" required value={this.state.email} onChange={this.onChangeEmail} />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-envelope"></i>
                   </span>
                 </div>
               </div>
-              <div class="field">
-                <label for="" class="label">Password</label>
-                <div class="control has-icons-left">
-                  <input type="password" placeholder="*******" class="input" required value={this.state.password} onChange={this.onChangePassword} />
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-lock"></i>
+              <div className="field">
+                <label for="" className="label">Password</label>
+                <div className="control has-icons-left">
+                  <input type="password" placeholder="*******" className="input" required value={this.state.password} onChange={this.onChangePassword} />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-lock"></i>
                   </span>
                 </div>
               </div>
-              <div class="field">
+              <div className="field">
                   <Link type="submit" class="button is-success" to="/login">
                     New user
                   </Link>                

@@ -21,13 +21,13 @@ export default class Users extends Component {
     }
     render() {
         return(
-    <section class="hero is-primary is-fullheight is-link">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-5-widescreen">
-          <h1 class="title is-2">Users</h1>
-            <table class="table is-striped">
+    <section className="hero is-primary is-fullheight is-link">
+    <div className="hero-body">
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-5-tablet is-4-desktop is-5-widescreen">
+          <h1 className="title is-2">Users</h1>
+            <table className="table is-striped">
                 <thead>
                     <tr>
                         <th>Name</th>
