@@ -2,6 +2,7 @@ import { getConnection } from "../conf/db";
 import queries from "../models/auth"
 import sql from "mssql";
 import { generateAccessToken } from "../middlewares/jwt";
+import { count } from "console";
 
 export const testGet = async (req: any, res: any) => {
 
@@ -26,23 +27,34 @@ export const getLogin = async (req: any, res: any) => {
 export const authLogin = async (req: any, res: any) => {
     const { email } = req.body;
     const { password } = req.body;
-    console.log(email);
-    console.log(password);
+
     //consulta y validacion
     const user = { email: email, password: password }; // se puede guardar cualquier tipo de dato
     const accessToken = generateAccessToken(user);
 
-    //const pool = await getConnection();
+    const pool = await getConnection();
 
-    /*const result = await pool?.request()
-        .input('email', sql.Int, user.email)
+    const result = await pool?.request()
+        .input('email', sql.VarChar, email)
         .input('password', sql.VarChar, password)
-        .query(queries.matchUser);*/
+        .query(queries.matchUser);
+
+    var verified = "???";
+
+    console.log(result);
+    console.log(typeof (result));
+
+    if ((result?.recordset)?.length) {
+        verified = "Verified";
+    } else {
+        verified = "imposter";
+    }
 
     res.header('authorization', accessToken).json({
         message: 'Auth completed',
         token: accessToken,
         email: user.email,
-        password: user.password
+        password: user.password,
+        verified: verified
     });
 }
