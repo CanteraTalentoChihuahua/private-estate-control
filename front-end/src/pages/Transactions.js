@@ -9,7 +9,7 @@ export default class Transactions extends Component {
                 <Navbar/>
                 <section class="main-content columns is-fullheight">
                     <Sidebar/>
-                    <div className="container column is-10">
+                    <div className="container column is-10 m-0">
                         <br/>
                         <Title title="Transactions"/>
                     </div>
