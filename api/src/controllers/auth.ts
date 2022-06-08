@@ -15,9 +15,10 @@ export const getLogin = async (req: any, res: any) => {
     res.send(`
         <html>
             <body>
-                <form method="POST" action="/api/login/auth">
+                <form method="POST" action="/login/auth">
                 Email: <input type="text" name="email" id="email"><br>
                 Password: <input type="password" name="password" id="password"><br>
+
                 <input type="submit" value="Log in">
                 </form>
             </body>

@@ -5,5 +5,6 @@ namespace NodeJS {
         SERVER: string
         DBPORT: number
         DATABASE: any
+        PORT: number
     }
 }

@@ -16,7 +16,8 @@ const getConfig = () => {
         PASSWORD: process.env.PASSWORD ? String(process.env.SVPORPASSWORDT) : undefined,
         SERVER: process.env.SERVER ? String(process.env.SERVER) : undefined,
         DBPORT: process.env.DBPORT ? Number(process.env.DBPORT) : undefined,
-        DATABASE: process.env.DATABASE ? String(process.env.DATABASE) : undefined
+        DATABASE: process.env.DATABASE ? String(process.env.DATABASE) : undefined,
+        PORT: process.env.PORT ? Number(process.env.PORT) : undefined
     };
 };
 // Throwing an Error if any field was undefined we don't 
