@@ -4,6 +4,8 @@ import sql from "mssql";
 import { generateAccessToken } from "../middlewares/jwt";
 import bcryptjs from "bcryptjs"
 import { count } from "console";
+import { nextTick } from "process";
+import { NextFunction } from "express";
 
 export const testGet = async (req: any, res: any) => {
 
@@ -26,37 +28,39 @@ export const getLogin = async (req: any, res: any) => {
     `);
 }
 
-export const authLogin = async (req: any, res: any) => {
+export const authLogin = async (req: any, res: any, next: NextFunction) => {
     const { email } = req.body;
     const { password } = req.body;
 
-    //consulta y validacion
-    const user = { email: email, password: password }; // se puede guardar cualquier tipo de dato
-    const accessToken = generateAccessToken(user);
+    const user = { email: email, password: password };
 
-    const pool = await getConnection();
+    try {
+        const pool = await getConnection();
 
-    const result = await pool?.request()
-        .input('email', sql.VarChar, email)
-        .query(queries.matchUser);
+        const result = await pool?.request()
+            .input('email', sql.VarChar, email)
+            .query(queries.matchUser);
 
-    var verified = "???";
+        const noemails = (result?.recordset)?.length;
 
-    const noemails = (result?.recordset)?.length;
-
-    if (!noemails) {
-        //make it return that the user does not exists (400?)
-        verified = "Imposter";
-    }
-
-    for (let i = 0; i <= Number(noemails) - 1; i++) {
-        const { Password } = result?.recordset[i];
-        verified = "Sus"
-        if ((bcryptjs.compareSync(user.password, Password))) {
-            verified = "Verified";
-            break;
-            //make it so it goes to the dashboard of the user depending on the roles?
+        if (!noemails) {
+            res.status(401);
+            return res.send("Error, the email is not valid");
         }
+
+        const { Password } = result?.recordset[0];
+
+        if (!(bcryptjs.compareSync(user.password, Password))) {
+            res.status(401);
+            return res.send("Error, the password is not valid");
+        }
+
+        const accessToken = generateAccessToken(user);
+        next();
+
+    } catch (error) {
+        res.status(406);
+        return res.send("Watafak what did u do? :(");
     }
 
     /*if ((result?.recordset)?.length) {
@@ -72,11 +76,10 @@ export const authLogin = async (req: any, res: any) => {
     // bcrypt.hashSync('Pa$$w0rd');
     // bcrypt.compareSync('Pa$$w0rd', passwordHash);
 
-    res.header('authorization', accessToken).json({
-        message: 'Auth completed',
-        token: accessToken,
-        email: user.email,
-        password: user.password,
-        verified: verified
-    });
+    // res.header('authorization', accessToken).json({
+    //     message: 'Auth completed',
+    //     token: accessToken,
+    //     email: user.email,
+    //     password: user.password,
+    // });
 }
