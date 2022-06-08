@@ -35,7 +35,8 @@ app.use('/expenses', expensesRoutes);
 app.use('/users', usersRoutes);
 app.use('/access', accessRoutes);
 
+
 app.listen(PORT, host, () => {
-    console.log(`Server running on port ${process.env.PORT}`
+    console.log(`Server running on port ${PORT}`
     )
 });

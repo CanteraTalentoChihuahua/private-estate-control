@@ -1,6 +1,7 @@
 import { getConnection } from "../conf/db";
 import sql from "mssql";
 import queries from "../models/users"
+import bcryptjs from "bcryptjs"
 
 export const getUsers = async (req: any, res: any) => {
     try {
@@ -41,7 +42,7 @@ export const createUser = async (req: any, res: any) => {
             .input('lastName', sql.VarChar, lastName)
             .input('phoneNumber', sql.VarChar, phoneNumber)
             .input('email', sql.VarChar, email)
-            .input('password', sql.VarChar, password)
+            .input('password', sql.VarChar, bcryptjs.hashSync(password))
             .input('active', sql.Bit, active)
             .input('facialId', sql.VarChar, facialId)
             .query(queries.createNewUser);
