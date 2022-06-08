@@ -50,12 +50,12 @@ export const authLogin = async (req: any, res: any) => {
 
     for (let i = 0; i <= Number(noemails) - 1; i++) {
         const { Password } = result?.recordset[i];
+        verified = "Sus"
         if ((bcryptjs.compareSync(user.password, Password))) {
             verified = "Verified";
             break;
             //make it so it goes to the dashboard of the user depending on the roles?
         }
-        verified = "Sus"
     }
 
     /*if ((result?.recordset)?.length) {
@@ -76,7 +76,6 @@ export const authLogin = async (req: any, res: any) => {
         token: accessToken,
         email: user.email,
         password: user.password,
-        hash: bcryptjs.hashSync("password123"),
         verified: verified
     });
 }
