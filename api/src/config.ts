@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve("../.env") });
 
 interface ENV {
     NODE_ENV: String | undefined;
-    SVPORT: Number | undefined;
+    PORT: Number | undefined;
     USER: String | undefined;
     PASSWORD: String | undefined;
     DBPORT: Number | undefined;
@@ -21,7 +21,7 @@ interface ENV {
 
 interface Config {
     NODE_ENV: String;
-    SVPORT: Number;
+    PORT: Number;
     USER: String;
     PASSWORD: String;
     DBPORT: Number;
@@ -34,7 +34,7 @@ interface Config {
 const getConfig = (): ENV => {
     return {
         NODE_ENV: process.env.NODE_ENV,
-        SVPORT: process.env.SVPORT ? Number(process.env.SVPORT) : undefined,
+        PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
         USER: process.env.USER ? String(process.env.USER) : undefined,
         PASSWORD: process.env.PASSWORD ? String(process.env.SVPORPASSWORDT) : undefined,
         DBPORT: process.env.DBPORT ? Number(process.env.DBPORT) : undefined,

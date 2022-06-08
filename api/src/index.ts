@@ -1,12 +1,19 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth";
+import accountRoutes from "./routes/account";
+import dashboardRoutes from "./routes/dashboard";
+import housesRoutes from "./routes/houses";
+import expensesRoutes from "./routes/expenses";
 import usersRoutes from "./routes/users";
+import accessRoutes from "./routes/access";
 import dotenv from "dotenv"
-import { type } from "os";
 dotenv.config();
 
 const app = express();
+
+const PORT = process.env.PORT || 80;
+const host = '0.0.0.0';
 
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: false }));
@@ -20,15 +27,15 @@ app.all('*', function (req, res, next) {
 });
 
 // Routers declarations
-app.use('/api', usersRoutes);
-app.use('/api/login', authRoutes);
+app.use('/login', authRoutes);
+app.use('/account', accountRoutes);
+app.use('/dashboard', dashboardRoutes);
+app.use('/houses', housesRoutes);
+app.use('/expenses', expensesRoutes);
+app.use('/users', usersRoutes);
+app.use('/access', accessRoutes);
 
-app.listen(process.env.SVPORT, () => {
-    console.log(`Server running on port ${process.env.SVPORT}`
+app.listen(PORT, host, () => {
+    console.log(`Server running on port ${process.env.PORT}`
     )
-    console.log(typeof (process.env.USER),
-        typeof (process.env.PASSWORD),
-        typeof (process.env.SERVER),
-        typeof (Number(process.env.DBPORT)),
-        typeof (process.env.DATABASE));
 });

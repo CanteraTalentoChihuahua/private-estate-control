@@ -11,12 +11,13 @@ dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../config/con
 const getConfig = () => {
     return {
         NODE_ENV: process.env.NODE_ENV,
-        SVPORT: process.env.SVPORT ? Number(process.env.SVPORT) : undefined,
+        PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
         USER: process.env.USER ? String(process.env.USER) : undefined,
         PASSWORD: process.env.PASSWORD ? String(process.env.SVPORPASSWORDT) : undefined,
         SERVER: process.env.SERVER ? String(process.env.SERVER) : undefined,
         DBPORT: process.env.DBPORT ? Number(process.env.DBPORT) : undefined,
-        DATABASE: process.env.DATABASE ? String(process.env.DATABASE) : undefined
+        DATABASE: process.env.DATABASE ? String(process.env.DATABASE) : undefined,
+        PORT: process.env.PORT ? Number(process.env.PORT) : undefined
     };
 };
 // Throwing an Error if any field was undefined we don't 
