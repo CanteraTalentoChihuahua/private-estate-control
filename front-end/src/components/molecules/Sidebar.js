@@ -4,13 +4,10 @@ import React, {Component} from "react"
 import './Sidebar.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMoneyCheckAlt, faSwimmer, faUsers, faHome, faCar, faChild, faPlus, faEdit, faLockOpen, faUserTag, faUserCircle, faPaperPlane, faSignOutAlt, faChartBar} from '@fortawesome/free-solid-svg-icons';
-import { click } from "@testing-library/user-event/dist/click";
 
-export default class Users extends Component {
-    
+export default class Sidebar extends Component {
     render() {
         return(
-            <div>
             <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
                 <ul class="menu-list">
                     <li>
@@ -78,7 +75,6 @@ export default class Users extends Component {
                     </li>*/}
                 </ul>
             </aside>
-            </div>
         )
     }
 }
