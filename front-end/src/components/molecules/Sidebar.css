@@ -16,10 +16,8 @@ flex-direction: column;*/
 margin-top: -12px;
 }
 
-.container {
-    width: 100%;
-    float: left;
-    margin-right: 0;
+.title.is-3 {
+    margin-left: -35%;
 }
 
 @media screen and (max-width: 768px) {

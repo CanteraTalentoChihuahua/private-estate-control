@@ -9,7 +9,7 @@ export default class Dashboard extends Component {
                 <Navbar/>
                 <section className="main-content columns is-fullheight">
                     <Sidebar/>
-                    <div className="container column is-10">
+                    <div className="container column is-10 m-0">
                         <br/>
                         <Title title="Dashboard"/>
                     </div>
