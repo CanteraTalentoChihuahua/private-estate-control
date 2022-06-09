@@ -55,26 +55,12 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
             return res.send("Error, the password is not valid");
         }
 
-        const accessToken = generateAccessToken(user);
         next();
 
     } catch (error) {
         res.status(406);
-        return res.send("Watafak what did u do? :(");
+        return res.send("An error occurred: " + error);
     }
-
-    /*if ((result?.recordset)?.length) {
-        // console.log(result.recordset[0]);
-        // console.log(bcryptjs.compareSync(user.password, Password));
-        const { Password } = result.recordset[0];
-        // console.log(Password)
-        verified = "Verified";
-    } else {
-        verified = "Imposter";
-    } */
-
-    // bcrypt.hashSync('Pa$$w0rd');
-    // bcrypt.compareSync('Pa$$w0rd', passwordHash);
 
     // res.header('authorization', accessToken).json({
     //     message: 'Auth completed',
