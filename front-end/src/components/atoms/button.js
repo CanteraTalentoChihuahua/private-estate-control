@@ -1,12 +1,12 @@
 import './button.css';
 import { Link } from 'react-router-dom';
 
-function Button()
+function Button(handleClick)
 {
     return(
         <div class="field">
-            <button class="button">
-                <Link to="/dashboard">
+            <button type="submit" className="button" onClick={handleClick}>
+                <Link>
                     Login
                 </Link> 
             </button>

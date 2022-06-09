@@ -2,6 +2,7 @@
 import React,{Component} from "react";
 //import Button from "../atoms/button";
 import './Login.css';
+import axios from "axios";
 
 export default class Login extends Component {
   state={
@@ -15,54 +16,59 @@ export default class Login extends Component {
   onSubmit=e=>{
     e.preventDefault();
   }
-  onchange=async e=>{
+  onChange = async e => {
     await this.setState({
-      login:{
+      form:{
         ...this.state.form,
-        [e.target.email]:e.target.value
+        [e.target.name]: e.target.value
       }
     })
-    console.log(this.state.form);
+  }
+  onButton=()=>{
+    axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
+    .then(res=>{
+      console.log(res);
+    })
   }
   render() {
     return(
-    <section class="hero is-primary is-fullheight is-link">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-4-widescreen">
-          <h1 class="title is-2">Welcome</h1>
-            <form onSubmit={this.onSubmit} class="box">
-              <div class="field">
-                <label for="" class="label">Email</label>
-                <div class="control has-icons-left">
-                  <input name="email" type="email" placeholder="e.g. bobsmith@gmail.com" class="input" required onChange={this.onChange}/>
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-envelope"></i>
+    <section className="hero is-primary is-fullheight is-link">
+    <div className="hero-body">
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-5-tablet is-4-desktop is-4-widescreen">
+          <h1 className="title is-2">Welcome</h1>
+            <form onSubmit={this.onSubmit} className="box">
+              <div className="field">
+                <label for="" className="label">Email</label>
+                <div className="control has-icons-left">
+                  <input name="email" type="email" placeholder="e.g. bobsmith@gmail.com" className="input" required onChange={this.onChange}/>
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-envelope"></i>
                   </span>
                 </div>
               </div>
-              <div class="field">
-                <label for="" class="label">Password</label>
-                <div class="control has-icons-left">
-                  <input name="password" type="password" placeholder="*******" class="input" required/>
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-lock"></i>
+              <div className="field">
+                <label for="" className="label">Password</label>
+                <div className="control has-icons-left">
+                  <input name="password" type="password" placeholder="*******" className="input" required onChange={this.onChange}/>
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-lock"></i>
                   </span>
                 </div>
               </div>
-              <div class="field">
-                <label for="" class="checkbox">
+              <div className="field">
+                <label for="" className="checkbox">
                   <input type="checkbox"/>
                   Remember me
                 </label>
               </div>
-              <div class="password">
-                <label for="" class="checkbox forgotPassword">
+              <div className="password">
+                <label for="" className="checkbox forgotPassword">
                   Forgot Password?
                 </label>
               </div>
-              <button type="submit" className="button">login</button>
+              <button onClick={this.onButton} type="submit" className="button">login</button>
             </form>
           </div>
         </div>
