@@ -39,12 +39,12 @@ export default class Navbar extends Component {
               About
             </a>
 
-            <a className="navbar-item is-tab">
+            <a href="/profile" className="navbar-item is-tab">
               <span className="icon">
                 <FontAwesomeIcon icon={faUserCircle} />
               </span>
             </a>
-            <a className="navbar-item is-tab">
+            <a href="/login" className="navbar-item is-tab">
               <span className="icon">
                 <FontAwesomeIcon icon={faSignOutAlt} />
               </span>

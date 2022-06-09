@@ -4,12 +4,14 @@ import React, {Component} from "react"
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar"
 import Sidebar from "../components/molecules/Sidebar"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCheck,faTimes} from '@fortawesome/free-solid-svg-icons';
 export default class Users extends Component {
     state={
         users:[]
     }
     async getUsers(){
-        const res = await axios.get('http://gestion-fraccionamiento.herokuapp.com/api/users');
+        const res = await axios.get('http://gestion-fraccionamiento.herokuapp.com/users/get');
         this.setState({users:res.data});
         console.log(res.data);
     }
@@ -27,12 +29,12 @@ export default class Users extends Component {
             <Navbar/>
                 <section className="main-content columns is-fullheight">
                     <Sidebar/>
-                    <div className="container column is-10">
+                    <div className="container column is-10 m-0">
                         <br/>
-                        <section className="hero is-primary is-fullheight is-link">
+                        <section className="is-fullheight">
                         <div className="column is-5-tablet is-4-desktop is-5-widescreen">
                             <Title title="Users"/>
-                            <table className="table is-striped">
+                            <table className="table is-striped is-fullwidth">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -44,8 +46,8 @@ export default class Users extends Component {
                                 </thead>
                                 <tbody>
                                 {
-                                    this.state.users.map(user => <tr key={user.id} onDoubleClick={()=> this.deleteUser(user.IdUser)}>
-                                    <td>{user.FirstName}</td><td>{user.LastName}</td><td>{user.PhoneNumber}</td><td>{user.Email}</td><td>{user.Active}</td>
+                                    this.state.users.map(user => <tr key={user.IdUser} onDoubleClick={()=> this.deleteUser(user.IdUser)}>
+                                    <td>{user.FirstName}</td><td>{user.LastName}</td><td>{user.PhoneNumber}</td><td>{user.Email}</td><td>{user.Active ? (<FontAwesomeIcon icon={faCheck}/>) : (<FontAwesomeIcon icon={faTimes}/>)}</td>
                                     </tr>)
                                 }
                                 </tbody>
