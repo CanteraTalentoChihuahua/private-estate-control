@@ -1,4 +1,3 @@
-import { useHistory } from "react-router-dom";
 import React,{Component} from "react";
 //import Button from "../atoms/button";
 import './Login.css';
@@ -28,8 +27,7 @@ export default class Login extends Component {
     axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
     .then(res=>{
       console.log(res.data);
-      const navigate = useHistory();
-      navigate.push("/dashboard");
+      this.props.history.push("/dashboard");
     })
     .catch((exception) => {
       alert(exception.response.data.msg);
@@ -45,7 +43,7 @@ export default class Login extends Component {
           <h1 className="title is-2">Welcome</h1>
             <form onSubmit={this.onSubmit} className="box">
               <div className="field">
-                <label for="" className="label">Email</label>
+                <label className="label">Email</label>
                 <div className="control has-icons-left">
                   <input name="email" type="email" placeholder="e.g. bobsmith@gmail.com" className="input" required onChange={this.onChange}/>
                   <span className="icon is-small is-left">
@@ -54,7 +52,7 @@ export default class Login extends Component {
                 </div>
               </div>
               <div className="field">
-                <label for="" className="label">Password</label>
+                <label className="label">Password</label>
                 <div className="control has-icons-left">
                   <input name="password" type="password" placeholder="*******" className="input" required onChange={this.onChange}/>
                   <span className="icon is-small is-left">
@@ -63,13 +61,13 @@ export default class Login extends Component {
                 </div>
               </div>
               <div className="field">
-                <label for="" className="checkbox">
+                <label className="checkbox">
                   <input type="checkbox"/>
                   Remember me
                 </label>
               </div>
               <div className="password">
-                <label for="" className="checkbox forgotPassword">
+                <label className="checkbox forgotPassword">
                   Forgot Password?
                 </label>
               </div>

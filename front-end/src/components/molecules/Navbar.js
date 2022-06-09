@@ -1,63 +1,51 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMoneyCheckAlt,
-  faSwimmer,
-  faUsers,
-  faHome,
-  faCar,
-  faChild,
-  faPlus,
-  faEdit,
-  faLockOpen,
-  faUserTag,
   faUserCircle,
-  faPaperPlane,
   faSignOutAlt,
-  faChartBar,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default class Navbar extends Component {
   render() {
     return (
-      <nav class="navbar has-shadow">
-        <div class="container">
-          <div class="navbar-left">
-            <h1 class="title is-3 navbar-item">MIND</h1>
+      <nav className="navbar has-shadow">
+        <div className="container">
+          <div className="navbar-left">
+            <h1 className="title is-3 navbar-item">MIND</h1>
           </div>
-          <label for="navbar-menu" class="navbar-toggle">
+          <label className="navbar-burger">
             <span></span>
             <span></span>
             <span></span>
           </label>
-          <input type="checkbox" id="navbar-menu" class="is-hidden" />
-          <div class="navbar-end navbar-menu">
-            <a class="navbar-item is-tab is-hidden-tablet">
-              <span class="icon">
-                <i class="fa fa-home"></i>
+          <input type="checkbox" id="navbar-menu" className="is-hidden" />
+          <div className="navbar-end navbar-menu">
+            <a className="navbar-item is-tab is-hidden-tablet">
+              <span className="icon">
+                <i className="fa fa-home"></i>
               </span>{" "}
               Home
             </a>
-            <a class="navbar-item is-tab is-hidden-tablet">
-              <span class="icon">
-                <i class="fa fa-table"></i>
+            <a className="navbar-item is-tab is-hidden-tablet">
+              <span className="icon">
+                <i className="fa fa-table"></i>
               </span>{" "}
               Links
             </a>
-            <a class="navbar-item is-tab is-hidden-tablet">
-              <span class="icon">
-                <i class="fa fa-info"></i>
+            <a className="navbar-item is-tab is-hidden-tablet">
+              <span className="icon">
+                <i className="fa fa-info"></i>
               </span>{" "}
               About
             </a>
 
-            <a class="navbar-item is-tab">
-              <span class="icon">
+            <a className="navbar-item is-tab">
+              <span className="icon">
                 <FontAwesomeIcon icon={faUserCircle} />
               </span>
             </a>
-            <a class="navbar-item is-tab">
-              <span class="icon">
+            <a className="navbar-item is-tab">
+              <span className="icon">
                 <FontAwesomeIcon icon={faSignOutAlt} />
               </span>
             </a>
