@@ -3,7 +3,7 @@ import React, {Component} from "react"
 //import axios from "axios"
 import './Sidebar.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMoneyCheckAlt, faSwimmer, faUsers, faHome, faCar, faChild, faPlus, faEdit, faLockOpen, faUserTag, faPaperPlane, faChartBar} from '@fortawesome/free-solid-svg-icons';
+import {faMoneyCheckAlt,faUsers, faHome,faLockOpen,faChartBar} from '@fortawesome/free-solid-svg-icons';
 
 export default class Sidebar extends Component {
     

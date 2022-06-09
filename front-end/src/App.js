@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Houses from "./pages/Houses";
 import Transactions from "./pages/Transactions";
 import Access from "./pages/Access";
+import Profile from "./pages/Profile";
 import Sidebar from "./components/molecules/Sidebar";
 import 'bulma/css/bulma.min.css';
 
@@ -18,6 +19,7 @@ function App() {
       <Route path="/houses" component={Houses} exact/>
       <Route path="/transactions" component={Transactions} exact/>
       <Route path="/access" component={Access} exact/>
+      <Route path="/profile" component={Profile} exact/>
       <Route path="/user"  component={NewUser} exact/>
       <Route path="/users" component={Users} exact/>
       <Route path="/sidebar" component={Sidebar} exact/>
