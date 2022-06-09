@@ -1,4 +1,4 @@
-//import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React,{Component} from "react";
 //import Button from "../atoms/button";
 import './Login.css';
@@ -27,8 +27,13 @@ export default class Login extends Component {
   onButton=()=>{
     axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
     .then(res=>{
-      console.log(res);
+      console.log(res.data);
+      const navigate = useHistory();
+      navigate.push("/dashboard");
     })
+    .catch((exception) => {
+      alert(exception.response.data.msg);
+    });
   }
   render() {
     return(
