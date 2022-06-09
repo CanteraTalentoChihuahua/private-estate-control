@@ -7,7 +7,7 @@ export default class Transactions extends Component {
         return(
             <div>
                 <Navbar/>
-                <section class="main-content columns is-fullheight">
+                <section className="main-content columns is-fullheight">
                     <Sidebar/>
                     <div className="container column is-10 m-0">
                         <br/>
