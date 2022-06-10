@@ -39,7 +39,7 @@ export default class Users extends Component {
                                     <tr>
                                         <th>Name</th>
                                         <th>Lastname</th>
-                                        <th>Phone Number</th>
+                                        <th>Phone</th>
                                         <th>Email</th>
                                         <th>Active</th>
                                     </tr>

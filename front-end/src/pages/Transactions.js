@@ -11,7 +11,7 @@ export default class Transactions extends Component {
                     <Sidebar/>
                     <div className="container column is-10 m-0">
                         <br/>
-                        <Title title="Transactions"/>
+                        <Title title="Outcomes"/>
                     </div>
                 </section>
             </div>

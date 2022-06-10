@@ -18,6 +18,8 @@ margin-top: -12px;
 
 .title.is-3 {
     margin-left: -35%;
+    text-decoration: none;
+    background: none;
 }
 
 @media screen and (max-width: 768px) {

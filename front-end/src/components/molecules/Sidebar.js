@@ -18,7 +18,7 @@ export default class Sidebar extends Component {
                     </li>
                     <li>
                         <a href="/transactions" className="">
-                            <span className="icon"><FontAwesomeIcon icon={faMoneyCheckAlt}/></span> Transactions
+                            <span className="icon"><FontAwesomeIcon icon={faMoneyCheckAlt}/></span> Outcomes
                         </a>
                     </li>
                     {/*<li>
@@ -56,7 +56,7 @@ export default class Sidebar extends Component {
                     </li>*/}
                     <li>
                         <a href="access" className="">
-                            <span className="icon"><FontAwesomeIcon icon={faLockOpen}/></span> Entries
+                            <span className="icon"><FontAwesomeIcon icon={faLockOpen}/></span> Access
                         </a>
                     </li>
                     {/*<li>
