@@ -90,7 +90,7 @@ export const updateUserById = async (req: any, res: any) => {
 
 
     if (firstName == null || lastName == null || password == null) {
-        console.log("User not created");
+        console.log("User not updated");
         return res.status(400).json({ msg: 'Bad request. Fill required fields' });
     }
 

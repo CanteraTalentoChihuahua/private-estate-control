@@ -11,8 +11,6 @@ export function validateToken(req: any, res: any, next: NextFunction) {
 
     if (tkn == null) return res.sendStatus(401);
 
-    console.log("token we: " + tkn);
-
     jwt.verify(tkn, "secret", (err: any, user: any) => {
 
         if (err) return res.sendStatus(403);

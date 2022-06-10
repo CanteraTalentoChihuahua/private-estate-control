@@ -1,21 +1,29 @@
-// A component in React is a function
-import NavItem from "./components/NavItem";
-import BodyItem from "./components/BodyItem";
-import BottomItem from "./components/BottomItem";
-import EndpointItem from "./components/EndpointItem";
-// Better to have just the ones used AND in a component lol
-import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/js/src/collapse.js';
+import { Route, Switch } from 'react-router-dom';
+import Login from "./components/molecules/Login";
+import NewUser from "./pages/NewUser";
+import Users from "./pages/Users";
+import Dashboard from "./pages/Dashboard";
+import Houses from "./pages/Houses";
+import Transactions from "./pages/Transactions";
+import Access from "./pages/Access";
+import Profile from "./pages/Profile";
+import Sidebar from "./components/molecules/Sidebar";
+import 'bulma/css/bulma.min.css';
 
 function App() {
-// JSX with just one parent
-
   return (
-    <div>
-      <NavItem />
-      <BodyItem />    
-      <EndpointItem />
-      <BottomItem /> 
+    <div id="app">
+      <Switch>
+      <Route path="/login" component={Login} exact/>
+      <Route path="/dashboard" component={Dashboard} exact/>
+      <Route path="/houses" component={Houses} exact/>
+      <Route path="/transactions" component={Transactions} exact/>
+      <Route path="/access" component={Access} exact/>
+      <Route path="/profile" component={Profile} exact/>
+      <Route path="/user"  component={NewUser} exact/>
+      <Route path="/users" component={Users} exact/>
+      <Route path="/sidebar" component={Sidebar} exact/>
+      </Switch>
     </div>
   );
 }
