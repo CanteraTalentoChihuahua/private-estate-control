@@ -7,7 +7,7 @@ export default class Dashboard extends Component {
         return(
             <div>
                 <Navbar/>
-                <section className="main-content columns is-fullheight">
+                <section className="main-content columns is-fullheight-with-navbar">
                     <Sidebar/>
                     <div className="container column is-10 m-0">
                         <br/>

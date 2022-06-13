@@ -16,9 +16,9 @@ flex-direction: column;*/
 margin-top: -12px;
 }
 
-.title.is-3 {
+/*.title.is-3 {
     margin-left: -35%;
-}
+}*/
 
 @media screen and (max-width: 768px) {
 #menu-toggle:checked + .nav-menu {
