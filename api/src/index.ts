@@ -7,7 +7,9 @@ import housesRoutes from "./routes/houses";
 import expensesRoutes from "./routes/expenses";
 import usersRoutes from "./routes/users";
 import accessRoutes from "./routes/access";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+import facerecognitionRoutes from "./routes/facerecognition";
+
 dotenv.config();
 
 const app = express();
@@ -34,6 +36,7 @@ app.use('/houses', housesRoutes);
 app.use('/expenses', expensesRoutes);
 app.use('/users', usersRoutes);
 app.use('/access', accessRoutes);
+app.use('/facerecognition', facerecognitionRoutes);
 
 
 app.listen(PORT, host, () => {

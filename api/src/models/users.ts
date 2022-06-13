@@ -5,7 +5,7 @@ export default {
     getUserById: `SELECT * FROM T_Users WHERE IdUser = @Id`,
     deleteUser: `DELETE FROM T_Users WHERE IdUser = @Id`,
     getTotalUsers: `SELECT COUNT(*) FROM T_Users`,
-    updateUsersById: `UPDATE T_Users SET FirstName = @firstName, LastName = @lastName,
-     Password = @password, PhoneNumber = @phoneNumber, Active = @active, FacialID = @facialId,
-    WHERE IdTestUser = @Id`
-}  
+    updateUsersById: `UPDATE T_Users SET IdResDev = @idResDev, FirstName = @firstName, LastName = @lastName,
+    PhoneNumber = @phoneNumber, Email = @email, Password = @password, Active = @active, FacialID = @facialId,
+    WHERE IdUser = @Id`
+}
