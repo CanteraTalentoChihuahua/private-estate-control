@@ -1,0 +1,27 @@
+.hero.is-primary.is-fullheight.is-link
+{
+    background-color: #8FBDD3;
+}
+
+label.checkbox.forgotPassword
+{
+    text-align: right;
+    cursor: pointer;
+    /*text-decoration: underline;*/
+}
+
+label.checkbox
+{
+    cursor: auto;
+}
+
+.hero.is-link .title {
+    text-align: center;
+}
+
+.password
+{
+    text-align: right;
+    margin-bottom: 5%;
+    color: #07689F;
+}

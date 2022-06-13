@@ -9,8 +9,15 @@ import { NextFunction } from "express";
 
 export const testGet = async (req: any, res: any) => {
 
-    //res.send(usrs);
-    res.json({ email: req.email, password: req.password }); // El username que guardamos
+    try {
+
+        res.json({ email: req.email, password: req.password });
+        
+    } catch (error) {
+        res.status(500);
+        return res.send("An error occurred: " + error);
+    }
+
 }
 
 export const getLogin = async (req: any, res: any) => {
@@ -31,6 +38,7 @@ export const getLogin = async (req: any, res: any) => {
 export const authLogin = async (req: any, res: any, next: NextFunction) => {
     const { email } = req.body;
     const { password } = req.body;
+    let message;
 
     const user = { email: email, password: password };
 
@@ -55,17 +63,13 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
             return res.send("Error, the password is not valid");
         }
 
-        next();
+        return res.json({salute: message = "Welcome"});
 
     } catch (error) {
         res.status(406);
         return res.send("An error occurred: " + error);
     }
 
-    // res.header('authorization', accessToken).json({
-    //     message: 'Auth completed',
-    //     token: accessToken,
-    //     email: user.email,
-    //     password: user.password,
-    // });
+        //next();
+
 }
