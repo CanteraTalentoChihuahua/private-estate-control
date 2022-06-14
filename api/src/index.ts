@@ -1,5 +1,9 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
+
+import * as swaggerDoc from "./swagger.json";
 import authRoutes from "./routes/auth";
 import accountRoutes from "./routes/account";
 import dashboardRoutes from "./routes/dashboard";
@@ -7,7 +11,6 @@ import housesRoutes from "./routes/houses";
 import expensesRoutes from "./routes/expenses";
 import usersRoutes from "./routes/users";
 import accessRoutes from "./routes/access";
-import dotenv from "dotenv";
 import facerecognitionRoutes from "./routes/facerecognition";
 import residentials from "./routes/residentials";
 
@@ -29,6 +32,8 @@ app.all('*', function (req, res, next) {
     next();
 });
 
+
+
 // Routers declarations
 app.use('/login', authRoutes);
 app.use('/account', accountRoutes);
@@ -39,7 +44,7 @@ app.use('/users', usersRoutes);
 app.use('/access', accessRoutes);
 app.use('/facerecognition', facerecognitionRoutes);
 app.use('/residentials', residentials);
-
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.listen(PORT, host, () => {
     console.log(`Server running on port ${PORT}`
