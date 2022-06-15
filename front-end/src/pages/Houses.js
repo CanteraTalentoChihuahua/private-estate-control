@@ -4,8 +4,8 @@ import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 export default class Houses extends Component {
     render() {
-        const salute = JSON.parse(localStorage.getItem('tkn'));
-        if(salute==null){
+        const tkn = JSON.parse(localStorage.getItem('tkn'));
+        if(tkn==null){
             this.props.history.push("/login");
         }
         return(

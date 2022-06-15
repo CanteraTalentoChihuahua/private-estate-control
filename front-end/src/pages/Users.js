@@ -25,7 +25,7 @@ export default class Users extends Component {
     }
     render() {
         const tkn = JSON.parse(localStorage.getItem('tkn'));
-        if(salute==null){
+        if(tkn==null){
             this.props.history.push("/login");
         }
         return(
