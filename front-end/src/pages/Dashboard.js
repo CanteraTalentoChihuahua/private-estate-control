@@ -5,10 +5,8 @@ import Navbar from "../components/molecules/Navbar";
 export default class Dashboard extends Component {
     render() {
             const tkn = JSON.parse(localStorage.getItem('tkn'));
-            console.log(tkn);
-            if(tkn==null){
-                this.props.history.push("/login");
-            }
+            //console.log(tkn);
+            if(tkn==null){this.props.history.push("/login");}
         return(
             <div>
                 <Navbar/>

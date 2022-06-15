@@ -17,9 +17,7 @@ export default class Navbar extends Component {
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
         el.classList.toggle('is-active');
         $target.classList.toggle('is-active');
-
     });
-  
   };
   render() {
     return (
@@ -36,11 +34,11 @@ export default class Navbar extends Component {
           <div id="navMenu" className="navbar-menu">
             <div className="navbar-end">
 {/* Comienzo de opciones invisibles */}
-            <Link to="/dashbboard" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/dashboard" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faChartBar}/></span>{" "}
               Dashboard
             </Link>
-            <Link to="/Transactions" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/transactions" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faMoneyCheckAlt}/></span>{" "}
               Transactions
             </Link>
