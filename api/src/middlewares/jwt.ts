@@ -18,8 +18,6 @@ export function validateToken(req: any, res: any, next: NextFunction) {
         req.email = user.email;
         req.password = user.password;
 
-        res.json({ bearer: tkn });
-
         next();
 
     });

@@ -32,10 +32,8 @@ app.all('*', function (req, res, next) {
     next();
 });
 
-
-
 // Routers declarations
-app.use('/login', authRoutes);
+app.use('/' || '/login', authRoutes);
 app.use('/account', accountRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/houses', housesRoutes);
