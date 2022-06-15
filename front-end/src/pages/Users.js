@@ -20,7 +20,7 @@ export default class Users extends Component {
         console.log(this.state.users);
     }
     deleteUser= async (id)=>{
-        await axios.delete('https://gestion-fraccionamiento.herokuapp.com/api/users'+id)
+        await axios.delete('https://gestion-fraccionamiento.herokuapp.com/users'+id)
         this.getUsers();
     }
     render() {
