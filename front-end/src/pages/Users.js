@@ -24,6 +24,10 @@ export default class Users extends Component {
         this.getUsers();
     }
     render() {
+        const tkn = JSON.parse(localStorage.getItem('tkn'));
+        if(salute==null){
+            this.props.history.push("/login");
+        }
         return(
             <div>
             <Navbar/>

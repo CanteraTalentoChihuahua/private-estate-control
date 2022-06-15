@@ -1,25 +1,23 @@
-//import { Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import React, {Component} from "react"
 //import axios from "axios"
 import './Sidebar.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMoneyCheckAlt,faUsers, faHome,faLockOpen,faChartBar} from '@fortawesome/free-solid-svg-icons';
-
 export default class Sidebar extends Component {
-    
     render() {
         return(
             <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
                 <ul className="menu-list">
                     <li>
-                        <a href="/dashboard" className="">
+                        <Link to="/dashboard" >
                             <span className="icon"><FontAwesomeIcon icon={faChartBar}/></span> Dashboard
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/transactions" className="">
+                        <Link to="/transactions" >
                             <span className="icon"><FontAwesomeIcon icon={faMoneyCheckAlt}/></span> Transactions
-                        </a>
+                        </Link>
                     </li>
                     {/*<li>
                         <a href="#">
@@ -40,14 +38,14 @@ export default class Sidebar extends Component {
                         </ul>
                     </li>*/}
                     <li>
-                        <a href="/users" className="">
+                        <Link to="/users" className="">
                             <span className="icon"><FontAwesomeIcon icon={faUsers}/></span> Users
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/houses" className="">
+                        <Link to="/houses">
                             <span className="icon"><FontAwesomeIcon icon={faHome}/></span> Houses
-                        </a>
+                        </Link>
                     </li>
                     {/*<li>
                         <a href="#" className="">
@@ -55,9 +53,9 @@ export default class Sidebar extends Component {
                         </a>
                     </li>*/}
                     <li>
-                        <a href="access" className="">
+                        <Link to="/access">
                             <span className="icon"><FontAwesomeIcon icon={faLockOpen}/></span> Access
-                        </a>
+                        </Link>
                     </li>
                     {/*<li>
                         <a href="#" className="">

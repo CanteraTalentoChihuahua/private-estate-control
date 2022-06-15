@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSignOutAlt,faMoneyCheckAlt,faUsers, faHome,faLockOpen,faChartBar } from "@fortawesome/free-solid-svg-icons";
-
+import { Link } from "react-router-dom"
 
 export default class Navbar extends Component {
-
+  logOut=()=>{
+    localStorage.clear();
+  }
   onBurger = () => {
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
     // Add a click event on each of them
@@ -34,39 +36,39 @@ export default class Navbar extends Component {
           <div id="navMenu" className="navbar-menu">
             <div className="navbar-end">
 {/* Comienzo de opciones invisibles */}
-            <a href="/dashboard" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/dashbboard" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faChartBar}/></span>{" "}
               Dashboard
-            </a>
-            <a href="/transactions" className="navbar-item is-tab is-hidden-tablet">
+            </Link>
+            <Link to="/Transactions" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faMoneyCheckAlt}/></span>{" "}
-              Outcomes
-            </a>
-            <a href="/users" className="navbar-item is-tab is-hidden-tablet">
+              Transactions
+            </Link>
+            <Link to="/users" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faUsers}/></span>{" "}
               Users
-            </a>
-            <a href="/houses" className="navbar-item is-tab is-hidden-tablet">
+            </Link>
+            <Link to="/houses" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faHome}/></span>{" "}
               Houses
-            </a>
-            <a href="/access" className="navbar-item is-tab is-hidden-tablet">
+            </Link>
+            <Link to="/access" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faLockOpen}/></span>{" "}
               Access
-            </a>
+            </Link>
 {/* Comienzo de opciones visibles */}
-            <a href="/profile" className="navbar-item">
+            <Link to="/profile" className="navbar-item">
               <span className="icon">
                 <FontAwesomeIcon icon={faUserCircle} />
               </span>{" "}
-              <div className="is-tab is-hidden-tablet">Profile</div>
-            </a>
-            <a href="/login" className="navbar-item">
+              <div className="is-tab is-hidden-mobile">Profile</div>
+            </Link>
+            <Link onClick={this.logOut} to="/login" className="navbar-item">
               <span className="icon">
                 <FontAwesomeIcon icon={faSignOutAlt} />
               </span>{" "}
-              <div className="is-tab is-hidden-tablet">Log out</div>
-            </a>
+              <div className="is-tab is-hidden-mobile">Log out</div>
+            </Link>
 
             </div>
           </div>

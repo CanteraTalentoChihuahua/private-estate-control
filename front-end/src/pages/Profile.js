@@ -4,6 +4,10 @@ import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 export default class Profile extends Component {
     render() {
+        const salute = JSON.parse(localStorage.getItem('tkn'));
+        if(salute==null){
+            this.props.history.push("/login");
+        }
         return(
             <div>
                 <Navbar/>

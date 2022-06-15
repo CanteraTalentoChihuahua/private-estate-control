@@ -26,7 +26,8 @@ export default class Login extends Component {
   onButton=()=>{
     axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
     .then(res=>{
-      console.log(res.data);
+      //console.log(res.data.salute);
+      localStorage.setItem('tkn',JSON.stringify(res.data.salute));
       this.props.history.push("/dashboard");
     })
     .catch((exception) => {
@@ -34,6 +35,9 @@ export default class Login extends Component {
     });
   }
   render() {
+    /* Aquí imprimimos el token para probar la eliminación del mismo al hacer log out*/
+    const salute = JSON.parse(localStorage.getItem('tkn'));
+    //console.log(salute);
     return(
     <section className="hero is-primary is-fullheight is-link">
     <div className="hero-body">
