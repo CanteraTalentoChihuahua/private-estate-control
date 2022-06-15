@@ -63,7 +63,7 @@ export default class Login extends Component {
               <div className="field">
                 <label className="checkbox">
                   <input type="checkbox"/>
-                  Remember me
+                  <span> Remember me</span>
                 </label>
               </div>
               <div className="password">
@@ -71,7 +71,7 @@ export default class Login extends Component {
                   Forgot Password?
                 </label>
               </div>
-              <button onClick={this.onButton} type="submit" className="button">login</button>
+              <center><button onClick={this.onButton} type="submit" className="button">Login</button></center>
             </form>
           </div>
         </div>

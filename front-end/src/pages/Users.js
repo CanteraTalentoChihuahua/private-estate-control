@@ -11,7 +11,7 @@ export default class Users extends Component {
         users:[]
     }
     async getUsers(){
-        const res = await axios.get('http://gestion-fraccionamiento.herokuapp.com/users/get');
+        const res = await axios.get('https://gestion-fraccionamiento.herokuapp.com/users/get');
         this.setState({users:res.data});
         console.log(res.data);
     }
@@ -20,7 +20,7 @@ export default class Users extends Component {
         console.log(this.state.users);
     }
     deleteUser= async (id)=>{
-        await axios.delete('http://gestion-fraccionamiento.herokuapp.com/api/users'+id)
+        await axios.delete('https://gestion-fraccionamiento.herokuapp.com/api/users'+id)
         this.getUsers();
     }
     render() {
@@ -39,7 +39,7 @@ export default class Users extends Component {
                                     <tr>
                                         <th>Name</th>
                                         <th>Lastname</th>
-                                        <th>Phone Number</th>
+                                        <th>Phone</th>
                                         <th>Email</th>
                                         <th>Active</th>
                                     </tr>

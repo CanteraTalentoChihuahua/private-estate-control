@@ -56,7 +56,7 @@ export default class Sidebar extends Component {
                     </li>*/}
                     <li>
                         <a href="access" className="">
-                            <span className="icon"><FontAwesomeIcon icon={faLockOpen}/></span> Entries
+                            <span className="icon"><FontAwesomeIcon icon={faLockOpen}/></span> Access
                         </a>
                     </li>
                     {/*<li>

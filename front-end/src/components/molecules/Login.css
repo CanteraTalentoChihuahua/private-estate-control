@@ -5,9 +5,9 @@
 
 label.checkbox.forgotPassword
 {
-    text-align: center;
+    text-align: right;
     cursor: pointer;
-    text-decoration: underline;
+    /*text-decoration: underline;*/
 }
 
 label.checkbox
@@ -21,7 +21,7 @@ label.checkbox
 
 .password
 {
-    text-align: center;
+    text-align: right;
     margin-bottom: 5%;
     color: #07689F;
 }
