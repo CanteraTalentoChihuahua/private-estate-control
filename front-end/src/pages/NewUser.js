@@ -8,7 +8,7 @@ export default class NewUser extends Component {
         "idResDev":"",
         "firstName":"",
         "lastName":"",
-        "phone":"",
+        "phoneNumber":"",
         "email":"",
         "password":"",
         "faceId":""
@@ -73,7 +73,7 @@ export default class NewUser extends Component {
               <div className="field">
                 <label className="label">Phone number</label>
                 <div className="control has-icons-left">
-                  <input name="phone" type="text" placeholder="6141234567" className="input" required value={this.state.PhoneNumber} onChange={this.onChange} />
+                  <input name="phoneNumber" type="text" placeholder="6141234567" className="input" required value={this.state.PhoneNumber} onChange={this.onChange} />
                   <span className="icon is-small is-left">
                     <i className="fa fa-mobile"></i>
                   </span>
