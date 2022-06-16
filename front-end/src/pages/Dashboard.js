@@ -43,12 +43,13 @@ export default class Dashboard extends Component {
                 <Navbar/>
                 <section className="main-content columns is-fullheight-with-navbar">
                     <Sidebar/>
-                    <div className="container box column is-8 m-0">
+                    <div className="container box column is-6 m-0">
                         <br/>
                         <Titlee title="Dashboard"/>
                         <Line data={this.state.data} options={options}/>
                     </div>
-                    <div className="column is-2 box content">
+                    <div className="column box">
+                        <br/>
                         <Titlee title="Transactions"/>
                         {
                             this.state.transactions.map(transaction => <ul key={transaction.Id} >
