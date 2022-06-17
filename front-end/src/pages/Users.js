@@ -60,7 +60,7 @@ export default class Users extends Component {
                         </section>
                     </div>
                 </section>
-                </div>
+            </div>
         )
     }
 }
