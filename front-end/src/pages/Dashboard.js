@@ -43,7 +43,7 @@ export default class Dashboard extends Component {
             <Navbar/>
             <section className="main-content columns is-multiline is-variable">
                 <Sidebar/>
-                <div className="column box" style={{marginRight:"20px"}}>
+                <div className="column box" style={{marginRight:"14px"}}>
                     <div className="columns is-multiline" style={{marginTop:"5px"}}>
                         <div className="column is-12">
                             <div className="box has-background-white-ter">

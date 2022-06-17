@@ -10,15 +10,20 @@ export default class Access extends Component {
         }
         return(
             <div>
-                <Navbar/>
-                <section className="main-content columns is-fullheight">
-                    <Sidebar/>
-                    <div className="container column is-10 m-0">
-                        <br/>
-                        <Title title="Access"/>
+            <Navbar />
+            <section className="main-content columns is-multiline is-variable">
+              <Sidebar />
+              <div className="column box" style={{ marginRight: "14px" }}>
+                <div className="columns is-multiline" style={{ marginTop: "5px" }}>
+                  <div className="column is-12">
+                    <div className="box has-background-white-ter">
+                      <Title title="Access"/>
                     </div>
-                </section>
-            </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         )
     }
 }
