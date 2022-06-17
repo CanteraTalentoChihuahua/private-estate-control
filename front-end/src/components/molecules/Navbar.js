@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSignOutAlt,faMoneyCheckAlt,faUsers, faHome,faLockOpen,faChartBar } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom"
-
+import Title from "../atoms/Title";
 export default class Navbar extends Component {
   logOut=()=>{
     localStorage.clear();
@@ -17,16 +17,14 @@ export default class Navbar extends Component {
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
         el.classList.toggle('is-active');
         $target.classList.toggle('is-active');
-
     });
-  
   };
   render() {
     return (
-      <nav className="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <nav className="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">
         
           <div className="navbar-brand">
-            <h1 className="title is-3 navbar-item">MIND</h1>
+            <div className="navbar-item"><Title title="MIND" color="has-text-white"/></div>
             <span href="#"onClick={this.onBurger} role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
               <span></span>
               <span></span>
@@ -36,11 +34,11 @@ export default class Navbar extends Component {
           <div id="navMenu" className="navbar-menu">
             <div className="navbar-end">
 {/* Comienzo de opciones invisibles */}
-            <Link to="/dashbboard" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/dashboard" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faChartBar}/></span>{" "}
               Dashboard
             </Link>
-            <Link to="/Transactions" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/transactions" className="navbar-item is-tab is-hidden-tablet">
             <span className="icon"><FontAwesomeIcon icon={faMoneyCheckAlt}/></span>{" "}
               Transactions
             </Link>
@@ -57,17 +55,16 @@ export default class Navbar extends Component {
               Access
             </Link>
 {/* Comienzo de opciones visibles */}
-            <Link to="/profile" className="navbar-item">
+            <Link to="/profile" className="navbar-item is-tab">
               <span className="icon">
                 <FontAwesomeIcon icon={faUserCircle} />
               </span>{" "}
-              <div className="is-tab is-hidden-mobile">Profile</div>
+              <span className="is-hidden-widescreen">Profile</span>
             </Link>
-            <Link onClick={this.logOut} to="/login" className="navbar-item">
+            <Link onClick={this.logOut} to="/login" className="navbar-item is-tab">
               <span className="icon">
-                <FontAwesomeIcon icon={faSignOutAlt} />
-              </span>{" "}
-              <div className="is-tab is-hidden-mobile">Log out</div>
+                <FontAwesomeIcon icon={faSignOutAlt}/>
+              </span><span className="is-hidden-widescreen">Log out</span>
             </Link>
 
             </div>

@@ -8,14 +8,6 @@ min-height: 100%;
 flex-direction: column;*/
 }
 
-/*.main-content {
-/*flex: 1;
-}*/
-
-.footer {
-margin-top: -12px;
-}
-
 @media screen and (max-width: 768px) {
 #menu-toggle:checked + .nav-menu {
     display: block;
