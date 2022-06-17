@@ -8,13 +8,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCircle} from '@fortawesome/free-solid-svg-icons';
 ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend,Filler);
 
-
 const scores = [60,55,52,51,45,39,50,47,50];
 const labels = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre"];
 const options = {
     responsive: true,
     fill: true
 }
+
 export default class Dashboard extends Component {
     state={
         transactions:[{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754},{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754},{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754},{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754}],
@@ -33,42 +33,42 @@ export default class Dashboard extends Component {
         }
     }
 
-            //chequeo del Token
-            render() {
-            const tkn = JSON.parse(localStorage.getItem('tkn'));
-            //console.log(tkn);
-            if(tkn==null){this.props.history.push("/login");}
-        return(
-            <div>
-                <Navbar/>
-                <section className="main-content columns is-multiline is-variable">
-                    <Sidebar/>
-                    <div className="column box" style={{marginRight:"20px"}}>
-                        <div className="columns is-multiline" style={{marginTop:"5px"}}>
-                            <div className="column is-12">
-                                <div className="box has-background-white-ter">
-                                    <Titlee title="Dashboard"/>
+    //chequeo del Token
+    render() {
+        const tkn = JSON.parse(localStorage.getItem('tkn'));
+        //console.log(tkn);
+        if(tkn==null){this.props.history.push("/login");}
+    return(
+        <div>
+            <Navbar/>
+            <section className="main-content columns is-multiline is-variable">
+                <Sidebar/>
+                <div className="column box" style={{marginRight:"20px"}}>
+                    <div className="columns is-multiline" style={{marginTop:"5px"}}>
+                        <div className="column is-12">
+                            <div className="box has-background-white-ter">
+                                <Titlee title="Dashboard"/>
                                 </div>
                             </div>
-                            <div className="column is-9">
-                                <div className="box has-background-white-ter">
-                                    <Line data={this.state.data} options={options}/>
-                                </div>
+                        <div className="column is-9">
+                            <div className="box has-background-white-ter">
+                                <Line data={this.state.data} options={options}/>
                             </div>
-                            <div className="column is-3">
-                                <div className="box has-background-white-ter">
-                                    <Titlee title="Transactions" color="is-3"/>
-                                    {
-                                        this.state.transactions.map(transaction => <ul key={transaction.Id} >
-                                        <span className="icon has-text-danger"><FontAwesomeIcon icon={faCircle}/></span> {transaction.Description} ${transaction.Amount}
-                                        </ul>)
-                                    }
-                                </div>
+                        </div>
+                        <div className="column is-3">
+                            <div className="box has-background-white-ter">
+                                <Titlee title="Transactions" color="is-3"/>
+                                {
+                                    this.state.transactions.map(transaction => <ul key={transaction.Id} >
+                                    <span className="icon has-text-danger"><FontAwesomeIcon icon={faCircle}/></span> {transaction.Description} ${transaction.Amount}
+                                    </ul>)
+                                }
                             </div>
                         </div>
                     </div>
-                </section>
-            </div>
-        )
+                </div>
+            </section>
+        </div>
+    )
     }
 }
