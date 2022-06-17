@@ -17,7 +17,7 @@ const options = {
 }
 export default class Dashboard extends Component {
     state={
-        transactions:[{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754}],
+        transactions:[{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754},{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754},{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754},{Description: "Pago del agua",Amount: 20563},{Description: "Pago de la luz",Amount:16754}],
         //Data from the chart
         data: {
             datasets: [{
@@ -41,24 +41,30 @@ export default class Dashboard extends Component {
         return(
             <div>
                 <Navbar/>
-                <section className="main-content columns is-variable is-fullheight-with-navbar">
+                <section className="main-content columns is-multiline is-variable">
                     <Sidebar/>
-                    <div className="column is-7">
-                        <br/>
-                        <div className="box has-background-white-ter">
-                        <Titlee title="Dashboard"/>
-                        <Line data={this.state.data} options={options}/>
-                        </div>
-                    </div>
-                    <div className="column is-3">
-                        <br/>
-                        <div className="box has-background-white-ter">
-                        <Titlee title="Transactions"/>
-                        {
-                            this.state.transactions.map(transaction => <ul key={transaction.Id} >
-                            <span className="icon has-text-danger"><FontAwesomeIcon icon={faCircle}/></span> {transaction.Description} ${transaction.Amount}
-                            </ul>)
-                        }
+                    <div className="column box" style={{marginRight:"20px"}}>
+                        <div className="columns is-multiline" style={{marginTop:"5px"}}>
+                            <div className="column is-12">
+                                <div className="box has-background-white-ter">
+                                    <Titlee title="Dashboard"/>
+                                </div>
+                            </div>
+                            <div className="column is-9">
+                                <div className="box has-background-white-ter">
+                                    <Line data={this.state.data} options={options}/>
+                                </div>
+                            </div>
+                            <div className="column is-3">
+                                <div className="box has-background-white-ter">
+                                    <Titlee title="Transactions" color="is-3"/>
+                                    {
+                                        this.state.transactions.map(transaction => <ul key={transaction.Id} >
+                                        <span className="icon has-text-danger"><FontAwesomeIcon icon={faCircle}/></span> {transaction.Description} ${transaction.Amount}
+                                        </ul>)
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
