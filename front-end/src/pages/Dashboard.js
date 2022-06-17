@@ -41,9 +41,9 @@ export default class Dashboard extends Component {
         return(
             <div>
                 <Navbar/>
-                <section className="main-content columns is-fullheight-with-navbar">
+                <section className="main-content columns is-variable is-fullheight-with-navbar">
                     <Sidebar/>
-                    <div className="column is-6 m-0">
+                    <div className="column is-7">
                         <br/>
                         <div className="box has-background-white-ter">
                         <Titlee title="Dashboard"/>
