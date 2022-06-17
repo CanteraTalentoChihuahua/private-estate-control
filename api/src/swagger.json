@@ -1,258 +1,285 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "description": "This is Mind Residentials official documentation.  You can find out how the REST API endpoints work.",
-      "version": "0.1.0",
-      "title": "Mind Residentials Documentation",
-      "termsOfService": "http://swagger.io/terms/",
-      "contact": {
-        "email": "apiteam@swagger.io"
-      },
-      "license": {
-        "name": "Apache 2.0",
-        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-      }
-    },
-    "host": "localhost:3000",
-    "basePath": "/v2",
-    "tags": [
-      {
-        "name": "user",
-        "description": "Users CRUD",
-        "externalDocs": {
-          "description": "Find out more about our store",
-          "url": "http://swagger.io"
-        }
-      }
-    ],
-    "schemes": [
-      "https",
-      "http"
-    ],
-    "paths": {
-      "/users": {
-        "get": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Get all users info from DB",
-          "description": "",
-          "operationId": "getUser",
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-                "type": "string"
-              },
-              "headers": {
-                "X-Rate-Limit": {
-                  "type": "integer",
-                  "format": "int32",
-                  "description": "calls per hour allowed by the user"
-                },
-                "X-Expires-After": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "date in UTC when token expires"
-                }
-              }
-            },
-            "403": {
-              "description": "Forbidden"
-            }
-          }
-        }
-      },
-      "/user": {
-        "post": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Create user",
-          "description": "This can only be done by the logged in user.",
-          "operationId": "createUser",
-          "produces": [
-            "application/xml",
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "in": "body",
-              "name": "body",
-              "description": "Created user object",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          ],
-          "responses": {
-            "default": {
-              "description": "successful operation"
-            }
-          }
-        }
-      },
-      "/user/{username}": {
-        "get": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Get user by user name",
-          "description": "",
-          "operationId": "getUserByName",
-          "produces": [
-            "application/xml",
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "username",
-              "in": "path",
-              "description": "The name that needs to be fetched. Use user1 for testing. ",
-              "required": true,
+  "swagger": "2.0",
+  "info": {
+    "description": "This is Mind Residentials official documentation. You can find out how the REST API endpoints work. So far no login auth is allowed. In future updates several endpoints will count with login auth requirement.",
+    "version": "0.0.1",
+    "title": "Mind Residentials Documentation"
+  },
+  "host": "gestion-fraccionamiento.herokuapp.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Users CRUD"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/users/get": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get all users info from DB",
+        "description": "Read of all DB stored users. Thought to be used only by admins.",
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
               "type": "string"
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
-            },
-            "400": {
-              "description": "Invalid username supplied"
-            },
-            "404": {
-              "description": "User not found"
-            }
-          }
-        },
-        "put": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Updated user",
-          "description": "This can only be done by the logged in user.",
-          "operationId": "updateUser",
-          "produces": [
-            "application/xml",
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "username",
-              "in": "path",
-              "description": "name that need to be updated",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "in": "body",
-              "name": "body",
-              "description": "Updated user object",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          ],
-          "responses": {
-            "400": {
-              "description": "Invalid user supplied"
-            },
-            "404": {
-              "description": "User not found"
-            }
-          }
-        },
-        "delete": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Delete user",
-          "description": "This can only be done by the logged in user.",
-          "operationId": "deleteUser",
-          "produces": [
-            "application/xml",
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "username",
-              "in": "path",
-              "description": "The name that needs to be deleted",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "400": {
-              "description": "Invalid username supplied"
-            },
-            "404": {
-              "description": "User not found"
-            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
     },
-    "securityDefinitions": {
-      "petstore_auth": {
-        "type": "oauth2",
-        "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-        "flow": "implicit",
-        "scopes": {
-          "write:pets": "modify pets in your account",
-          "read:pets": "read your pets"
+    "/users/post": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "Endpoint to create users by administrators.\n Use 1 for testing because there it is a first residential registered.",
+        "operationId": "createUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Users_without_ID"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully created"
+          },
+          "400": {
+            "description": "Not created"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users/get/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user by id",
+        "description": "Read of a specific user by ID. Used only by admins to check users using ID filter.",
+        "operationId": "getUserById",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID from the user that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Users_with_ID"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users/put/{id}": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updated user",
+        "description": "Update of a single user by ID. Used only by admins to update a user by its ID.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Users_with_ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Users_with_ID"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users/delete/{id}": {
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete user",
+        "description": "Delete of a specific user by ID. Used only by admins to delete users by their ID.",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Users_with_ID"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Users_with_ID": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "idResDev": {
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "description": "Hashed password"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "User Status"
+        },
+        "faceId": {
+          "type": "string",
+          "description": "String to store Face ID data"
+        }
+      }
+    },
+    "Users_without_ID": {
+      "type": "object",
+      "properties": {
+        "idResDev": {
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "description": "Hashed password"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "User Status"
+        },
+        "faceId": {
+          "type": "string",
+          "description": "String to store Face ID data"
         }
       },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
+      "xml": {
+        "name": "Users"
       }
-    },
-    "definitions": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "username": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "userStatus": {
-            "type": "integer",
-            "format": "int32",
-            "description": "User Status"
-          }
-        },
-        "xml": {
-          "name": "User"
-        }
-      }
-    },
-    "externalDocs": {
-      "description": "Find out more about Swagger",
-      "url": "http://swagger.io"
     }
   }
+}

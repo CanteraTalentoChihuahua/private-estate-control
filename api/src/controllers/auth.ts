@@ -6,6 +6,7 @@ import bcryptjs from "bcryptjs"
 import { count } from "console";
 import { nextTick } from "process";
 import { NextFunction } from "express";
+import { validateToken } from "../middlewares/jwt";
 
 export const testGet = async (req: any, res: any) => {
 
@@ -63,13 +64,13 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
             return res.send("Error, the password is not valid");
         }
 
-        return res.json({salute: message = "Welcome"});
+        return res.json({salute: message = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+        eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+        SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`});
 
     } catch (error) {
         res.status(406);
         return res.send("An error occurred: " + error);
     }
-
-        //next();
 
 }
