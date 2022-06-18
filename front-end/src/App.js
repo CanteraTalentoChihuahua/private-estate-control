@@ -1,6 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
 import Login from "./components/molecules/Login";
-import NewUser from "./pages/NewUser";
 import Users from "./pages/Users";
 import Dashboard from "./pages/Dashboard";
 import Houses from "./pages/Houses";
@@ -20,7 +19,6 @@ function App() {
       <Route path="/transactions" component={Transactions} exact/>
       <Route path="/access" component={Access} exact/>
       <Route path="/profile" component={Profile} exact/>
-      <Route path="/user"  component={NewUser} exact/>
       <Route path="/users" component={Users} exact/>
       <Route path="/sidebar" component={Sidebar} exact/>
       </Switch>
