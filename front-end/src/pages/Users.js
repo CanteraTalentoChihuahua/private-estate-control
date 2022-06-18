@@ -25,11 +25,11 @@ export default class Users extends Component {
       "https://gestion-fraccionamiento.herokuapp.com/users/get"
     );
     this.setState({ users: res.data });
-    console.log(res.data);
+    //console.log(res.data);
   }
   async componentDidMount() {
     this.getUsers();
-    console.log(this.state.users);
+    //console.log(this.state.users);
   }
   //Función para ocultar y mostrar el formulario
   onBurger = () => {
@@ -39,13 +39,11 @@ export default class Users extends Component {
         // Get the target from the "data-target" attribute
         const target = el.dataset.target;
         const $target = document.getElementById(target);
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-        if($target.classList.value===''){
+        if($target.classList.value==='is-danger'){
             el.classList.toggle('is-success');
         }else{
             el.classList.toggle('is-danger');
         }
-        console.log($target.classList)
         $target.classList.toggle('is-hidden');
     });
   };
@@ -96,7 +94,7 @@ export default class Users extends Component {
                     </div>
                     <div className="column is-1">
                       <button onClick={this.onBurger} className="button icon user-form is-success" data-target="usersForm">
-                        {<FontAwesomeIcon icon={faPlus}/>}
+                          <FontAwesomeIcon id="icono" icon={faPlus}/>
                       </button>
                     </div>
                   </div>
