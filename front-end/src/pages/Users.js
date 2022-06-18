@@ -5,7 +5,7 @@ import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faEdit, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 export default class Users extends Component {
   state = {
     users: [],
@@ -239,6 +239,7 @@ export default class Users extends Component {
                         <th>Phone</th>
                         <th>Email</th>
                         <th>Active</th>
+                        <th>Edit</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -250,6 +251,7 @@ export default class Users extends Component {
                           <td>
                             {user.Active ? (<FontAwesomeIcon icon={faCheck} />) : (<FontAwesomeIcon icon={faTimes} />)}
                           </td>
+                          <td><button className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
                         </tr>
                       ))}
                     </tbody>

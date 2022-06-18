@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import Sidebar from "../components/molecules/Sidebar";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faEdit} from "@fortawesome/free-solid-svg-icons";
 export default class Houses extends Component {
   state = {
     houses: [],
@@ -42,6 +44,7 @@ export default class Houses extends Component {
                     <tr>
                       <th>Address</th>
                       <th>Balance</th>
+                      <th>Edit</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -49,6 +52,7 @@ export default class Houses extends Component {
                       <tr key={house.IdHouse}>
                         <td>{house.Address}</td>
                         <td>{house.Balance}</td>
+                        <td><button className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
                       </tr>
                     ))}
                   </tbody>
