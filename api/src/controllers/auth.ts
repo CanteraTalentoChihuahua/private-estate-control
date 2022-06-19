@@ -5,6 +5,8 @@ import { generateAccessToken } from "../middlewares/jwt";
 import bcryptjs from "bcryptjs"
 import { NextFunction } from "express";
 
+let readRole;
+
 export const testGet = async (req: any, res: any) => {
 
     try {
@@ -43,6 +45,10 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
     try {
         const pool = await getConnection();
 
+        const role = await pool?.request()
+        .input('email', sql.VarChar, email)
+        .query(queries.getRole);
+
         const result = await pool?.request()
             .input('email', sql.VarChar, email)
             .query(queries.matchUser);
@@ -61,9 +67,24 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
             return res.send("Error, the password is not valid");
         }
 
+        switch (role?.recordset[0].Role) {
+            case 1:
+                readRole = "Super Administrator"
+                break;
+            case 2:
+                readRole = "Administrator"
+                break;
+            case 3:
+                readRole = "Regular User"
+                break;
+            default:
+                readRole = "Not A Role"
+                break;
+        }
+
         const bearer = generateAccessToken(user);
 
-        console.log(bearer);
+        console.log("Current logged user role: " + readRole);
 
         return res.json({salute: message = bearer});
 
