@@ -10,7 +10,7 @@ router.get("/get/count", validateToken, getTotalUsers);
 
 router.get("/get/:id", validateToken, getUserById);
 
-router.post("/post", validateToken, createUser);
+router.post("/post", createUser);
 
 router.put("/put/:id", validateToken, updateUserById);
 
