@@ -3,10 +3,7 @@ import queries from "../models/auth"
 import sql from "mssql";
 import { generateAccessToken } from "../middlewares/jwt";
 import bcryptjs from "bcryptjs"
-import { count } from "console";
-import { nextTick } from "process";
 import { NextFunction } from "express";
-import { validateToken } from "../middlewares/jwt";
 
 export const testGet = async (req: any, res: any) => {
 
@@ -64,9 +61,11 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
             return res.send("Error, the password is not valid");
         }
 
-        return res.json({salute: message = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-        eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
-        SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`});
+        const bearer = generateAccessToken(user);
+
+        console.log(bearer);
+
+        return res.json({salute: message = bearer});
 
     } catch (error) {
         res.status(406);
