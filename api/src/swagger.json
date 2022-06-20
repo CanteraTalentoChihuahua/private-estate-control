@@ -23,7 +23,7 @@
           "user"
         ],
         "summary": "Get all users info from DB",
-        "description": "Read of all DB stored users. Thought to be used only by admins.",
+        "description": "Read of all DB stored users. Thought to be used only by admins and actually requires to be tested using auth login by admin, so better use postman to test this.",
         "operationId": "getUser",
         "responses": {
           "200": {
