@@ -231,7 +231,7 @@
         "tags": [
           "authentication"
         ],
-        "summary": "To get auth token",
+        "summary": "To get auth token. So far, it is not working",
         "operationId": "postAuth",
         "responses": {
           "200": {
@@ -241,7 +241,7 @@
       }
     },
     "/residentials/get": {
-      "post": {
+      "get": {
         "tags": [
           "residential"
         ],
@@ -249,13 +249,16 @@
         "operationId": "getResidentials",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
           }
         }
       }
     },
     "/houses/get": {
-      "post": {
+      "get": {
         "tags": [
           "house"
         ],
@@ -263,13 +266,16 @@
         "operationId": "getHouses",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
           }
         }
       }
     },
     "/incomes/get": {
-      "post": {
+      "get": {
         "tags": [
           "income"
         ],
@@ -277,13 +283,16 @@
         "operationId": "getIncomes",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
           }
         }
       }
     },
     "/outcomes/get": {
-      "post": {
+      "get": {
         "tags": [
           "outcome"
         ],
@@ -291,7 +300,10 @@
         "operationId": "getOutcomes",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
           }
         }
       }
