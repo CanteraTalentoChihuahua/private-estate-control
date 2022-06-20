@@ -42,3 +42,61 @@ export const createOutcome = async (req: any, res: any) => {
     }
 
 }
+
+export const getOutcomeById = async (req: any, res: any) => {
+    const { id } = req.params;
+
+    try {
+        const pool = await getConnection();
+        const result = await pool?.request()
+        .input('id', id)
+        .query(queries.getOutcomeById);
+
+        res.status(200);
+        res.send(result?.recordset[0]);
+
+    } catch (error) {
+        res.status(500).send(error);
+    }
+    
+}
+
+export const deleteOutcomeById = async (req: any, res: any) => {
+    const { id } = req.params;
+
+    try {
+        const pool = await getConnection();
+        const result = await pool?.request()
+        .input('id', id)
+        .query(queries.deleteOutcome);
+    
+        res.sendStatus(200);
+        
+    } catch (error) {
+        res.status(500).send(error);
+        
+    }
+    
+}
+
+export const updateOutcomeById = async (req: any, res: any) => {
+    const { idResDev, description, date, amount } = req.body;
+    const { id } = req.params;
+
+    try {
+        const pool = await getConnection()
+        await pool?.request()
+        .input('idResDev', sql.Int, idResDev)
+        .input('description', sql.VarChar, description)
+        .input('date', sql.Date, date)
+        .input('amount', sql.Float, amount)
+        .input('id', sql.Int, id)
+        .query(queries.updateOutcomesById)
+    
+        res.status(200).json({ idResDev, description, date, amount });
+        
+    } catch (error) {
+        res.status(500).send(error);
+    }
+
+}
