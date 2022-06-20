@@ -11,10 +11,27 @@
     {
       "name": "user",
       "description": "Users CRUD"
+    },
+    {
+      "name": "authentication",
+      "description": "Auth routes"
+    },
+    {
+      "name": "residential",
+      "description": "Residentials CRUD"
+    },
+    {
+      "name": "house",
+      "description": "Houses CRUD"
+    },
+    {
+      "name": "income",
+      "description": "Incomes CRUD"
+    },
+    {
+      "name": "outcome",
+      "description": "Outcomes CRUD"
     }
-  ],
-  "schemes": [
-    "https"
   ],
   "paths": {
     "/users/get": {
@@ -23,7 +40,7 @@
           "user"
         ],
         "summary": "Get all users info from DB",
-        "description": "Read of all DB stored users. Thought to be used only by admins and actually requires to be tested using auth login by admin, so better use postman to test this.",
+        "description": "Read of all DB stored users. Thought to be used only by admins.",
         "operationId": "getUser",
         "responses": {
           "200": {
@@ -208,6 +225,76 @@
           }
         }
       }
+    },
+    "/login/auth": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "To get auth token",
+        "operationId": "postAuth",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/residentials/get": {
+      "post": {
+        "tags": [
+          "residential"
+        ],
+        "summary": "Get all residentials from DB",
+        "operationId": "getResidentials",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/houses/get": {
+      "post": {
+        "tags": [
+          "house"
+        ],
+        "summary": "Get all houses from DB",
+        "operationId": "getHouses",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/incomes/get": {
+      "post": {
+        "tags": [
+          "income"
+        ],
+        "summary": "Get all incomes from DB",
+        "operationId": "getIncomes",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/outcomes/get": {
+      "post": {
+        "tags": [
+          "outcome"
+        ],
+        "summary": "Get all outcomes from DB",
+        "operationId": "getOutcomes",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -275,6 +362,88 @@
         "faceId": {
           "type": "string",
           "description": "String to store Face ID data"
+        }
+      }
+    },
+    "ResidentialsData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "HousesData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "address": {
+          "type": "string"
+        },
+        "occupied": {
+          "type": "boolean"
+        },
+        "balance": {
+          "type": "number"
+        },
+        "idResDev": {
+          "type": "integer"
+        }
+      }
+    },
+    "IncomesData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "idResDev": {
+          "type": "integer"
+        },
+        "idHouse": {
+          "type": "integer"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date like: 2022-06-20 (YYYY-MM-DD)"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "receipt": {
+          "type": "string"
+        }
+      }
+    },
+    "OutcomesData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "idResDev": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date like: 2022-06-20 (YYYY-MM-DD)"
+        },
+        "amount": {
+          "type": "number"
         }
       },
       "xml": {
