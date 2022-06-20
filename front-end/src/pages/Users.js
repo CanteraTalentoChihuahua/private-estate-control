@@ -6,6 +6,8 @@ import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faEdit, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+const tkn = JSON.parse(localStorage.getItem("tkn"));
+axios.defaults.headers.common = {'Authorization': 'bearer '+ tkn}
 export default class Users extends Component {
   state = {
     users: [],
@@ -19,11 +21,13 @@ export default class Users extends Component {
         "faceId":""
       }
   };
+  //Función para editar
+  onEditar=(key)=>{
+    console.log(key);
+  }
   //GET para obtener usuarios
   async getUsers() {
-    const res = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/users/get"
-    );
+    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
     this.setState({ users: res.data });
     //console.log(res.data);
   }
@@ -114,7 +118,7 @@ export default class Users extends Component {
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
-                            <i className="fa fa-user"></i>
+                            <i className="fa fa-id-badge"></i>
                           </span>
                         </div>
                       </div>
@@ -216,7 +220,7 @@ export default class Users extends Component {
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
-                            <i className="fa fa-lock"></i>
+                            <i className="fa fa-smile-plus"></i>
                           </span>
                         </div>
                       </div>
@@ -251,7 +255,7 @@ export default class Users extends Component {
                           <td>
                             {user.Active ? (<FontAwesomeIcon icon={faCheck} />) : (<FontAwesomeIcon icon={faTimes} />)}
                           </td>
-                          <td><button className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
+                          <td><button onClick={()=>this.onEditar(user)} className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
                         </tr>
                       ))}
                     </tbody>
