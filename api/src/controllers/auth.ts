@@ -5,7 +5,7 @@ import { generateAccessToken } from "../middlewares/jwt";
 import bcryptjs from "bcryptjs"
 import { NextFunction } from "express";
 
-let readRole;
+export let readRole: string;
 
 export const testGet = async (req: any, res: any) => {
 

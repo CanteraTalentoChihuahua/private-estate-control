@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { createUser, deleteUserById, getTotalUsers, getUserById, getUsers, updateUserById } from "../controllers/users";
-import { validateToken } from "../middlewares/jwt";
+import { validateToken, validateSA } from "../middlewares/jwt";
 
 const router = Router();
 
-router.get("/get", validateToken, getUsers);
+router.get("/get", validateSA, getUsers);
 
 router.get("/get/count", validateToken, getTotalUsers);
 
