@@ -9,7 +9,7 @@ router.get("/get/:id", getResById);
 
 router.post("/post", createRes);
 
-router.put("/update/:id", updateResById);
+router.put("/put/:id", updateResById);
 
 router.delete("/delete/:id", deleteResById);
 

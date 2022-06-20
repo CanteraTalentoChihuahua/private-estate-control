@@ -1,17 +1,17 @@
 // Houses
 import { Router } from "express";
-import { createHouse, deleteHouse, getHouseById, getHouses, updateHouse } from "../controllers/houses";
+import { createHouse, deleteHouseById, getHouseById, getHouses, updateHouseById } from "../controllers/houses";
 
 const router = Router();
 
-router.post("/create", createHouse);
-
-router.get("/getall", getHouses);
+router.get("/get", getHouses);
 
 router.get("/get/:id", getHouseById);
 
-router.put("/update/:id", updateHouse);
+router.post("/post", createHouse);
 
-router.delete("/delete/:id", deleteHouse);
+router.put("/put/:id", updateHouseById);
+
+router.delete("/delete/:id", deleteHouseById);
 
 export default router;
