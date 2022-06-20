@@ -4,14 +4,14 @@ import queries from "../models/residentials"
 
 export const createRes = async (req: any, res: any) => {
 
-    const { Name, Description } = req.body;
+    const { name, description } = req.body;
 
-    if (Name == null) {
+    if (name == null) {
         console.log("Residential not created");
         return res.status(400).json({ msg: 'Bad request. Fill required fields (Name)' });
     }
 
-    if (Description == null) {
+    if (description == null) {
         let Description = "";
     }
 
@@ -19,11 +19,11 @@ export const createRes = async (req: any, res: any) => {
         const pool = await getConnection();
 
         const result = await pool?.request()
-            .input('Name', sql.VarChar, Name)
-            .input('Description', sql.VarChar, Description)
+            .input('name', sql.VarChar, name)
+            .input('description', sql.VarChar, description)
             .query(queries.createRes);
 
-        return res.status(200).json({ Name, Description });
+        return res.status(201).json({ name, description });
 
     } catch (error) {
         res.status(500);
@@ -32,16 +32,16 @@ export const createRes = async (req: any, res: any) => {
 
 }
 
-export const getallRes = async (req: any, res: any) => {
+export const getRes = async (req: any, res: any) => {
+    
     try {
-
         const pool = await getConnection();
-        const result = await pool?.request().query(queries.getallRes);
+        const result = await pool?.request().query(queries.getAllRes);
 
-        res.json(result?.recordset);
+        res.status(200).json(result?.recordset);
 
     } catch (error) {
-        res.status(500); // Internal server error
+        res.status(500);
         res.send(error);
     }
 }
@@ -49,43 +49,59 @@ export const getallRes = async (req: any, res: any) => {
 export const getResById = async (req: any, res: any) => {
     const { id } = req.params;
 
-    const pool = await getConnection();
-    const result = await pool?.request()
-        .input('IdResDev', id)
+    try {
+        const pool = await getConnection();
+        const result = await pool?.request()
+        .input('id', sql.Int, id)
         .query(queries.getResById);
 
-    res.send(result?.recordset[0]);
+        res.status(200);
+        res.send(result?.recordset[0]);
+
+    } catch (error) {
+        res.status(500).send(error);
+    }
+    
 }
 
-export const updateRes = async (req: any, res: any) => {
-
-    const { Name, Description } = req.body;
+export const updateResById = async (req: any, res: any) => {
+    const { name, description } = req.body;
     const { id } = req.params;
 
-
-    if (Name == null) {
+    if (name == null) {
         console.log("Residential not updated");
         return res.status(400).json({ msg: 'Bad request. Fill required fields (Name)' });
     }
 
-    const pool = await getConnection()
-    await pool?.request()
-        .input('Name', sql.VarChar, Name)
-        .input('Description', sql.VarChar, Description)
-        .input('Id', sql.Int, id)
-        .query(queries.updateRes)
-
-    res.json({ id, Name });
+    try {
+        const pool = await getConnection()
+        await pool?.request()
+            .input('name', sql.VarChar, name)
+            .input('description', sql.VarChar, description)
+            .input('id', sql.Int, id)
+            .query(queries.updateRes)
+    
+        res.status(200).json({ id, name });
+        
+    } catch (error) {
+        
+    }
 
 }
 
-export const deleteRes = async (req: any, res: any) => {
+export const deleteResById = async (req: any, res: any) => {
     const { id } = req.params;
 
-    const pool = await getConnection();
-    const result = await pool?.request()
-        .input('Id', id)
+    try {
+        const pool = await getConnection();
+        const result = await pool?.request()
+        .input('id', sql.Int, id)
         .query(queries.deleteRes);
 
-    res.sendStatus(204); // All fine
+        res.sendStatus(200);
+
+    } catch (error) {
+        res.status(500).send(error);        
+    }
+    
 }

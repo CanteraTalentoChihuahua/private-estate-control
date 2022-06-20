@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { createRes, getallRes, getResById, updateRes, deleteRes } from "../controllers/residentials";
+import { createRes, getRes, getResById, updateResById, deleteResById } from "../controllers/residentials";
 
 const router = Router();
 
-router.post("/create", createRes);
-
-router.get("/getall", getallRes);
+router.get("/get", getRes);
 
 router.get("/get/:id", getResById);
 
-router.put("/update/:id", updateRes);
+router.post("/post", createRes);
 
-router.delete("/delete/:id", deleteRes);
+router.put("/update/:id", updateResById);
+
+router.delete("/delete/:id", deleteResById);
 
 export default router;

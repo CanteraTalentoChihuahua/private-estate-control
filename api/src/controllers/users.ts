@@ -74,8 +74,6 @@ export const getUserById = async (req: any, res: any) => {
         res.status(500).send(error);
     }
 
-    
-
     //  TODO: Http responses => 403 forbidden; 404 not found
 }
 
