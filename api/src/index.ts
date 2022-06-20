@@ -11,6 +11,8 @@ import housesRoutes from "./routes/houses";
 import expensesRoutes from "./routes/expenses";
 import usersRoutes from "./routes/users";
 import accessRoutes from "./routes/access";
+import outcomesRoutes from "./routes/outcomes";
+import incomesRoutes from "./routes/incomes";
 //import facerecognitionRoutes from "./routes/facerecognition";
 import residentials from "./routes/residentials";
 
@@ -40,6 +42,8 @@ app.use('/houses', housesRoutes);
 app.use('/expenses', expensesRoutes);
 app.use('/users', usersRoutes);
 app.use('/access', accessRoutes);
+app.use('/outcomes', outcomesRoutes);
+app.use('/incomes', incomesRoutes);
 //app.use('/facerecognition', facerecognitionRoutes);
 app.use('/residentials', residentials);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
