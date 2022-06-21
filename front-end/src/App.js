@@ -20,7 +20,6 @@ function App() {
       <Route path="/access" component={Access} exact/>
       <Route path="/profile" component={Profile} exact/>
       <Route path="/users" component={Users}/>
-      <Route path="/sidebar" component={Sidebar} exact/>
       </Switch>
     </div>
   );
