@@ -23,10 +23,23 @@ export default class Users extends Component {
     edit: false,
     idEdit:""
   };
+    //GET para obtener usuarios
+    async getUsers() {
+      console.log(this.state.edit);
+      const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
+      this.setState({ users: res.data });
+      //console.log(res.data);
+    }
+    async componentDidMount() {
+      this.getUsers();
+      //console.log(this.state.users);
+    }
   //Función para editar
   onEditar=(key)=>{
     const password = document.getElementById("password");
-    //password.classList.toggle('is-hidden');
+    const passwordInput = document.getElementById("passwordInput");
+    password.classList.toggle('is-hidden');
+    passwordInput.removeAttribute('required');
     this.onBurger();
     // eslint-disable-next-line
     this.state.edit=true
@@ -43,17 +56,6 @@ export default class Users extends Component {
       active:key.Active
       }
     });
-  }
-  //GET para obtener usuarios
-  async getUsers() {
-    console.log(this.state.edit);
-    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
-    this.setState({ users: res.data });
-    //console.log(res.data);
-  }
-  async componentDidMount() {
-    this.getUsers();
-    //console.log(this.state.users);
   }
   //Función para ocultar y mostrar el formulario
   onBurger = () => {
@@ -80,7 +82,7 @@ export default class Users extends Component {
       }
     })
   }
-  //POST para crear usuarios
+  //POST y PUT para crear usuarios
   onSubmit = async e => {
     e.preventDefault();
     if(this.state.edit){
@@ -94,13 +96,14 @@ export default class Users extends Component {
         console.log(exception.response.data);
       });
     }else{
+      console.log(this.state.newUsers);
       axios.post('https://gestion-fraccionamiento.herokuapp.com/users/post',this.state.newUsers)
       .then(res=>{
         console.log(res);
         this.getUsers();
       })
       .catch((exception) => {
-        alert(exception.response.data.msg);
+        console.log(exception.response);
       });
     }
   }
@@ -225,6 +228,7 @@ export default class Users extends Component {
                         <label className="label">Password</label>
                         <div className="control has-icons-left">
                           <input
+                            id="passwordInput"
                             name="password"
                             type="password"
                             placeholder="*******"
