@@ -1,6 +1,6 @@
-//import { Link } from "react-router-dom"
 import axios from "axios";
 import React, { Component } from "react";
+import { Link } from "react-router-dom"
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
@@ -19,14 +19,34 @@ export default class Users extends Component {
         "email":"",
         "password":"",
         "faceId":""
-      }
+      },
+    edit: false,
+    idEdit:""
   };
   //Función para editar
   onEditar=(key)=>{
-    console.log(key);
+    const password = document.getElementById("password");
+    //password.classList.toggle('is-hidden');
+    this.onBurger();
+    // eslint-disable-next-line
+    this.state.edit=true
+    this.setState({idEdit:key.IdUser,
+      newUsers:{
+        ...this.state.newUsers,
+      idResDev:key.IdResDev,
+      firstName:key.FirstName,
+      lastName:key.LastName,
+      phoneNumber:key.PhoneNumber,
+      email:key.Email,
+      password:key.Password,
+      faceId:key.FaceID,
+      active:key.Active
+      }
+    });
   }
   //GET para obtener usuarios
   async getUsers() {
+    console.log(this.state.edit);
     const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
     this.setState({ users: res.data });
     //console.log(res.data);
@@ -63,15 +83,26 @@ export default class Users extends Component {
   //POST para crear usuarios
   onSubmit = async e => {
     e.preventDefault();
-    console.log("State:", this.state.newUsers);
-    axios.post('https://gestion-fraccionamiento.herokuapp.com/users/post',this.state.newUsers)
-    .then(res=>{
-      console.log(res);
-      this.getUsers();
-    })
-    .catch((exception) => {
-      alert(exception.response.data.msg);
-    });
+    if(this.state.edit){
+      console.log(this.state.newUsers);
+      axios.put('https://gestion-fraccionamiento.herokuapp.com/users/put/'+this.state.idEdit,this.state.newUsers)
+      .then(res=>{
+        console.log(res);
+        this.getUsers();
+      })
+      .catch((exception) => {
+        console.log(exception.response.data);
+      });
+    }else{
+      axios.post('https://gestion-fraccionamiento.herokuapp.com/users/post',this.state.newUsers)
+      .then(res=>{
+        console.log(res);
+        this.getUsers();
+      })
+      .catch((exception) => {
+        alert(exception.response.data.msg);
+      });
+    }
   }
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
@@ -114,7 +145,7 @@ export default class Users extends Component {
                             placeholder="1"
                             className="input"
                             required
-                            value={this.state.IdResDev}
+                            value={this.state.newUsers.idResDev}
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
@@ -131,7 +162,7 @@ export default class Users extends Component {
                             placeholder="Bob"
                             className="input"
                             required
-                            value={this.state.FirstName}
+                            value={this.state.newUsers.firstName}
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
@@ -148,7 +179,7 @@ export default class Users extends Component {
                             placeholder="Smith"
                             className="input"
                             required
-                            value={this.state.LastName}
+                            value={this.state.newUsers.lastName}
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
@@ -165,7 +196,7 @@ export default class Users extends Component {
                             placeholder="6141234567"
                             className="input"
                             required
-                            value={this.state.PhoneNumber}
+                            value={this.state.newUsers.phoneNumber}
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
@@ -182,7 +213,7 @@ export default class Users extends Component {
                             placeholder="e.g. bobsmith@gmail.com"
                             className="input"
                             required
-                            value={this.state.Email}
+                            value={this.state.newUsers.email}
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
@@ -190,7 +221,7 @@ export default class Users extends Component {
                           </span>
                         </div>
                       </div>
-                      <div className="field">
+                      <div className="field" id="password">
                         <label className="label">Password</label>
                         <div className="control has-icons-left">
                           <input
@@ -199,7 +230,7 @@ export default class Users extends Component {
                             placeholder="*******"
                             className="input"
                             required
-                            value={this.state.Password}
+                            value={this.state.newUsers.password}
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
@@ -216,7 +247,7 @@ export default class Users extends Component {
                             placeholder="TuCara"
                             className="input"
                             required
-                            value={this.state.FaceId}
+                            value={this.state.newUsers.faceId}
                             onChange={this.onChange}
                           />
                           <span className="icon is-small is-left">
@@ -226,7 +257,7 @@ export default class Users extends Component {
                       </div>
                       <div className="field">
                         <button type="submit" className="button is-success">
-                          New user
+                          Save
                         </button>
                       </div>
                     </form>
@@ -255,7 +286,7 @@ export default class Users extends Component {
                           <td>
                             {user.Active ? (<FontAwesomeIcon icon={faCheck} />) : (<FontAwesomeIcon icon={faTimes} />)}
                           </td>
-                          <td><button onClick={()=>this.onEditar(user)} className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
+                          <td><Link to={"/users/"+user.IdUser} onClick={()=>this.onEditar(user)} className="button"><FontAwesomeIcon icon={faEdit}/></Link></td>
                         </tr>
                       ))}
                     </tbody>
