@@ -99,7 +99,7 @@ export default class Dashboard extends Component {
               </div>
               <div className="column is-3">
                 <div className="box has-background-white-ter">
-                  <Titlee title="Transactions" color="is-3" />
+                  <Titlee title="Transactions" class="is-3" />
                   {this.state.transactions.map((transaction) => (
                     <ul key={transaction.Id}>
                       <span className="icon has-text-danger">

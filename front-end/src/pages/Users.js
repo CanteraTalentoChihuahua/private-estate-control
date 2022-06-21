@@ -141,14 +141,14 @@ export default class Users extends Component {
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box has-background-white-ter">
-                  <Title title="Users" />
+                  <Title title="Users" class="is-2"/>
                 </div>
               </div>
               <div className="column is-12">
                 <div className="box has-background-white-ter">
                   <div className="columns mb-0">
                     <div className="column is-11">
-                      <Title title="New user" color="is-4" />
+                      <Title title="New user" class="is-4" />
                     </div>
                     <div className="column is-1">
                       <button
@@ -161,9 +161,7 @@ export default class Users extends Component {
                     </div>
                   </div>
                   {/*form para New user oculto*/}
-                  <div id="usersForm" className="is-hidden">
                     <UserForm state={this.state} onChange={this.onChange} onSubmit={this.onSubmit} />
-                  </div>
                 </div>
               </div>
               <UserTable state={this.state} onEditar={this.onEditar} />

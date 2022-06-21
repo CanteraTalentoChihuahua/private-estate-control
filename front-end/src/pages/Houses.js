@@ -115,7 +115,7 @@ export default class Houses extends Component {
                 <div className="box has-background-white-ter">
                 <div className="columns mb-0">
                     <div className="column is-11">
-                      <Title title="New House" color="is-4" />
+                      <Title title="New House" class="is-4" />
                     </div>
                     <div className="column is-1">
                       <button onClick={this.onBurger} className="button icon house-form is-success" data-target="housesForm">

@@ -4,6 +4,7 @@ export default class UserForm extends Component {
 
   render() {
     return (
+        <div id="usersForm" className="is-hidden">
       <form onSubmit={this.props.onSubmit}>
         <div className="field">
           <label className="label">Id</label>
@@ -131,6 +132,7 @@ export default class UserForm extends Component {
           </button>
         </div>
       </form>
+      </div>
     );
   }
 }
