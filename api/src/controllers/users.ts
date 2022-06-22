@@ -108,7 +108,7 @@ export const getTotalUsers = async (req: any, res: any) => {
 }
 
 export const updateUserById = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber, email, password, active, faceId } = req.body;
+    const { idResDev, firstName, lastName, phoneNumber, email, password, active, faceId, idHouse, idUser } = req.body;
     const { id } = req.params;
 
     try {
@@ -124,8 +124,16 @@ export const updateUserById = async (req: any, res: any) => {
         .input('faceId', sql.VarChar, faceId)
         .input('id', sql.Int, id)
         .query(queries.updateUsersById)
+
+        if (idUser != null) {
+            const insertUsersHouses = await pool?.request()
+            .input('idHouse', sql.Int, idHouse)
+            .input('idUser', sql.Int, idUser)
+            .query(queriesReport.createUsersHousesRegister);   
+            }
     
-        res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email, password, active, faceId });
+        res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email,
+            password, active, faceId, idHouse, idUser });
         
     } catch (error) {
         res.status(500).send(error);
