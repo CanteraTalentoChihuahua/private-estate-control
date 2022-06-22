@@ -83,6 +83,10 @@ export const deleteUserById = async (req: any, res: any) => {
 
     try {
         const pool = await getConnection();
+        const relationship = await pool?.request()
+        .input('id', sql.Int, id)
+        .query(queriesReport.deleteUserHouse)
+
         const result = await pool?.request()
         .input('id', id)
         .query(queries.deleteUser);
@@ -119,18 +123,16 @@ export const updateUserById = async (req: any, res: any) => {
         .input('lastName', sql.VarChar, lastName)
         .input('phoneNumber', sql.VarChar, phoneNumber)
         .input('email', sql.VarChar, email)
-        .input('password', sql.VarChar, bcryptjs.hashSync(password))
+        //.input('password', sql.VarChar, bcryptjs.hashSync(password))
         .input('active', sql.Bit, active)
         .input('faceId', sql.VarChar, faceId)
         .input('id', sql.Int, id)
         .query(queries.updateUsersById)
 
-        if (idUser != null) {
-            const insertUsersHouses = await pool?.request()
-            .input('idHouse', sql.Int, idHouse)
-            .input('idUser', sql.Int, idUser)
-            .query(queriesReport.createUsersHousesRegister);   
-            }
+        const insertUsersHouses = await pool?.request()
+        .input('idHouse', sql.Int, idHouse)
+        .input('idUser', sql.Int, idUser)
+        .query(queriesReport.createUsersHousesRegister);   
     
         res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email,
             password, active, faceId, idHouse, idUser });
