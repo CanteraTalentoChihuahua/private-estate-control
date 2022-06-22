@@ -31,7 +31,7 @@ export default class Login extends Component {
       this.props.history.push("/dashboard");
     })
     .catch((exception) => {
-      alert(exception.response.data.msg);
+      console.log(exception);
     });
   }
   render() {
