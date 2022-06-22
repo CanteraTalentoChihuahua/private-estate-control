@@ -1,15 +1,15 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlus, faMapMarkerAlt, faCalendarAlt, faStickyNote, faFileAlt, faFile,  } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus, faMapMarkerAlt, faCalendarAlt,faFileAlt} from "@fortawesome/free-solid-svg-icons";
 export default class Transactions extends Component {
   state = {
     incomes: [],
     outcomes: [],
-    transactions: [],
     newIncomes: {
       "address":"",
       "date":"",
@@ -20,31 +20,23 @@ export default class Transactions extends Component {
       "date":"",
       "description":"",
       "amount":""
-    }
+    },
+    edit: false,
+    idEdit: "",
   }
-  //GET para obtener incomes
-  async getIncomes() {
-    const res = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/incomes/get"
-    );
-    this.setState({ incomes: res.data });
-    //console.log(res.data);
-  }
-  //GET para obtener outcomes
-  async getOutcomes() {
-    const res = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/outcomes/get"
-    );
-    this.setState({ outcomes: res.data });
-    //console.log(res.data);
+  //GET para obtener incomes y outcomes
+  async getTransactions() {
+    const resIn = await axios.get("https://gestion-fraccionamiento.herokuapp.com/incomes/get");
+    const resOut = await axios.get("https://gestion-fraccionamiento.herokuapp.com/outcomes/get");
+    this.setState({ incomes: resIn.data });
+    this.setState({ outcomes: resOut.data });
   }
   async componentDidMount() {
-    this.getIncomes();
-    this.getOutcomes();
-    //console.log(this.state.users);
+    this.getTransactions();
   }
-  //Función para ocultar y mostrar el formulario
+  //Función para ocultar y mostrar el formulario incomes
   onBurgerIn = () => {
+    console.log(this.state.incomes)
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.income-form'), 0);
     // Add a click event on each of them
     $navbarBurgers.forEach( el => {
@@ -59,6 +51,7 @@ export default class Transactions extends Component {
         $target.classList.toggle('is-hidden');
     });
   };
+  //Función para ocultar y mostrar el formulario outcomes
   onBurgerOut = () => {
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.outcome-form'), 0);
     // Add a click event on each of them
@@ -74,7 +67,7 @@ export default class Transactions extends Component {
         $target.classList.toggle('is-hidden');
     });
   };
-  //Capturando datos del formulario
+  //Capturando datos del formulario incomes
   onChangeIn = async e => {
     await this.setState({
       newIncomes:{
@@ -83,6 +76,7 @@ export default class Transactions extends Component {
       }
     })
   }
+  //Capturando datos del formulario outcomes
   onChangeOut = async e => {
     await this.setState({
       newOutcomes:{
@@ -91,26 +85,33 @@ export default class Transactions extends Component {
       }
     })
   }
-  //POST para crear usuarios
+  //POST para crear incomes
   onSubmitIn = async e => {
     e.preventDefault();
     console.log("State:", this.state.newIncomes);
     axios.post('https://gestion-fraccionamiento.herokuapp.com/incomes/post',this.state.newIncomes)
     .then(res=>{
       console.log(res);
-      this.getIncomes();
+      this.getTransactions();
     })
     .catch((exception) => {
       alert(exception.response.data.msg);
     });
   }
+  //POST para crear outcomes
   onSubmitOut = async e => {
     e.preventDefault();
+    await this.setState({
+      newOutcomes:{
+        ...this.state.newOutcomes,
+        idResDev: 1
+      }
+    })
     console.log("State:", this.state.newOutcomes);
     axios.post('https://gestion-fraccionamiento.herokuapp.com/outcomes/post',this.state.newOutcomes)
     .then(res=>{
       console.log(res);
-      this.getIncomes();
+      this.getTransactions();
     })
     .catch((exception) => {
       alert(exception.response.data.msg);
@@ -130,14 +131,14 @@ export default class Transactions extends Component {
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box has-background-white-ter">
-                  <Title title="Transactions" />
+                  <Title title="Transactions"  class="is-2"/>
                 </div>
               </div>
               <div className="column is-6">
                 <div className="box has-background-white-ter">
                   <div className="columns mb-0">
                     <div className="column is-11">
-                      <Title title="New Income" color="is-4" />
+                      <Title title="New Income" class="is-4" />
                     </div>
                     <div className="column is-1">
                       <button onClick={this.onBurgerIn} className="button icon income-form is-success" data-target="incomesForm">
@@ -230,7 +231,7 @@ export default class Transactions extends Component {
                 <div className="box has-background-white-ter">
                   <div className="columns mb-0">
                     <div className="column is-11">
-                      <Title title="New Outcome" color="is-4" />
+                      <Title title="New Outcome" class="is-4" />
                     </div>
                     <div className="column is-1">
                       <button onClick={this.onBurgerOut} className="button icon outcome-form is-success" data-target="outcomesForm">
@@ -319,14 +320,18 @@ export default class Transactions extends Component {
                           <td>{income.Date}</td>
                           <td>{income.Description}</td>
                           <td>{income.Amount}</td>
-                          <td><button className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
+                          <td><Link to={"/transactions/" + income.IdUser} onClick={() => this.props.onEditar(income)} className="button">
+                            <FontAwesomeIcon icon={faEdit} /></Link>
+                          </td>
                         </tr>
                       ))}
                       {this.state.outcomes.map((outcome) => (<tr key={outcome.IdOutcome}>
                           <td>{outcome.Date}</td>
                           <td>{outcome.Description}</td>
                           <td>{outcome.Amount}</td>
-                          <td><button className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
+                          <td><Link to={"/transactions/" + outcome.IdUser} onClick={() => this.props.onEditar(outcome)} className="button">
+                           <FontAwesomeIcon icon={faEdit} /></Link>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

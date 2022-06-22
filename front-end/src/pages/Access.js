@@ -17,7 +17,7 @@ export default class Access extends Component {
                 <div className="columns is-multiline" style={{ marginTop: "5px" }}>
                   <div className="column is-12">
                     <div className="box has-background-white-ter">
-                      <Title title="Access"/>
+                      <Title title="Access" class="is-2"/>
                     </div>
                   </div>
                 </div>

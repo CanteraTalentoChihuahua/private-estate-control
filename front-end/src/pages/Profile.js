@@ -17,7 +17,7 @@ export default class Profile extends Component {
                 <div className="columns is-multiline" style={{ marginTop: "5px" }}>
                   <div className="column is-12">
                     <div className="box has-background-white-ter">
-                      <Title title="Profile"/>
+                      <Title title="Profile" class="is-2"/>
                     </div>
                   </div>
                 </div>

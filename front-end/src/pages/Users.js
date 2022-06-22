@@ -34,12 +34,10 @@ export default class Users extends Component {
 
   //GET para obtener usuarios
   async getUsers() {
-    console.log(this.state.newUsers);
     const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
     const resHouses = await axios.get("https://gestion-fraccionamiento.herokuapp.com/houses/get");
     this.setState({ users: res.data });
     this.setState({ houses: resHouses.data });
-    console.log(this.state.newUsers);
   }
   async componentDidMount() {
     this.getUsers();
@@ -47,6 +45,7 @@ export default class Users extends Component {
   }
   //Función para editar
   onEditar = (key) => {
+    console.log(this.state.users);
     const password = document.getElementById("password");
     const passwordInput = document.getElementById("passwordInput");
     passwordInput.removeAttribute("required");
@@ -54,7 +53,6 @@ export default class Users extends Component {
     this.onBurger();
     // eslint-disable-next-line
     this.state.edit = true;
-    console.log(key);
     this.setState({
       idEdit: key.IdUser,
       newUsers: {
@@ -70,14 +68,10 @@ export default class Users extends Component {
         idHouse: key.Address
       },
     });
-    console.log(this.state.newUsers)
   };
   //Función para ocultar y mostrar el formulario
   onBurger = () => {
-    const $navbarBurgers = Array.prototype.slice.call(
-      document.querySelectorAll(".user-form"),
-      0
-    );
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll(".user-form"),0);
     // Add a click event on each of them
     $navbarBurgers.forEach((el) => {
       // Get the target from the "data-target" attribute
@@ -105,12 +99,10 @@ export default class Users extends Component {
     e.preventDefault();
     if (this.state.edit) {
         for (let i=0;i<this.state.houses.length;i++){
-          if(this.state.houses.Address[i]===this.state.newUsers.idHouse){
-            this.setState({newUsers:{idHouse:this.state.houses.Address[i]}});
+          if( await this.state.houses[i].Address===this.state.newUsers.idHouse){
+            this.setState({newUsers:{...this.state.newUsers, idHouse: this.state.houses[i].IdHouse}});
           }
         }
-      console.log(this.state.houses)
-      console.log(this.state.newUsers)
       axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.idEdit,
           this.state.newUsers
         )
@@ -119,7 +111,7 @@ export default class Users extends Component {
           this.getUsers();
         })
         .catch((exception) => {
-          console.log(exception.response.data);
+          console.log(exception.response);
         });
     } else {
       console.log(this.state.newUsers);

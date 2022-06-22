@@ -23,11 +23,9 @@ export default class Houses extends Component {
       "https://gestion-fraccionamiento.herokuapp.com/houses/get"
     );
     this.setState({ houses: res.data });
-    console.log(res.data);
   }
   async componentDidMount() {
     this.getHouses();
-    console.log(this.state.houses);
   }
     //Función para editar
     onEditar=(key)=>{
@@ -69,11 +67,10 @@ export default class Houses extends Component {
         }
       })
     }
-    //POST y PUT para crear usuarios
+    //POST y PUT para crear houses
     onSubmit = async e => {
       e.preventDefault();
       if(this.state.edit){
-        console.log(this.state.newHouses);
         axios.put('https://gestion-fraccionamiento.herokuapp.com/houses/put/'+this.state.idEdit,this.state.newHouses)
         .then(res=>{
           console.log(res);
@@ -83,7 +80,6 @@ export default class Houses extends Component {
           console.log(exception.response.data);
         });
       }else{
-        console.log(this.state.newHouses);
         axios.post('https://gestion-fraccionamiento.herokuapp.com/houses/post',this.state.newHouses)
         .then(res=>{
           console.log(res);
@@ -108,7 +104,7 @@ export default class Houses extends Component {
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box has-background-white-ter">
-                  <Title title="Houses" />
+                  <Title title="Houses"  class="is-2"/>
                 </div>
               </div>
               <div className="column is-12">
