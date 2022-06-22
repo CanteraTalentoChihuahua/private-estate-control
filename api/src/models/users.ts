@@ -1,5 +1,5 @@
 export default {
-    getAllUsers: 'SELECT * FROM T_Users',
+    getAllUsers: 'SELECT * FROM T_Users ORDER BY LastName',
     createNewUser: `INSERT INTO T_Users (IdResDev, FirstName, LastName, PhoneNumber, Email, Password, Active, FaceID, Role) 
     VALUES (@idResDev, @firstName, @lastName, @phoneNumber, @email, @password, @active, @faceId, 3)`,
     getUserById: `SELECT * FROM T_Users WHERE IdUser = @id`,

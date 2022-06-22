@@ -8,6 +8,7 @@ export default {
     ON T_UsersHouses.IdUser = T_Users.IdUser
     FULL OUTER JOIN T_Houses
     ON
-    T_Houses.IdHouse = T_UsersHouses.IdHouse`,
+    T_Houses.IdHouse = T_UsersHouses.IdHouse
+    ORDER BY ISNULL(LastName, 'zzzzzzzzzz') ASC`,
     deleteUserHouse: `DELETE FROM T_UsersHouses WHERE IdUser = @id`
 }
