@@ -15,15 +15,18 @@ export default class Users extends Component {
   constructor(props){
     super(props)
   this.state = {
+    houses: [],
     users: [],
     newUsers: {
+      idUser: "",
       idResDev: "",
       firstName: "",
       lastName: "",
       phoneNumber: "",
+      password:"",
       email: "",
-      password: "",
       faceId: "",
+      idHouse: ""
     },
     edit: false,
     idEdit: "",
@@ -31,11 +34,12 @@ export default class Users extends Component {
 
   //GET para obtener usuarios
   async getUsers() {
-    const res = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/users/get"
-    );
+    console.log(this.state.newUsers);
+    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
+    const resHouses = await axios.get("https://gestion-fraccionamiento.herokuapp.com/houses/get");
     this.setState({ users: res.data });
-    //console.log(res.data);
+    this.setState({ houses: resHouses.data });
+    console.log(this.state.newUsers);
   }
   async componentDidMount() {
     this.getUsers();
@@ -45,25 +49,28 @@ export default class Users extends Component {
   onEditar = (key) => {
     const password = document.getElementById("password");
     const passwordInput = document.getElementById("passwordInput");
-    password.classList.toggle("is-hidden");
     passwordInput.removeAttribute("required");
+    password.classList.toggle("is-hidden");
     this.onBurger();
     // eslint-disable-next-line
     this.state.edit = true;
+    console.log(key);
     this.setState({
       idEdit: key.IdUser,
       newUsers: {
         ...this.state.newUsers,
+        idUser: key.IdUser,
         idResDev: key.IdResDev,
         firstName: key.FirstName,
         lastName: key.LastName,
         phoneNumber: key.PhoneNumber,
         email: key.Email,
-        password: key.Password,
         faceId: key.FaceID,
         active: key.Active,
+        idHouse: key.Address
       },
     });
+    console.log(this.state.newUsers)
   };
   //Función para ocultar y mostrar el formulario
   onBurger = () => {
@@ -97,11 +104,14 @@ export default class Users extends Component {
   onSubmit = async (e) => {
     e.preventDefault();
     if (this.state.edit) {
-      console.log(this.state.newUsers);
-      axios
-        .put(
-          "https://gestion-fraccionamiento.herokuapp.com/users/put/" +
-            this.state.idEdit,
+        for (let i=0;i<this.state.houses.length;i++){
+          if(this.state.houses.Address[i]===this.state.newUsers.idHouse){
+            this.setState({newUsers:{idHouse:this.state.houses.Address[i]}});
+          }
+        }
+      console.log(this.state.houses)
+      console.log(this.state.newUsers)
+      axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.idEdit,
           this.state.newUsers
         )
         .then((res) => {
@@ -113,11 +123,7 @@ export default class Users extends Component {
         });
     } else {
       console.log(this.state.newUsers);
-      axios
-        .post(
-          "https://gestion-fraccionamiento.herokuapp.com/users/post",
-          this.state.newUsers
-        )
+      axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post",this.state.newUsers)
         .then((res) => {
           console.log(res);
           this.getUsers();
@@ -160,7 +166,7 @@ export default class Users extends Component {
                       </button>
                     </div>
                   </div>
-                  {/*form para New user oculto*/}
+                    {/*form para New user oculto*/}
                     <UserForm state={this.state} onChange={this.onChange} onSubmit={this.onSubmit} />
                 </div>
               </div>

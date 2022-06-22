@@ -11,7 +11,7 @@ export default class Houses extends Component {
     houses: [],
     newHouses: {
       address:'',
-      occupied:'',
+      occuppied:'',
       balance:'',
       idResDev:''
     },
@@ -38,7 +38,7 @@ export default class Houses extends Component {
         newHouses:{
           ...this.state.newHouses,
         address:key.Address,
-        occupied:key.Occuppied,
+        occuppied:key.Occuppied,
         balance:key.Balance,
         idResDev:key.IdResDev
         }

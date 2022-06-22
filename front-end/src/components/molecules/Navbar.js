@@ -24,7 +24,7 @@ export default class Navbar extends Component {
       <nav className="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">
         
           <div className="navbar-brand">
-            <div className="navbar-item"><Title title="MIND" color="has-text-white"/></div>
+            <div className="navbar-item"><Title title="MIND" class="has-text-white"/></div>
             <span href="#"onClick={this.onBurger} role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
               <span></span>
               <span></span>

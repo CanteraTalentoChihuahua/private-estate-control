@@ -7,7 +7,6 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 export default class UserForm extends Component {
-
   render() {
     return (
         <div className="column is-12">
@@ -19,6 +18,8 @@ export default class UserForm extends Component {
                 <th>Lastname</th>
                 <th>Phone</th>
                 <th>Email</th>
+                <th>Address</th>
+                <th>Wallet</th>
                 <th>Active</th>
                 <th>Edit</th>
               </tr>
@@ -30,6 +31,8 @@ export default class UserForm extends Component {
                   <td>{user.LastName}</td>
                   <td>{user.PhoneNumber}</td>
                   <td>{user.Email}</td>
+                  <td>{user.Address}</td>
+                  <td>{user.Balance}</td>
                   <td>
                     {user.Active ? (
                       <FontAwesomeIcon icon={faCheck} />
