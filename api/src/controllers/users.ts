@@ -4,24 +4,11 @@ import queries from "../models/users";
 import queriesReport from "../models/reports";
 import bcryptjs from "bcryptjs";
 
-export const getUsersHouses = async (req: any, res: any) => {
-    try {
-        const pool = await getConnection();
-        const result = await pool?.request().query(queriesReport.reportUsersHouses);
-
-        res.status(200).json(result?.recordset);
-
-    } catch (error) {
-        res.status(500);
-        res.send(error);
-    }
-}
-
 export const getUsers = async (req: any, res: any) => {
 
     try {
         const pool = await getConnection();
-        const result = await pool?.request().query(queries.getAllUsers);
+        const result = await pool?.request().query(queriesReport.reportUsersHouses);
 
         res.status(200).json(result?.recordset);
 
