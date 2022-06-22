@@ -4,14 +4,14 @@ import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {  } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus, faMapMarkerAlt, faCalendarAlt, faStickyNote, faFileAlt, faFile,  } from "@fortawesome/free-solid-svg-icons";
 export default class Transactions extends Component {
   state = {
     incomes: [],
     outcomes: [],
     transactions: [],
     newIncomes: {
-      "idCasa":"",
+      "address":"",
       "date":"",
       "description":"",
       "amount":""
@@ -25,7 +25,7 @@ export default class Transactions extends Component {
   //GET para obtener incomes
   async getIncomes() {
     const res = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/transactions/get"
+      "https://gestion-fraccionamiento.herokuapp.com/incomes/get"
     );
     this.setState({ incomes: res.data });
     //console.log(res.data);
@@ -33,7 +33,7 @@ export default class Transactions extends Component {
   //GET para obtener outcomes
   async getOutcomes() {
     const res = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/transactions/get"
+      "https://gestion-fraccionamiento.herokuapp.com/outcomes/get"
     );
     this.setState({ outcomes: res.data });
     //console.log(res.data);
@@ -44,8 +44,23 @@ export default class Transactions extends Component {
     //console.log(this.state.users);
   }
   //Función para ocultar y mostrar el formulario
-  onBurger = () => {
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.user-form'), 0);
+  onBurgerIn = () => {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.income-form'), 0);
+    // Add a click event on each of them
+    $navbarBurgers.forEach( el => {
+        // Get the target from the "data-target" attribute
+        const target = el.dataset.target;
+        const $target = document.getElementById(target);
+        if($target.classList.value==='is-danger'){
+            el.classList.toggle('is-success');
+        }else{
+            el.classList.toggle('is-danger');
+        }
+        $target.classList.toggle('is-hidden');
+    });
+  };
+  onBurgerOut = () => {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.outcome-form'), 0);
     // Add a click event on each of them
     $navbarBurgers.forEach( el => {
         // Get the target from the "data-target" attribute
@@ -80,7 +95,7 @@ export default class Transactions extends Component {
   onSubmitIn = async e => {
     e.preventDefault();
     console.log("State:", this.state.newIncomes);
-    axios.post('https://gestion-fraccionamiento.herokuapp.com/transactions/post',this.state.newIncomes)
+    axios.post('https://gestion-fraccionamiento.herokuapp.com/incomes/post',this.state.newIncomes)
     .then(res=>{
       console.log(res);
       this.getIncomes();
@@ -91,8 +106,8 @@ export default class Transactions extends Component {
   }
   onSubmitOut = async e => {
     e.preventDefault();
-    console.log("State:", this.state.newIncomes);
-    axios.post('https://gestion-fraccionamiento.herokuapp.com/transactions/post',this.state.newOutcomes)
+    console.log("State:", this.state.newOutcomes);
+    axios.post('https://gestion-fraccionamiento.herokuapp.com/outcomes/post',this.state.newOutcomes)
     .then(res=>{
       console.log(res);
       this.getIncomes();
@@ -118,103 +133,83 @@ export default class Transactions extends Component {
                   <Title title="Transactions" />
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-
-
-
-    return (
-      <div>
-        <Navbar />
-        <section className="main-content columns is-multiline is-variable">
-          <Sidebar />
-          <div className="column box" style={{ marginRight: "14px" }}>
-            <div className="columns is-multiline" style={{ marginTop: "5px" }}>
-              <div className="column is-12">
-                <div className="box has-background-white-ter">
-                  <Title title="Transactions" />
-                </div>
-              </div>
-              <div className="column is-12">
+              <div className="column is-6">
                 <div className="box has-background-white-ter">
                   <div className="columns mb-0">
                     <div className="column is-11">
                       <Title title="New Income" color="is-4" />
                     </div>
                     <div className="column is-1">
-                      <button onClick={this.onBurger} className="button icon user-form is-success" data-target="incomesForm">
+                      <button onClick={this.onBurgerIn} className="button icon income-form is-success" data-target="incomesForm">
                           <FontAwesomeIcon id="icono" icon={faPlus}/>
                       </button>
                     </div>
                   </div>
                   {/*form para New income oculto*/}
-                  <div id="usersForm" className="is-hidden">
-                    <form onSubmit={this.onSubmit}>
+                  <div id="incomesForm" className="is-hidden"> 
+                    <form onSubmit={this.onSubmitIn}>
                       <div className="field">
-                        <label className="label">Id Casa</label>
+                        <label className="label">Address</label>
                         <div className="control has-icons-left">
                           <input
-                            name="idCasa"
+                            name="address"
                             type="text"
-                            placeholder="1"
+                            placeholder="Calle Street #321"
                             className="input"
-                            required
-                            value={this.state.IdResDev}
-                            onChangeIn={this.onChangeIn}
+                            required 
+                            value={this.state.Address}
+                            onChange={this.onChangeIn}
                           />
                           <span className="icon is-small is-left">
-                            <i className="fas fa-key"></i>
+                            <FontAwesomeIcon icon={faMapMarkerAlt} />
                           </span>
                         </div>
                       </div>
                       <div className="field">
-                        <label className="label">Name</label>
+                        <label className="label">Date</label>
                         <div className="control has-icons-left">
                           <input
-                            name="firstName"
+                            name="date"
                             type="text"
-                            placeholder="Bob"
+                            placeholder="YYYY-MM-DD"
                             className="input"
                             required
-                            value={this.state.FirstName}
-                            onChange={this.onChange}
+                            value={this.state.Date}
+                            onChange={this.onChangeIn}
                           />
                           <span className="icon is-small is-left">
-                            <i className="fa fa-user"></i>
+                            <FontAwesomeIcon icon={faCalendarAlt} />
                           </span>
                         </div>
                       </div>
                       <div className="field">
-                        <label className="label">Lastname</label>
+                        <label className="label">Description</label>
                         <div className="control has-icons-left">
                           <input
-                            name="lastName"
+                            name="description"
                             type="text"
-                            placeholder="Smith"
+                            placeholder="House 74 Payment"
                             className="input"
                             required
-                            value={this.state.LastName}
-                            onChange={this.onChange}
+                            value={this.state.Description}
+                            onChange={this.onChangeIn}
                           />
                           <span className="icon is-small is-left">
-                            <i className="fa fa-user"></i>
+                            <FontAwesomeIcon icon={faFileAlt} />
                           </span>
                         </div>
                       </div>
                       <div className="field">
-                        <label className="label">Phone number</label>
+                        <label className="label">Amount</label>
                         <div className="control has-icons-left">
                           <input
-                            name="phoneNumber"
+                            name="amount"
                             type="text"
-                            placeholder="6141234567"
+                            placeholder="$500.00"
                             className="input"
                             required
-                            value={this.state.PhoneNumber}
-                            onChange={this.onChange}
+                            value={this.state.Amount}
+                            onChange={this.onChangeIn}
                           />
                           <span className="icon is-small is-left">
                             <i className="fa fa-mobile"></i>
@@ -222,87 +217,115 @@ export default class Transactions extends Component {
                         </div>
                       </div>
                       <div className="field">
-                        <label className="label">Email</label>
-                        <div className="control has-icons-left">
-                          <input
-                            name="email"
-                            type="email"
-                            placeholder="e.g. bobsmith@gmail.com"
-                            className="input"
-                            required
-                            value={this.state.Email}
-                            onChange={this.onChange}
-                          />
-                          <span className="icon is-small is-left">
-                            <i className="fa fa-envelope"></i>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="field">
-                        <label className="label">Password</label>
-                        <div className="control has-icons-left">
-                          <input
-                            name="password"
-                            type="password"
-                            placeholder="*******"
-                            className="input"
-                            required
-                            value={this.state.Password}
-                            onChange={this.onChange}
-                          />
-                          <span className="icon is-small is-left">
-                            <i className="fa fa-lock"></i>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="field">
-                        <label className="label">FaceId</label>
-                        <div className="control has-icons-left">
-                          <input
-                            name="faceId"
-                            type="text"
-                            placeholder="TuCara"
-                            className="input"
-                            required
-                            value={this.state.FaceId}
-                            onChange={this.onChange}
-                          />
-                          <span className="icon is-small is-left">
-                            <i className="fa fa-lock"></i>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="field">
                         <button type="submit" className="button is-success">
-                          New user
+                          New income
                         </button>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
+
+              <div className="column is-6">
+                <div className="box has-background-white-ter">
+                  <div className="columns mb-0">
+                    <div className="column is-11">
+                      <Title title="New Outcome" color="is-4" />
+                    </div>
+                    <div className="column is-1">
+                      <button onClick={this.onBurgerOut} className="button icon outcome-form is-success" data-target="outcomesForm">
+                          <FontAwesomeIcon id="icono" icon={faPlus}/>
+                      </button>
+                    </div>
+                  </div>
+                  {/*form para New outcome oculto*/}
+                  <div id="outcomesForm" className="is-hidden"> 
+                    <form onSubmit={this.onSubmitOut}>
+                      <div className="field">
+                        <label className="label">Date</label>
+                        <div className="control has-icons-left">
+                          <input
+                            name="date"
+                            type="text"
+                            placeholder="MM/DD/YYYY"
+                            className="input"
+                            required
+                            value={this.state.Date}
+                            onChange={this.onChangeOut}
+                          />
+                          <span className="icon is-small is-left">
+                            <i className="fa fa-user"></i>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="field">
+                        <label className="label">Description</label>
+                        <div className="control has-icons-left">
+                          <input
+                            name="description"
+                            type="text"
+                            placeholder="Pago del agua"
+                            className="input"
+                            required
+                            value={this.state.Description}
+                            onChange={this.onChangeOut}
+                          />
+                          <span className="icon is-small is-left">
+                            <i className="fa fa-user"></i>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="field">
+                        <label className="label">Amount</label>
+                        <div className="control has-icons-left">
+                          <input
+                            name="amount"
+                            type="text"
+                            placeholder="$2000.00"
+                            className="input"
+                            required
+                            value={this.state.Amount}
+                            onChange={this.onChangeOut}
+                          />
+                          <span className="icon is-small is-left">
+                            <i className="fa fa-mobile"></i>
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="field">
+                        <button type="submit" className="button is-success">
+                          New outcome
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
               <div className="column is-12">
                 <div className="box has-background-white-ter">
                   <table className="table is-fullwidth has-background-white-ter is-hoverable">
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Lastname</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Active</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
                         <th>Edit</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.users.map((user) => (<tr key={user.IdUser}>
-                          <td>{user.FirstName}</td>
-                          <td>{user.LastName}</td>
-                          <td>{user.PhoneNumber}</td>
-                          <td>{user.Email}</td>
-                          <td>
-                            {user.Active ? (<FontAwesomeIcon icon={faCheck} />) : (<FontAwesomeIcon icon={faTimes} />)}
-                          </td>
+                      {this.state.incomes.map((income) => (<tr key={income.IdIncome}>
+                          <td>{income.Date}</td>
+                          <td>{income.Description}</td>
+                          <td>{income.Amount}</td>
+                          <td><button className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
+                        </tr>
+                      ))}
+                      {this.state.outcomes.map((outcome) => (<tr key={outcome.IdOutcome}>
+                          <td>{outcome.Date}</td>
+                          <td>{outcome.Description}</td>
+                          <td>{outcome.Amount}</td>
                           <td><button className="button"><FontAwesomeIcon icon={faEdit}/></button></td>
                         </tr>
                       ))}
