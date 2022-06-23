@@ -52,6 +52,12 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
         const result = await pool?.request()
             .input('email', sql.VarChar, email)
             .query(queries.matchUser);
+        
+        const idRes = await pool?.request()
+            .input('email', sql.VarChar, email)
+            .query(queries.getIdResDev);
+        
+        const idResUser = idRes?.recordset[0].IdResDev;
 
         const noemails = (result?.recordset)?.length;
 
@@ -86,7 +92,7 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
 
         console.log("Current logged user role: " + readRole);
 
-        return res.json({salute: message = bearer});
+        return res.json({salute: message = bearer, idResDev: idResUser});
 
     } catch (error) {
         res.status(406);
