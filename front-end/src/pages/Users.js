@@ -6,36 +6,39 @@ import Sidebar from "../components/molecules/Sidebar";
 import UserForm from "../components/molecules/userForm";
 import UserTable from "../components/molecules/userTable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 const tkn = JSON.parse(localStorage.getItem("tkn"));
 axios.defaults.headers.common = { Authorization: "bearer " + tkn };
 export default class Users extends Component {
-  constructor(props){
-    super(props)
-  this.state = {
-    houses: [],
-    users: [],
-    newUsers: {
-      idUser: "",
-      idResDev: "",
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      password:"",
-      email: "",
-      faceId: "",
-      idHouse: ""
-    },
-    edit: false,
-    idEdit: "",
-  };}
+  constructor(props) {
+    super(props);
+    this.state = {
+      houses: [],
+      users: [],
+      newUsers: {
+        idUser: "",
+        idResDev: "",
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        password: "",
+        email: "",
+        faceId: "",
+        idHouse: "",
+      },
+      edit: false,
+      idEdit: "",
+    };
+  }
 
   //GET para obtener usuarios
   async getUsers() {
-    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
-    const resHouses = await axios.get("https://gestion-fraccionamiento.herokuapp.com/houses/get");
+    const res = await axios.get(
+      "https://gestion-fraccionamiento.herokuapp.com/users/get"
+    );
+    const resHouses = await axios.get(
+      "https://gestion-fraccionamiento.herokuapp.com/houses/get"
+    );
     this.setState({ users: res.data });
     this.setState({ houses: resHouses.data });
   }
@@ -65,13 +68,16 @@ export default class Users extends Component {
         email: key.Email,
         faceId: key.FaceID,
         active: key.Active,
-        idHouse: key.Address
+        idHouse: key.Address,
       },
     });
   };
   //Función para ocultar y mostrar el formulario
   onBurger = () => {
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll(".user-form"),0);
+    const $navbarBurgers = Array.prototype.slice.call(
+      document.querySelectorAll(".user-form"),
+      0
+    );
     // Add a click event on each of them
     $navbarBurgers.forEach((el) => {
       // Get the target from the "data-target" attribute
@@ -98,12 +104,22 @@ export default class Users extends Component {
   onSubmit = async (e) => {
     e.preventDefault();
     if (this.state.edit) {
-        for (let i=0;i<this.state.houses.length;i++){
-          if( await this.state.houses[i].Address===this.state.newUsers.idHouse){
-            this.setState({newUsers:{...this.state.newUsers, idHouse: this.state.houses[i].IdHouse}});
-          }
+      for (let i = 0; i < this.state.houses.length; i++) {
+        if (
+          (await this.state.houses[i].Address) === this.state.newUsers.idHouse
+        ) {
+          this.setState({
+            newUsers: {
+              ...this.state.newUsers,
+              idHouse: this.state.houses[i].IdHouse,
+            },
+          });
         }
-      axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.idEdit,
+      }
+      axios
+        .put(
+          "https://gestion-fraccionamiento.herokuapp.com/users/put/" +
+            this.state.idEdit,
           this.state.newUsers
         )
         .then((res) => {
@@ -115,7 +131,11 @@ export default class Users extends Component {
         });
     } else {
       console.log(this.state.newUsers);
-      axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post",this.state.newUsers)
+      axios
+        .post(
+          "https://gestion-fraccionamiento.herokuapp.com/users/post",
+          this.state.newUsers
+        )
         .then((res) => {
           console.log(res);
           this.getUsers();
@@ -139,7 +159,7 @@ export default class Users extends Component {
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box has-background-white-ter">
-                  <Title title="Users" class="is-2"/>
+                  <Title title="Users" class="is-2" />
                 </div>
               </div>
               <div className="column is-12">
@@ -158,8 +178,12 @@ export default class Users extends Component {
                       </button>
                     </div>
                   </div>
-                    {/*form para New user oculto*/}
-                    <UserForm state={this.state} onChange={this.onChange} onSubmit={this.onSubmit} />
+                  {/*form para New user oculto*/}
+                  <UserForm
+                    state={this.state}
+                    onChange={this.onChange}
+                    onSubmit={this.onSubmit}
+                  />
                 </div>
               </div>
               <UserTable state={this.state} onEditar={this.onEditar} />

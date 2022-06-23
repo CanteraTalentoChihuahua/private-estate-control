@@ -1,12 +1,7 @@
-button.button
-{
+button.button{
     background-color: #07689F;
     border-color: transparent;
     color: #fff;
     width: 100%;
 }
-
-a
-{
-    color: #fff;
-}
+a{color: #fff;}

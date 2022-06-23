@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faEdit,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 export default class UserForm extends Component {
   render() {
     return (
-        <div className="column is-12">
+      <div className="column is-12">
         <div className="box has-background-white-ter">
           <table className="table is-fullwidth has-background-white-ter is-hoverable">
             <thead>

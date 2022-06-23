@@ -126,13 +126,13 @@ export default class UserForm extends Component {
           </div>
           <div className="field">
             <div className="select">
-              <select
-                name="idHouse"
-                onChange={this.props.onChange}>
+              <select name="idHouse" onChange={this.props.onChange}>
                 <option>Address</option>
-                  {this.props.state.houses.map((house)=>(
-                  <option key={house.IdHouse} className="dropdown-item">{house.Address}</option>
-                  ))}
+                {this.props.state.houses.map((house) => (
+                  <option key={house.IdHouse} className="dropdown-item">
+                    {house.Address}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
