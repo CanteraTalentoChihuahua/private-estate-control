@@ -38,6 +38,9 @@ export default class Navbar extends Component {
       $target.classList.toggle("is-active");
     });
   };
+  logOut=()=>{
+    localStorage.clear();
+  }
   render() {
     return (
       <nav className="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">

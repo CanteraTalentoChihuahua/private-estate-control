@@ -14,6 +14,7 @@ export default class Login extends Component {
   };
   onSubmit = (e) => {
     e.preventDefault();
+    localStorage.clear();
   };
   onChange = async (e) => {
     await this.setState({
@@ -23,8 +24,8 @@ export default class Login extends Component {
       }
     })
   }
-  onButton=()=>{
-    axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
+  onButton= async ()=>{
+    await axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
     .then(res=>{
       console.log(res);
       localStorage.setItem('tkn',JSON.stringify(res.data.salute));
@@ -32,23 +33,9 @@ export default class Login extends Component {
       this.props.history.push("/dashboard");
     })
     .catch((exception) => {
+      console.log(this.state.form)
       console.log(exception);
     });
-  };
-  onButton = () => {
-    axios
-      .post(
-        "https://gestion-fraccionamiento.herokuapp.com/login/auth",
-        this.state.form
-      )
-      .then((res) => {
-        console.log(res);
-        localStorage.setItem("tkn", JSON.stringify(res.data.salute));
-        this.props.history.push("/dashboard");
-      })
-      .catch((exception) => {
-        console.log(exception);
-      });
   };
   render() {
     /* Aquí imprimimos el token para probar la eliminación del mismo al hacer log out*/

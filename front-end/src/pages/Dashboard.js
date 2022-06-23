@@ -76,6 +76,8 @@ export default class Dashboard extends Component {
   //chequeo del Token
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
+    const idResDev = JSON.parse(localStorage.getItem("idResDev"));
+    console.log(idResDev)
     if (tkn == null) {
       this.props.history.push("/login");
     }
