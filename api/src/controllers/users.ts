@@ -4,11 +4,51 @@ import queries from "../models/users";
 import queriesReport from "../models/reports";
 import bcryptjs from "bcryptjs";
 
+async function canInsert() {
+    try {
+        const pool = await getConnection();
+        let index = 0;
+        let c = 0;
+
+        const getReport = await pool?.request()
+        .query(queriesReport.getAllUsersHouses);
+        
+        while (getReport?.recordset[index]) {
+            // If both Ids are already in log, then it is true and C does not increment
+            if ((getReport?.recordset[index].IdHouse == 6 && getReport?.recordset[index].IdUser == 30) != true) {
+                c++;
+                console.log(c + " => Counter sum/Index => " + index);
+            }
+            // Index helps on making track of each record 
+            index++;
+        }
+        
+        // At the end it is not needed the increment on index, so it is better to remove it
+        index--;
+
+        // To make it work in a condition later, then just return the proper result
+        if (c <= index) {
+            return false;
+        }else{
+            return true;
+        }
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getUsers = async (req: any, res: any) => {
 
     try {
         const pool = await getConnection();
         const result = await pool?.request().query(queriesReport.reportUsersHouses);
+        
+        if (await canInsert()) {
+            console.log("Approved to INSERT");
+        } else {
+            console.log("DO NOT INSERT");
+        }
 
         res.status(200).json(result?.recordset);
 
