@@ -18,6 +18,7 @@ export default class UserForm extends Component {
                 <th>Wallet</th>
                 <th>Active</th>
                 <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -43,6 +44,14 @@ export default class UserForm extends Component {
                       className="button"
                     >
                       <FontAwesomeIcon icon={faEdit} />
+                    </Link>
+                  </td>
+                  <td>
+                    <Link
+                      to={"/users/" + user.IdUser}
+                      onClick={() => this.props.onDelete(user)}
+                      className="button">
+                      <FontAwesomeIcon icon={faTimes} />
                     </Link>
                   </td>
                 </tr>

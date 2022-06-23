@@ -19,8 +19,20 @@ export default class Login extends Component {
     await this.setState({
       form: {
         ...this.state.form,
-        [e.target.name]: e.target.value,
-      },
+        [e.target.name]: e.target.value
+      }
+    })
+  }
+  onButton=()=>{
+    axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
+    .then(res=>{
+      console.log(res);
+      localStorage.setItem('tkn',JSON.stringify(res.data.salute));
+      localStorage.setItem('idResDev',JSON.stringify(res.data.idResDev));
+      this.props.history.push("/dashboard");
+    })
+    .catch((exception) => {
+      console.log(exception);
     });
   };
   onButton = () => {

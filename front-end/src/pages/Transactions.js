@@ -11,18 +11,22 @@ import {
   faMapMarkerAlt,
   faCalendarAlt,
   faFileAlt,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 export default class Transactions extends Component {
   state = {
+    houses: [],
     incomes: [],
     outcomes: [],
     newIncomes: {
-      address: "",
+      idResDev: "",
+      idHouse: "",
       date: "",
       description: "",
       amount: "",
     },
     newOutcomes: {
+      idResDev: "",
       date: "",
       description: "",
       amount: "",
@@ -32,21 +36,53 @@ export default class Transactions extends Component {
   };
   //GET para obtener incomes y outcomes
   async getTransactions() {
-    const resIn = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/incomes/get"
-    );
-    const resOut = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/outcomes/get"
-    );
+    const resIn = await axios.get("https://gestion-fraccionamiento.herokuapp.com/incomes/get");
+    const resOut = await axios.get("https://gestion-fraccionamiento.herokuapp.com/outcomes/get");
+    const resHouses = await axios.get("https://gestion-fraccionamiento.herokuapp.com/houses/get");
     this.setState({ incomes: resIn.data });
     this.setState({ outcomes: resOut.data });
+    this.setState({ houses: resHouses.data });
   }
   async componentDidMount() {
     this.getTransactions();
   }
+  onEditarIn = async (key) => {
+    this.onBurgerIn();
+    // eslint-disable-next-line
+    this.state.edit = true;
+    await this.setState({
+      idEdit: key.IdIncome,
+      newIncomes: {
+        ...this.state.newIncomes,
+        id: key.IdIncome,
+        idResDev: key.IdResDev,
+        idHouse: key.IdHouse,
+        date: key.Date,
+        amount: key.Amount,
+        description: key.Description,
+      },
+    });
+    console.log(this.state.newIncomes);
+  };
+  onEditarOut = async (key) => {
+    this.onBurgerOut();
+    // eslint-disable-next-line
+    this.state.edit = true;
+    await this.setState({
+      idEdit: key.IdOutcome,
+      newOutcomes: {
+        ...this.state.newOutcomes,
+        id: key.IdOutcome,
+        idResDev: key.IdResDev,
+        date: key.Date,
+        amount: key.Amount,
+        description: key.Description,
+      },
+    });
+    console.log(this.state.newOutcomes);
+  };
   //Función para ocultar y mostrar el formulario incomes
   onBurgerIn = () => {
-    console.log(this.state.incomes);
     const $navbarBurgers = Array.prototype.slice.call(
       document.querySelectorAll(".income-form"),
       0
@@ -101,45 +137,99 @@ export default class Transactions extends Component {
       },
     });
   };
-  //POST para crear incomes
+  //DELETE para incomes
+  onDeleteIn = async (key) => {
+    await axios.delete("https://gestion-fraccionamiento.herokuapp.com/incomes/delete/"+key.IdIncome,key.IdIncome)
+    .then((res) => {
+      console.log(res);
+      this.getTransactions();
+    })
+    .catch((exception) => {
+      console.log(exception.response);
+    });
+  };
+    //DELETE para outcomes
+    onDeleteOut = async (key) => {
+      await axios.delete("https://gestion-fraccionamiento.herokuapp.com/outcomes/delete/"+key.IdOutcome,key.IdOutcome)
+      .then((res) => {
+        console.log(res);
+        this.getTransactions();
+      })
+      .catch((exception) => {
+        console.log(exception.response);
+      });
+    };
+  //POST y PUT para incomes
   onSubmitIn = async (e) => {
     e.preventDefault();
-    console.log("State:", this.state.newIncomes);
-    axios
-      .post(
-        "https://gestion-fraccionamiento.herokuapp.com/incomes/post",
-        this.state.newIncomes
-      )
-      .then((res) => {
-        console.log(res);
-        this.getTransactions();
-      })
-      .catch((exception) => {
-        alert(exception.response.data.msg);
-      });
+    if (this.state.edit) {
+      for (let i = 0; i < this.state.houses.length; i++) {
+        if ((await this.state.houses[i].Address) === this.state.newIncomes.idHouse){
+          this.setState({
+            newIncomes: {
+              ...this.state.newIncomes,
+              idHouse: this.state.houses[i].IdHouse,
+            },
+          });
+        }
+      }
+      axios.put("https://gestion-fraccionamiento.herokuapp.com/incomes/put/"+this.state.idEdit,this.state.newIncomes)
+        .then((res) => {
+          console.log(res);
+          this.getTransactions();
+        })
+        .catch((exception) => {
+          console.log(exception.response);
+        });
+    } else {
+      for (let i = 0; i < this.state.houses.length; i++) {
+        if ((await this.state.houses[i].Address) === this.state.newIncomes.idHouse){
+          await this.setState({
+            newIncomes: {
+              ...this.state.newIncomes,
+              idHouse: this.state.houses[i].IdHouse,
+              idResDev: JSON.parse(localStorage.getItem("idResDev"))
+            },
+          });
+        }
+      }
+      console.log(this.state.newIncomes)
+      axios.post("https://gestion-fraccionamiento.herokuapp.com/incomes/post",this.state.newIncomes)
+        .then((res) => {
+          console.log(res);
+          this.getTransactions();
+        })
+        .catch((exception) => {
+          console.log(exception.response);
+        });
+    }
   };
-  //POST para crear outcomes
+  //POST y PUT para crear Outcomes
   onSubmitOut = async (e) => {
     e.preventDefault();
-    await this.setState({
-      newOutcomes: {
-        ...this.state.newOutcomes,
-        idResDev: 1,
-      },
-    });
-    console.log("State:", this.state.newOutcomes);
-    axios
-      .post(
-        "https://gestion-fraccionamiento.herokuapp.com/outcomes/post",
-        this.state.newOutcomes
-      )
-      .then((res) => {
-        console.log(res);
-        this.getTransactions();
-      })
-      .catch((exception) => {
-        alert(exception.response.data.msg);
-      });
+    if (this.state.edit) {
+      console.log(this.state.newOutcomes);
+      axios.put("https://gestion-fraccionamiento.herokuapp.com/outcomes/put/"+this.state.idEdit,this.state.newOutcomes)
+        .then((res) => {
+          console.log(res);
+          this.getTransactions();
+        })
+        .catch((exception) => {
+          console.log(exception.response);
+        });
+    } else {
+      console.log(this.state.newOutcomes);
+      await this.setState({newOutcomes:{...this.state.newOutcomes, idResDev: JSON.parse(localStorage.getItem("idResDev"))}});
+      console.log(this.state.newOutcomes);
+      axios.post("https://gestion-fraccionamiento.herokuapp.com/outcomes/post",this.state.newOutcomes)
+        .then((res) => {
+          console.log(res);
+          this.getTransactions();
+        })
+        .catch((exception) => {
+          console.log(exception.response);
+        });
+    }
   };
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
@@ -177,22 +267,22 @@ export default class Transactions extends Component {
                   {/*form para New income oculto*/}
                   <div id="incomesForm" className="is-hidden">
                     <form onSubmit={this.onSubmitIn}>
-                      <div className="field">
-                        <label className="label">Address</label>
-                        <div className="control has-icons-left">
-                          <input
-                            name="address"
-                            type="text"
-                            placeholder="Calle Street #321"
-                            className="input"
-                            required
-                            value={this.state.Address}
-                            onChange={this.onChangeIn}
-                          />
-                          <span className="icon is-small is-left">
+                      <div className="control has-icons-left">
+                        <div className="select">
+                          <select name="idHouse" onChange={this.onChangeIn}>
+                            <option>Address</option>
+                            {this.state.houses.map((house) => (
+                              <option
+                                key={house.IdHouse}
+                                className="dropdown-item">
+                                {house.Address}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faMapMarkerAlt} />
                           </span>
-                        </div>
                       </div>
                       <div className="field">
                         <label className="label">Date</label>
@@ -203,7 +293,7 @@ export default class Transactions extends Component {
                             placeholder="YYYY-MM-DD"
                             className="input"
                             required
-                            value={this.state.Date}
+                            value={this.state.newIncomes.date}
                             onChange={this.onChangeIn}
                           />
                           <span className="icon is-small is-left">
@@ -220,7 +310,7 @@ export default class Transactions extends Component {
                             placeholder="House 74 Payment"
                             className="input"
                             required
-                            value={this.state.Description}
+                            value={this.state.newIncomes.description}
                             onChange={this.onChangeIn}
                           />
                           <span className="icon is-small is-left">
@@ -237,7 +327,7 @@ export default class Transactions extends Component {
                             placeholder="$500.00"
                             className="input"
                             required
-                            value={this.state.Amount}
+                            value={this.state.newIncomes.amount}
                             onChange={this.onChangeIn}
                           />
                           <span className="icon is-small is-left">
@@ -283,7 +373,7 @@ export default class Transactions extends Component {
                             placeholder="MM/DD/YYYY"
                             className="input"
                             required
-                            value={this.state.Date}
+                            value={this.state.newOutcomes.date}
                             onChange={this.onChangeOut}
                           />
                           <span className="icon is-small is-left">
@@ -300,7 +390,7 @@ export default class Transactions extends Component {
                             placeholder="Pago del agua"
                             className="input"
                             required
-                            value={this.state.Description}
+                            value={this.state.newOutcomes.description}
                             onChange={this.onChangeOut}
                           />
                           <span className="icon is-small is-left">
@@ -317,7 +407,7 @@ export default class Transactions extends Component {
                             placeholder="$2000.00"
                             className="input"
                             required
-                            value={this.state.Amount}
+                            value={this.state.newOutcomes.amount}
                             onChange={this.onChangeOut}
                           />
                           <span className="icon is-small is-left">
@@ -345,6 +435,7 @@ export default class Transactions extends Component {
                         <th>Description</th>
                         <th>Amount</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -355,11 +446,18 @@ export default class Transactions extends Component {
                           <td>{income.Amount}</td>
                           <td>
                             <Link
-                              to={"/transactions/" + income.IdUser}
-                              onClick={() => this.props.onEditar(income)}
-                              className="button"
-                            >
+                              to={"/transactions/" + income.IdIncome}
+                              onClick={() => this.onEditarIn(income)}
+                              className="button">
                               <FontAwesomeIcon icon={faEdit} />
+                            </Link>
+                          </td>
+                          <td>
+                            <Link
+                              to={"/transactions/" + income.IdIncome}
+                              onClick={() => this.onDeleteIn(income)}
+                              className="button">
+                              <FontAwesomeIcon icon={faTimes} />
                             </Link>
                           </td>
                         </tr>
@@ -371,11 +469,19 @@ export default class Transactions extends Component {
                           <td>{outcome.Amount}</td>
                           <td>
                             <Link
-                              to={"/transactions/" + outcome.IdUser}
-                              onClick={() => this.props.onEditar(outcome)}
+                              to={"/transactions/" + outcome.IdOutcome}
+                              onClick={() => this.onEditarOut(outcome)}
                               className="button"
                             >
                               <FontAwesomeIcon icon={faEdit} />
+                            </Link>
+                          </td>
+                          <td>
+                            <Link
+                              to={"/transactions/" + outcome.IdOutcome}
+                              onClick={() => this.onDeleteOut(outcome)}
+                              className="button">
+                              <FontAwesomeIcon icon={faTimes} />
                             </Link>
                           </td>
                         </tr>

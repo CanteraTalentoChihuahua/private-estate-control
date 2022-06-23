@@ -100,6 +100,17 @@ export default class Users extends Component {
       },
     });
   };
+    //DELETE para incomes
+    onDelete = async (key) => {
+      await axios.delete("https://gestion-fraccionamiento.herokuapp.com/users/delete/"+key.IdUser,key.IdUser)
+      .then((res) => {
+        console.log(res);
+        this.getUsers();
+      })
+      .catch((exception) => {
+        console.log(exception.response);
+      });
+    };
   //POST y PUT para crear usuarios
   onSubmit = async (e) => {
     e.preventDefault();
@@ -186,7 +197,7 @@ export default class Users extends Component {
                   />
                 </div>
               </div>
-              <UserTable state={this.state} onEditar={this.onEditar} />
+              <UserTable state={this.state} onEditar={this.onEditar} onDelete={this.onDelete}/>
             </div>
           </div>
         </section>
