@@ -2,41 +2,7 @@ import { getConnection } from "../conf/db";
 import sql from "mssql";
 import queries from "../models/users";
 import queriesReport from "../models/reports";
-import bcryptjs from "bcryptjs";
-
-async function canInsert() {
-    try {
-        const pool = await getConnection();
-        let index = 0;
-        let c = 0;
-
-        const getReport = await pool?.request()
-        .query(queriesReport.getAllUsersHouses);
-        
-        while (getReport?.recordset[index]) {
-            // If both Ids are already in log, then it is true and C does not increment
-            if ((getReport?.recordset[index].IdHouse == 6 && getReport?.recordset[index].IdUser == 30) != true) {
-                c++;
-                console.log(c + " => Counter sum/Index => " + index);
-            }
-            // Index helps on making track of each record 
-            index++;
-        }
-        
-        // At the end it is not needed the increment on index, so it is better to remove it
-        index--;
-
-        // To make it work in a condition later, then just return the proper result
-        if (c <= index) {
-            return false;
-        }else{
-            return true;
-        }
-        
-    } catch (error) {
-        console.log(error);
-    }
-}
+import bcryptjs from "bcryptjs";      
 
 export const getUsers = async (req: any, res: any) => {
 
@@ -149,6 +115,9 @@ export const updateUserById = async (req: any, res: any) => {
     const { idResDev, firstName, lastName, phoneNumber, email, password, active, faceId, idHouse, idUser } = req.body;
     const { id } = req.params;
 
+    let index = 0;
+    let c = 0
+
     try {
         const pool = await getConnection()
         await pool?.request()
@@ -163,17 +132,29 @@ export const updateUserById = async (req: any, res: any) => {
         .input('id', sql.Int, id)
         .query(queries.updateUsersById)
 
-        if (await canInsert()) {
+    
+        const getReport = await pool?.request()
+        .query(queriesReport.getAllUsersHouses);
+            
+            while (getReport?.recordset[index]) {
+                // If both Ids are already in log, then it is true and C does not increment
+                if ((getReport?.recordset[index].IdHouse == idHouse && getReport?.recordset[index].IdUser == idUser ) != true) {
+                    c++;
+                }
+                // Index helps on making track of each record 
+                index++;
+            }
+
+        if ((c >= index) == true) {
             const insertUsersHouses = await pool?.request()
             .input('idHouse', sql.Int, idHouse)
             .input('idUser', sql.Int, idUser)
             .query(queriesReport.createUsersHousesRegister); 
+            console.log("Relationship done: " + c + " C - I " + index);
         } else {
-            console.log("Unable to insert on users & houses relationship");
+            console.log("Unable to insert on users & houses relationship " + c + " C - I " + index);
         }
 
-
-    
         res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email,
             password, active, faceId, idHouse, idUser });
         
