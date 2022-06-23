@@ -43,12 +43,6 @@ export const getUsers = async (req: any, res: any) => {
     try {
         const pool = await getConnection();
         const result = await pool?.request().query(queriesReport.reportUsersHouses);
-        
-        if (await canInsert()) {
-            console.log("Approved to INSERT");
-        } else {
-            console.log("DO NOT INSERT");
-        }
 
         res.status(200).json(result?.recordset);
 
@@ -169,10 +163,16 @@ export const updateUserById = async (req: any, res: any) => {
         .input('id', sql.Int, id)
         .query(queries.updateUsersById)
 
-        const insertUsersHouses = await pool?.request()
-        .input('idHouse', sql.Int, idHouse)
-        .input('idUser', sql.Int, idUser)
-        .query(queriesReport.createUsersHousesRegister);   
+        if (await canInsert()) {
+            const insertUsersHouses = await pool?.request()
+            .input('idHouse', sql.Int, idHouse)
+            .input('idUser', sql.Int, idUser)
+            .query(queriesReport.createUsersHousesRegister); 
+        } else {
+            console.log("Unable to insert on users & houses relationship");
+        }
+
+
     
         res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email,
             password, active, faceId, idHouse, idUser });
