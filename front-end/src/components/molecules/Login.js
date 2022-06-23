@@ -28,6 +28,7 @@ export default class Login extends Component {
     .then(res=>{
       console.log(res);
       localStorage.setItem('tkn',JSON.stringify(res.data.salute));
+      localStorage.setItem('idResDev',JSON.stringify(res.data.idResDev));
       this.props.history.push("/dashboard");
     })
     .catch((exception) => {

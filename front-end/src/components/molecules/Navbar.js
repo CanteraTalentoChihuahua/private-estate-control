@@ -1,11 +1,19 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSignOutAlt,faMoneyCheckAlt,faUsers, faHome,faLockOpen,faChartBar } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom"
 import Title from "../atoms/Title";
 export default class Navbar extends Component {
-  logOut=()=>{
-    localStorage.clear();
+  state = {
+    residential: []
+  }
+  async getResidential() {
+    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/residentials/get/"+JSON.parse(localStorage.getItem("idResDev")),JSON.parse(localStorage.getItem("idResDev")));
+    await this.setState({ residential: res.data.Name });
+  }
+  async componentDidMount() {
+    this.getResidential();
   }
   onBurger = () => {
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
@@ -24,7 +32,7 @@ export default class Navbar extends Component {
       <nav className="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">
         
           <div className="navbar-brand">
-            <div className="navbar-item"><Title title="MIND" class="has-text-white"/></div>
+            <div className="navbar-item"><Title title={this.state.residential} class="has-text-white"/></div>
             <span href="#"onClick={this.onBurger} role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
               <span></span>
               <span></span>
