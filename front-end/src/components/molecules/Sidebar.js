@@ -1,25 +1,37 @@
-import { Link } from "react-router-dom"
-import React, {Component} from "react"
+import { Link } from "react-router-dom";
+import React, { Component } from "react";
 //import axios from "axios"
-import './Sidebar.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMoneyCheckAlt,faUsers, faHome,faLockOpen,faChartBar} from '@fortawesome/free-solid-svg-icons';
+import "./Sidebar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMoneyCheckAlt,
+  faUsers,
+  faHome,
+  faLockOpen,
+  faChartBar,
+} from "@fortawesome/free-solid-svg-icons";
 export default class Sidebar extends Component {
-    render() {
-        return(
-            <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
-                <ul className="menu-list">
-                    <li>
-                        <Link to="/dashboard" >
-                            <span className="icon"><FontAwesomeIcon icon={faChartBar}/></span> Dashboard
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/transactions" >
-                            <span className="icon"><FontAwesomeIcon icon={faMoneyCheckAlt}/></span> Transactions
-                        </Link>
-                    </li>
-                    {/*<li>
+  render() {
+    return (
+      <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+        <ul className="menu-list">
+          <li>
+            <Link to="/dashboard">
+              <span className="icon">
+                <FontAwesomeIcon icon={faChartBar} />
+              </span>{" "}
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link to="/transactions">
+              <span className="icon">
+                <FontAwesomeIcon icon={faMoneyCheckAlt} />
+              </span>{" "}
+              Transactions
+            </Link>
+          </li>
+          {/*<li>
                         <a href="#">
                             <span className="icon"><FontAwesomeIcon icon={faSwimmer}/></span> Green Areas
                         </a>
@@ -37,27 +49,36 @@ export default class Sidebar extends Component {
                             </li>
                         </ul>
                     </li>*/}
-                    <li>
-                        <Link to="/users" className="">
-                            <span className="icon"><FontAwesomeIcon icon={faUsers}/></span> Users
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/houses">
-                            <span className="icon"><FontAwesomeIcon icon={faHome}/></span> Houses
-                        </Link>
-                    </li>
-                    {/*<li>
+          <li>
+            <Link to="/users" className="">
+              <span className="icon">
+                <FontAwesomeIcon icon={faUsers} />
+              </span>{" "}
+              Users
+            </Link>
+          </li>
+          <li>
+            <Link to="/houses">
+              <span className="icon">
+                <FontAwesomeIcon icon={faHome} />
+              </span>{" "}
+              Houses
+            </Link>
+          </li>
+          {/*<li>
                         <a href="#" className="">
                             <span className="icon"><FontAwesomeIcon icon={faPaperPlane}/></span> Requests
                         </a>
                     </li>*/}
-                    <li>
-                        <Link to="/access">
-                            <span className="icon"><FontAwesomeIcon icon={faLockOpen}/></span> Access
-                        </Link>
-                    </li>
-                    {/*<li>
+          <li>
+            <Link to="/access">
+              <span className="icon">
+                <FontAwesomeIcon icon={faLockOpen} />
+              </span>{" "}
+              Access
+            </Link>
+          </li>
+          {/*<li>
                         <a href="#" className="">
                             <span className="icon"><FontAwesomeIcon icon={faUserTag}/></span> Roles
                         </a>
@@ -72,8 +93,8 @@ export default class Sidebar extends Component {
                             <span className="icon"><FontAwesomeIcon icon={faChild}/></span> Visitors
                         </a>
                     </li>*/}
-                </ul>
-            </aside>
-        )
-    }
+        </ul>
+      </aside>
+    );
+  }
 }
