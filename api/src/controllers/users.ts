@@ -101,6 +101,25 @@ export const deleteUserById = async (req: any, res: any) => {
     // TODO: Same http responses as in get by id
 }
 
+export const unlinkUserById = async (req: any, res: any) => {
+    const { id } = req.params;
+
+    try {
+        const pool = await getConnection();
+        const relationship = await pool?.request()
+        .input('id', sql.Int, id)
+        .query(queries.unlinkUserHouse)
+    
+        res.sendStatus(200);
+        
+    } catch (error) {
+        res.status(500).send(error);
+        
+    }
+
+    // TODO: Same http responses as in get by id
+}
+
 export const getTotalUsers = async (req: any, res: any) => {
     const pool = await getConnection();
     const result = await pool?.request()
