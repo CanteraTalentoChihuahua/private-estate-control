@@ -8,5 +8,5 @@ export default {
     updateUsersById: `UPDATE T_Users SET IdResDev = @idResDev, FirstName = @firstName, LastName = @lastName,
     PhoneNumber = @phoneNumber, Email = @email, Active = @active, FaceID = @faceId
     WHERE IdUser = @id`,
-    unlinkUserHouse: `DELETE FROM T_UsersHouses WHERE IdUser = @id`
+    unlinkUserHouse: `DELETE FROM T_UsersHouses WHERE IdUser = @idUser, IdHouse = @idHouse`
 }

@@ -102,12 +102,14 @@ export const deleteUserById = async (req: any, res: any) => {
 }
 
 export const unlinkUserById = async (req: any, res: any) => {
-    const { id } = req.params;
+    const { idUser } = req.params;
+    const { idHouse } = req.body;
 
     try {
         const pool = await getConnection();
         const relationship = await pool?.request()
-        .input('id', sql.Int, id)
+        .input('idUser', sql.Int, idUser)
+        .input('idHouse', sql.Int, idHouse)
         .query(queries.unlinkUserHouse)
     
         res.sendStatus(200);
