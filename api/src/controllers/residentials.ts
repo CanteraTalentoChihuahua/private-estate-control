@@ -1,6 +1,9 @@
 import { getConnection } from "../conf/db";
 import sql from "mssql";
-import queries from "../models/residentials"
+import queries from "../models/residentials";
+import queriesHouses from "../models/houses";
+
+export let allowOutcome = false;
 
 export const createRes = async (req: any, res: any) => {
 
@@ -64,9 +67,55 @@ export const getResById = async (req: any, res: any) => {
     
 }
 
+export const updateResBalance = async (req: any, res: any) => {
+    const { id } = req.params;
+    let totalBalance = 0;
+    let index = 0;
+    let midBalance = 0;    
+
+    console.log("TEST OUTCOME BOOLEAN => " + allowOutcome);
+
+    try {
+        const pool = await getConnection()
+        const getBalances = await pool?.request()
+            .query(queriesHouses.getAllHouses);
+        
+            while (getBalances?.recordset[index]) {
+                midBalance = getBalances?.recordset[index].Balance;
+                totalBalance = totalBalance + midBalance;
+                index++;
+                console.log("Current total = " + totalBalance);
+            }
+
+            if (totalBalance > 0) {
+                allowOutcome = true;
+            } else {
+                allowOutcome = false;
+            }
+
+            try {
+                await pool?.request()
+                .input('totalBalance', sql.Float, totalBalance)
+                .input('id', sql.Int, id)
+                .query(queries.updateResBalance)
+
+            } catch (error) {
+                console.log(error);
+            }
+
+            console.log("Final allow outcome: " + allowOutcome);
+            res.status(200).json({ id, totalBalance});
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 export const updateResById = async (req: any, res: any) => {
     const { name, description } = req.body;
     const { id } = req.params;
+
 
     if (name == null) {
         console.log("Residential not updated");
