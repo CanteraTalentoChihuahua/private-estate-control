@@ -14,7 +14,7 @@ export default class Houses extends Component {
       address: "",
       occuppied: "",
       balance: "",
-      idResDev: "",
+      idResDev: JSON.parse(localStorage.getItem("idResDev")),
     },
     edit: false,
     idEdit: "",
@@ -63,9 +63,10 @@ export default class Houses extends Component {
       $target.classList.toggle("is-hidden");
     });
   };
-  showUsers=()=>{
-    
-  }
+  showUsers = (id) => {
+    const row = document.getElementById("usersTable" + id);
+    row.classList.toggle("is-hidden");
+  };
   //Capturando datos del formulario
   onChange = async (e) => {
     await this.setState({
@@ -88,6 +89,17 @@ export default class Houses extends Component {
         .then((res) => {
           console.log(res);
           this.getHouses();
+          this.onBurger();
+          // eslint-disable-next-line
+          this.state.edit = false;
+          this.setState({
+            newHouses: {
+              ...this.state.newHouses,
+              address: "",
+              occuppied: "",
+              balance: "",
+            },
+          });
         })
         .catch((exception) => {
           console.log(exception.response.data);
@@ -101,6 +113,15 @@ export default class Houses extends Component {
         .then((res) => {
           console.log(res);
           this.getHouses();
+          this.onBurger();
+          this.setState({
+            newHouses: {
+              ...this.state.newHouses,
+              address: "",
+              occuppied: "",
+              balance: "",
+            },
+          });
         })
         .catch((exception) => {
           alert(exception.response.data.msg);
@@ -143,23 +164,6 @@ export default class Houses extends Component {
                   <div id="housesForm" className="is-hidden">
                     <form onSubmit={this.onSubmit}>
                       <div className="field">
-                        <label className="label">Id</label>
-                        <div className="control has-icons-left">
-                          <input
-                            name="idResDev"
-                            type="text"
-                            placeholder="1"
-                            className="input"
-                            required
-                            value={this.state.newHouses.idResDev}
-                            onChange={this.onChange}
-                          />
-                          <span className="icon is-small is-left">
-                            <i className="fa fa-id-badge"></i>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="field">
                         <label className="label">Address</label>
                         <div className="control has-icons-left">
                           <input
@@ -194,23 +198,42 @@ export default class Houses extends Component {
                         <th>Edit</th>
                       </tr>
                     </thead>
-                      {this.state.houses.map((house) => {
-                        return (
+                    {this.state.houses.map((house) => {
+                      return (
                         <tbody>
-                        <tr onClick={this.showUsers} key={house.IdHouse}>
-                          <td>{house.Address}</td>
-                          <td>
-                            <Link
-                              to={"/houses/" + house.Id}
-                              onClick={() => this.onEditar(house)}
-                              className="button">
-                              <FontAwesomeIcon icon={faEdit} />
-                            </Link>
-                          </td>
-                        </tr>
-                        <span id={"usersTable"+house.Id} className=""><UserTable idHouse={house.IdHouse} state={this.state} onEditar={this.onEditar} onDelete={this.onDelete}/></span>
+                          <tr role="button" key={house.IdHouse}>
+                            <td onClick={() => this.showUsers(house.IdHouse)}>
+                              {house.Address}
+                            </td>
+                            <td>
+                              <Link
+                                to={"/houses/" + house.Id}
+                                onClick={() => this.onEditar(house)}
+                                className="button"
+                              >
+                                <FontAwesomeIcon icon={faEdit} />
+                              </Link>
+                            </td>
+                          </tr>
+                          <tr
+                            id={"usersTable" + house.IdHouse}
+                            className="table is-fullwidth is-hidden"
+                          >
+                            <td
+                              className="has-background-white-bis p-0"
+                              colSpan={2}
+                            >
+                              <UserTable
+                                idHouse={house.IdHouse}
+                                state={this.state}
+                                onEditar={this.onEditar}
+                                onDelete={this.onDelete}
+                              />
+                            </td>
+                          </tr>
                         </tbody>
-                      )})}
+                      );
+                    })}
                   </table>
                 </div>
               </div>
