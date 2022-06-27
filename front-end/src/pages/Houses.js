@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import UserTable from "../components/molecules/userTable";
 import Sidebar from "../components/molecules/Sidebar";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
@@ -62,6 +63,9 @@ export default class Houses extends Component {
       $target.classList.toggle("is-hidden");
     });
   };
+  showUsers=()=>{
+    
+  }
   //Capturando datos del formulario
   onChange = async (e) => {
     await this.setState({
@@ -187,27 +191,26 @@ export default class Houses extends Component {
                     <thead>
                       <tr>
                         <th>Address</th>
-                        <th>Balance</th>
                         <th>Edit</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {this.state.houses.map((house) => (
-                        <tr key={house.IdHouse}>
+                      {this.state.houses.map((house) => {
+                        return (
+                        <tbody>
+                        <tr onClick={this.showUsers} key={house.IdHouse}>
                           <td>{house.Address}</td>
-                          <td>{house.Balance}</td>
                           <td>
                             <Link
                               to={"/houses/" + house.Id}
                               onClick={() => this.onEditar(house)}
-                              className="button"
-                            >
+                              className="button">
                               <FontAwesomeIcon icon={faEdit} />
                             </Link>
                           </td>
                         </tr>
-                      ))}
-                    </tbody>
+                        <span id={"usersTable"+house.Id} className=""><UserTable idHouse={house.IdHouse} state={this.state} onEditar={this.onEditar} onDelete={this.onDelete}/></span>
+                        </tbody>
+                      )})}
                   </table>
                 </div>
               </div>
