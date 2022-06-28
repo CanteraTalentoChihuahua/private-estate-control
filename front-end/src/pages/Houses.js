@@ -6,7 +6,12 @@ import Sidebar from "../components/molecules/Sidebar";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faEdit,
+  faPlus,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 export default class Houses extends Component {
   state = {
     houses: [],
@@ -196,13 +201,23 @@ export default class Houses extends Component {
                       <tr>
                         <th>Address</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                       </tr>
                     </thead>
                     {this.state.houses.map((house) => {
                       return (
                         <tbody>
                           <tr role="button" key={house.IdHouse}>
-                            <td onClick={() => this.showUsers(house.IdHouse)}>
+                            <td
+                              onClick={() => this.showUsers(house.IdHouse)}
+                              style={{
+                                verticalAlign: "middle",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <span className="icon">
+                                <FontAwesomeIcon icon={faBars} />
+                              </span>{" "}
                               {house.Address}
                             </td>
                             <td>
@@ -214,6 +229,14 @@ export default class Houses extends Component {
                                 <FontAwesomeIcon icon={faEdit} />
                               </Link>
                             </td>
+                            <td>
+                              <Link
+                                onClick={() => this.deleteAlert()}
+                                className="button"
+                              >
+                                <FontAwesomeIcon icon={faTimes} />
+                              </Link>
+                            </td>
                           </tr>
                           <tr
                             id={"usersTable" + house.IdHouse}
@@ -221,7 +244,7 @@ export default class Houses extends Component {
                           >
                             <td
                               className="has-background-white-bis p-0"
-                              colSpan={2}
+                              colSpan={3}
                             >
                               <UserTable
                                 idHouse={house.IdHouse}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTimes, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 export default class UserForm extends Component {
   state = {
     users: [],
@@ -28,6 +28,7 @@ export default class UserForm extends Component {
             <th>Phone</th>
             <th>Email</th>
             <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -46,10 +47,15 @@ export default class UserForm extends Component {
                   <FontAwesomeIcon icon={faEdit} />
                 </Link>
               </td>
+              <td>
+                <Link onClick={() => this.deleteAlert()} className="button">
+                  <FontAwesomeIcon icon={faTimes} />
+                </Link>
+              </td>
             </tr>
           ))}
           <tr>
-            <td colSpan={5} style={{ textAlign: "center" }} className="p-0">
+            <td colSpan={6} style={{ textAlign: "center" }} className="p-0">
               <Link
                 onClick={() => this.onModalAdd()}
                 className="button is-light is-fullwidth has-text-info"
