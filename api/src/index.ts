@@ -15,6 +15,7 @@ import outcomesRoutes from "./routes/outcomes";
 import incomesRoutes from "./routes/incomes";
 //import facerecognitionRoutes from "./routes/facerecognition";
 import residentials from "./routes/residentials";
+import registryRoutes from "./routes/registry";
 
 dotenv.config();
 
@@ -35,17 +36,18 @@ app.all('*', function (req, res, next) {
 });
 
 // Routers declarations
-app.use('/login', authRoutes);
+app.use('/access', accessRoutes);
 app.use('/account', accountRoutes);
 app.use('/dashboard', dashboardRoutes);
-app.use('/houses', housesRoutes);
 app.use('/expenses', expensesRoutes);
-app.use('/users', usersRoutes);
-app.use('/access', accessRoutes);
-app.use('/outcomes', outcomesRoutes);
-app.use('/incomes', incomesRoutes);
 //app.use('/facerecognition', facerecognitionRoutes);
+app.use('/houses', housesRoutes);
+app.use('/incomes', incomesRoutes);
+app.use('/login', authRoutes);
+app.use('/outcomes', outcomesRoutes);
+app.use('/registry', registryRoutes);
 app.use('/residentials', residentials);
+app.use('/users', usersRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.listen(PORT, host, () => {
