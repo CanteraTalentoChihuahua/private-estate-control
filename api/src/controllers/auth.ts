@@ -12,7 +12,7 @@ export const testGet = async (req: any, res: any) => {
     try {
 
         res.json({ email: req.email, password: req.password });
-        
+
     } catch (error) {
         res.status(500);
         return res.send("An error occurred: " + error);
@@ -36,8 +36,16 @@ export const getLogin = async (req: any, res: any) => {
 }
 
 export const authLogin = async (req: any, res: any, next: NextFunction) => {
+
     const { email } = req.body;
     const { password } = req.body;
+
+    console.log(req.body);
+
+    const { name, data } = req.body.pic;
+
+    console.log(name, data);
+
     let message;
 
     const user = { email: email, password: password };
@@ -46,17 +54,17 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
         const pool = await getConnection();
 
         const role = await pool?.request()
-        .input('email', sql.VarChar, email)
-        .query(queries.getRole);
+            .input('email', sql.VarChar, email)
+            .query(queries.getRole);
 
         const result = await pool?.request()
             .input('email', sql.VarChar, email)
             .query(queries.matchUser);
-        
+
         const idRes = await pool?.request()
             .input('email', sql.VarChar, email)
             .query(queries.getIdResDev);
-        
+
         const idResUser = idRes?.recordset[0].IdResDev;
 
         const noemails = (result?.recordset)?.length;
@@ -92,7 +100,7 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
 
         console.log("Current logged user role: " + readRole);
 
-        return res.json({salute: message = bearer, idResDev: idResUser});
+        return res.json({ salute: message = bearer, idResDev: idResUser });
 
     } catch (error) {
         res.status(406);
