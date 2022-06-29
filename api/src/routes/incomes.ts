@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createIncome, deleteIncomeById, getIncomeById, getIncomes, updateIncomeById } from "../controllers/incomes";
+import { upload } from "../middlewares/image";
 
 import { validateToken, validateSA } from "../middlewares/jwt";
 
@@ -9,7 +10,7 @@ router.get("/get", getIncomes);
 
 router.get("/get/:id", getIncomeById);
 
-router.post("/post", createIncome);
+router.post("/post", /*createIncome*/upload.single("image"));
 
 router.put("/put/:id", updateIncomeById);
 
