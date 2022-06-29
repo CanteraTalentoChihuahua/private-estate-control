@@ -31,6 +31,14 @@ export default class Sidebar extends Component {
               Transactions
             </Link>
           </li>
+          <li>
+            <Link to="/incomes">
+              <span className="icon">
+                <FontAwesomeIcon icon={faMoneyCheckAlt} />
+              </span>{" "}
+              Incomes
+            </Link>
+          </li>
           {/*<li>
                         <a href="#">
                             <span className="icon"><FontAwesomeIcon icon={faSwimmer}/></span> Green Areas
