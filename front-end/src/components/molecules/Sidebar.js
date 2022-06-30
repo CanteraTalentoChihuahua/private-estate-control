@@ -5,7 +5,6 @@ import "./Sidebar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMoneyCheckAlt,
-  faUsers,
   faHome,
   faLockOpen,
   faChartBar,
@@ -24,19 +23,19 @@ export default class Sidebar extends Component {
             </Link>
           </li>
           <li>
-            <Link to="/transactions">
-              <span className="icon">
-                <FontAwesomeIcon icon={faMoneyCheckAlt} />
-              </span>{" "}
-              Transactions
-            </Link>
-          </li>
-          <li>
             <Link to="/incomes">
               <span className="icon">
                 <FontAwesomeIcon icon={faMoneyCheckAlt} />
               </span>{" "}
               Incomes
+            </Link>
+          </li>
+          <li>
+            <Link to="/outcomes">
+              <span className="icon">
+                <FontAwesomeIcon icon={faMoneyCheckAlt} />
+              </span>{" "}
+              Outcomes
             </Link>
           </li>
           {/*<li>
@@ -57,14 +56,6 @@ export default class Sidebar extends Component {
                             </li>
                         </ul>
                     </li>*/}
-          <li>
-            <Link to="/users" className="">
-              <span className="icon">
-                <FontAwesomeIcon icon={faUsers} />
-              </span>{" "}
-              Users
-            </Link>
-          </li>
           <li>
             <Link to="/houses">
               <span className="icon">
