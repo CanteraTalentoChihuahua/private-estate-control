@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTimes, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 export default class UserForm extends Component {
   state = {
     users: [],
@@ -17,6 +18,36 @@ export default class UserForm extends Component {
   async componentDidMount() {
     this.getUsers();
     //console.log(this.state.users);
+  }
+  onDeleteAlert = async (users) => {
+    Swal.fire({
+      title: 'Are you sure you want to delete ' + users + '?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      } else if (
+          result.dismiss === Swal.DismissReason.cancel
+      ) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Cancelled',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      }
+    }) 
   }
   render() {
     return (
@@ -48,7 +79,9 @@ export default class UserForm extends Component {
                 </Link>
               </td>
               <td>
-                <Link onClick={() => this.deleteAlert()} className="button">
+                <Link 
+                  onClick={() => this.onDeleteAlert(user.FirstName)}
+                  className="button">
                   <FontAwesomeIcon icon={faTimes} />
                 </Link>
               </td>

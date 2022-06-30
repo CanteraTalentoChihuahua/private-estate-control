@@ -6,6 +6,7 @@ import Sidebar from "../components/molecules/Sidebar";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Swal from "sweetalert2";
 import {
   faBars,
   faEdit,
@@ -133,6 +134,36 @@ export default class Houses extends Component {
         });
     }
   };
+  onDeleteAlert = async (address) => {
+    Swal.fire({
+      title: 'Are you sure you want to delete ' + address + '?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      } else if (
+          result.dismiss === Swal.DismissReason.cancel
+      ) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Cancelled',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      }
+    }) 
+  }
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -231,7 +262,7 @@ export default class Houses extends Component {
                             </td>
                             <td>
                               <Link
-                                onClick={() => this.deleteAlert()}
+                                onClick={() => this.onDeleteAlert(house.Address)}
                                 className="button"
                               >
                                 <FontAwesomeIcon icon={faTimes} />

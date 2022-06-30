@@ -2,6 +2,7 @@ import React, { Component } from "react";
 //import Button from "../atoms/button";
 import "./Login.css";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 export default class Login extends Component {
   state = {
@@ -28,6 +29,20 @@ export default class Login extends Component {
     await axios.post("https://gestion-fraccionamiento.herokuapp.com/login/auth",this.state.form)
     .then(res=>{
       console.log(res);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'success',
+        title: 'Signed in successfully'
+      })
       localStorage.setItem('tkn',JSON.stringify(res.data.salute));
       localStorage.setItem('idResDev',JSON.stringify(res.data.idResDev));
       this.props.history.push("/dashboard");
@@ -35,6 +50,13 @@ export default class Login extends Component {
     .catch((exception) => {
       console.log(this.state.form)
       console.log(exception);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Invalid email or password',
+        showConfirmButton: false,
+        timer: 2000
+      })
     });
   };
   render() {
