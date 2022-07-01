@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
-import UserForm from "../components/molecules/userForm";
 import UserTable from "../components/molecules/userTable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 const tkn = JSON.parse(localStorage.getItem("tkn"));
 axios.defaults.headers.common = { Authorization: "bearer " + tkn };
 export default class Users extends Component {
@@ -48,7 +48,75 @@ export default class Users extends Component {
   }
   //Función para editar
   onEditar = (key) => {
-    console.log(this.state.users);
+    Swal.fire({
+      title: "Edit users",
+      html: `<label className="label">Name</label>
+        <input class="swal2-input"
+          name="firstName"
+          type="text"
+          id="firstName"
+          placeholder="Bob"
+          required/>
+      <label className="label">Lastname</label>
+        <input class="swal2-input"
+          name="lastName"
+          type="text"
+          placeholder="Smith"
+          className="input"
+          required
+        />
+      <label className="label">Phone number</label>
+        <input class="swal2-input"
+          name="phoneNumber"
+          type="text"
+          placeholder="6141234567"
+          className="input"
+          required
+        />
+      <label className="label">Email</label>
+        <input class="swal2-input"
+          name="email"
+          type="email"
+          placeholder="e.g. bobsmith@gmail.com"
+          className="input"
+          required
+        />
+      <label className="label">Password</label>
+        <input class="swal2-input"
+          id="passwordInput"
+          name="password"
+          type="password"
+          placeholder="*******"
+          required
+        />
+      <label className="label">FaceId</label>
+        <input class="swal2-input"
+          name="faceId"
+          type="text"
+          placeholder="TuCara"
+          required
+        />`,
+      confirmButtonText: "Sign in",
+      buttonsStyling: true,
+      cancelButtonClass: "button is-danger",
+      confirmButtonClass: "button is-success",
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        const login = Swal.getPopup().querySelector("#firstName").value;
+        const password = Swal.getPopup().querySelector("#passwordInput").value;
+        if (!login || !password) {
+          Swal.showValidationMessage(`Please enter login and password`);
+        }
+        return { login: login, password: password };
+      },
+    }).then((result) => {
+      Swal.fire(
+        `Login: ${result.value.login}
+        Password: ${result.value.password}`.trim()
+      );
+    });
+    /*console.log(this.state.users);
     const password = document.getElementById("password");
     const passwordInput = document.getElementById("passwordInput");
     passwordInput.removeAttribute("required");
@@ -70,7 +138,7 @@ export default class Users extends Component {
         active: key.Active,
         idHouse: key.Address,
       },
-    });
+    });*/
   };
   //Función para ocultar y mostrar el formulario
   onBurger = () => {
@@ -181,7 +249,7 @@ export default class Users extends Component {
                     </div>
                     <div className="column is-1">
                       <button
-                        onClick={this.onBurger}
+                        onClick={()=>this.onEditar()}
                         className="button icon user-form is-success"
                         data-target="usersForm"
                       >
@@ -190,11 +258,6 @@ export default class Users extends Component {
                     </div>
                   </div>
                   {/*form para New user oculto*/}
-                  <UserForm
-                    state={this.state}
-                    onChange={this.onChange}
-                    onSubmit={this.onSubmit}
-                  />
                 </div>
               </div>
               <UserTable state={this.state} onEditar={this.onEditar} onDelete={this.onDelete}/>

@@ -5,6 +5,8 @@ import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Swal from "sweetalert2";
+import DeleteAlert from "../components/atoms/deleteAlert";
 import {
   faEdit,
   faPlus,
@@ -137,7 +139,7 @@ export default class Transactions extends Component {
       },
     });
   };
-  //DELETE para incomes
+  /*//DELETE para incomes
   onDeleteIn = async (key) => {
     await axios.delete("https://gestion-fraccionamiento.herokuapp.com/incomes/delete/"+key.IdIncome,key.IdIncome)
     .then((res) => {
@@ -148,17 +150,17 @@ export default class Transactions extends Component {
       console.log(exception.response);
     });
   };
-    //DELETE para outcomes
-    onDeleteOut = async (key) => {
-      await axios.delete("https://gestion-fraccionamiento.herokuapp.com/outcomes/delete/"+key.IdOutcome,key.IdOutcome)
-      .then((res) => {
-        console.log(res);
-        this.getTransactions();
-      })
-      .catch((exception) => {
-        console.log(exception.response);
-      });
-    };
+  //DELETE para outcomes
+  onDeleteOut = async (key) => {
+    await axios.delete("https://gestion-fraccionamiento.herokuapp.com/outcomes/delete/"+key.IdOutcome,key.IdOutcome)
+    .then((res) => {
+      console.log(res);
+      this.getTransactions();
+    })
+    .catch((exception) => {
+      console.log(exception.response);
+    });
+  };*/
   //POST y PUT para incomes
   onSubmitIn = async (e) => {
     e.preventDefault();
@@ -231,6 +233,37 @@ export default class Transactions extends Component {
         });
     }
   };
+  onDeleteAlert = async () => {
+    Swal.fire({
+      title: 'Are you sure you want to delete?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            showConfirmButton: false,
+            timer: 2000
+          })
+      } else if (
+          result.dismiss === Swal.DismissReason.cancel
+      ) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Cancelled',
+            showConfirmButton: false,
+            timer: 2000
+          })
+      }
+    }) 
+  }
+
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -370,7 +403,7 @@ export default class Transactions extends Component {
                           <input
                             name="date"
                             type="text"
-                            placeholder="MM/DD/YYYY"
+                            placeholder="YYYY-MM-DD"
                             className="input"
                             required
                             value={this.state.newOutcomes.date}
@@ -455,7 +488,7 @@ export default class Transactions extends Component {
                           <td>
                             <Link
                               to={"/transactions/" + income.IdIncome}
-                              onClick={() => this.onDeleteIn(income)}
+                              onClick={ this.onDeleteAlert }
                               className="button">
                               <FontAwesomeIcon icon={faTimes} />
                             </Link>

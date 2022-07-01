@@ -1,11 +1,18 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import UserTable from "../components/molecules/userTable";
 import Sidebar from "../components/molecules/Sidebar";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import {
+  faBars,
+  faEdit,
+  faPlus,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 export default class Houses extends Component {
   state = {
     houses: [],
@@ -13,7 +20,7 @@ export default class Houses extends Component {
       address: "",
       occuppied: "",
       balance: "",
-      idResDev: "",
+      idResDev: JSON.parse(localStorage.getItem("idResDev")),
     },
     edit: false,
     idEdit: "",
@@ -62,6 +69,10 @@ export default class Houses extends Component {
       $target.classList.toggle("is-hidden");
     });
   };
+  showUsers = (id) => {
+    const row = document.getElementById("usersTable" + id);
+    row.classList.toggle("is-hidden");
+  };
   //Capturando datos del formulario
   onChange = async (e) => {
     await this.setState({
@@ -84,6 +95,17 @@ export default class Houses extends Component {
         .then((res) => {
           console.log(res);
           this.getHouses();
+          this.onBurger();
+          // eslint-disable-next-line
+          this.state.edit = false;
+          this.setState({
+            newHouses: {
+              ...this.state.newHouses,
+              address: "",
+              occuppied: "",
+              balance: "",
+            },
+          });
         })
         .catch((exception) => {
           console.log(exception.response.data);
@@ -97,12 +119,51 @@ export default class Houses extends Component {
         .then((res) => {
           console.log(res);
           this.getHouses();
+          this.onBurger();
+          this.setState({
+            newHouses: {
+              ...this.state.newHouses,
+              address: "",
+              occuppied: "",
+              balance: "",
+            },
+          });
         })
         .catch((exception) => {
           alert(exception.response.data.msg);
         });
     }
   };
+  onDeleteAlert = async (address) => {
+    Swal.fire({
+      title: 'Are you sure you want to delete ' + address + '?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      } else if (
+          result.dismiss === Swal.DismissReason.cancel
+      ) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Cancelled',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      }
+    }) 
+  }
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -139,23 +200,6 @@ export default class Houses extends Component {
                   <div id="housesForm" className="is-hidden">
                     <form onSubmit={this.onSubmit}>
                       <div className="field">
-                        <label className="label">Id</label>
-                        <div className="control has-icons-left">
-                          <input
-                            name="idResDev"
-                            type="text"
-                            placeholder="1"
-                            className="input"
-                            required
-                            value={this.state.newHouses.idResDev}
-                            onChange={this.onChange}
-                          />
-                          <span className="icon is-small is-left">
-                            <i className="fa fa-id-badge"></i>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="field">
                         <label className="label">Address</label>
                         <div className="control has-icons-left">
                           <input
@@ -187,27 +231,63 @@ export default class Houses extends Component {
                     <thead>
                       <tr>
                         <th>Address</th>
-                        <th>Balance</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {this.state.houses.map((house) => (
-                        <tr key={house.IdHouse}>
-                          <td>{house.Address}</td>
-                          <td>{house.Balance}</td>
-                          <td>
-                            <Link
-                              to={"/houses/" + house.Id}
-                              onClick={() => this.onEditar(house)}
-                              className="button"
+                    {this.state.houses.map((house) => {
+                      return (
+                        <tbody>
+                          <tr role="button" key={house.IdHouse}>
+                            <td
+                              onClick={() => this.showUsers(house.IdHouse)}
+                              style={{
+                                verticalAlign: "middle",
+                                cursor: "pointer",
+                              }}
                             >
-                              <FontAwesomeIcon icon={faEdit} />
-                            </Link>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
+                              <span className="icon">
+                                <FontAwesomeIcon icon={faBars} />
+                              </span>{" "}
+                              {house.Address}
+                            </td>
+                            <td>
+                              <Link
+                                to={"/houses/" + house.Id}
+                                onClick={() => this.onEditar(house)}
+                                className="button"
+                              >
+                                <FontAwesomeIcon icon={faEdit} />
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                onClick={() => this.onDeleteAlert(house.Address)}
+                                className="button"
+                              >
+                                <FontAwesomeIcon icon={faTimes} />
+                              </Link>
+                            </td>
+                          </tr>
+                          <tr
+                            id={"usersTable" + house.IdHouse}
+                            className="table is-fullwidth is-hidden"
+                          >
+                            <td
+                              className="has-background-white-bis p-0"
+                              colSpan={3}
+                            >
+                              <UserTable
+                                idHouse={house.IdHouse}
+                                state={this.state}
+                                onEditar={this.onEditar}
+                                onDelete={this.onDelete}
+                              />
+                            </td>
+                          </tr>
+                        </tbody>
+                      );
+                    })}
                   </table>
                 </div>
               </div>
