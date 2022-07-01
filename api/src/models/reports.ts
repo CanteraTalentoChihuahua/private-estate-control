@@ -10,5 +10,8 @@ export default {
     ON
     T_Houses.IdHouse = T_UsersHouses.IdHouse
     ORDER BY ISNULL(LastName, 'zzzzzzzzzz') ASC`,
+    emailVerification: `SELECT T_Users.IdUser
+    FROM T_Users
+    WHERE Email = @email`,
     deleteUserHouse: `DELETE FROM T_UsersHouses WHERE IdUser = @id`
 }

@@ -21,19 +21,7 @@ export const getUsers = async (req: any, res: any) => {
 }
 
 export const createUser = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber, email, password, active = 1, faceId } = req.body;
-
-    if (idResDev == null || firstName == null || lastName == null || email == null || password == null) {
-        console.log("User not created");
-        return res.status(400).json({ msg: 'Bad request. Missing some of these fields: IdResDev, FirstName, LastName, Email, Password' });
-    }
-
-    if (phoneNumber == null) {
-        let phoneNumber = "";
-    }
-    if (faceId == null) {
-        let faceId = "";
-    }
+    const { idResDev, firstName, lastName, phoneNumber = "", email, password, active = 1, faceId = "" } = req.body;
 
     try {
         const pool = await getConnection();
