@@ -3,7 +3,6 @@ import Login from "./components/molecules/Login";
 import Users from "./pages/Users";
 import Dashboard from "./pages/Dashboard";
 import Houses from "./pages/Houses";
-import Transactions from "./pages/Transactions";
 import Incomes from "./pages/Incomes";
 import Outcomes from "./pages/Outcomes"
 import Access from "./pages/Access";
@@ -20,7 +19,6 @@ function App() {
         <Route path="/incomes" component={Incomes} />
         <Route path="/outcomes" component={Outcomes} />
         <Route path="/houses" component={Houses} />
-        <Route path="/transactions" component={Transactions} />
         <Route path="/access" component={Access} />
         <Route path="/profile" component={Profile} exact />
         <Route path="/users" component={Users} />

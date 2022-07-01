@@ -163,7 +163,6 @@ export default class Outcomes extends Component {
                   {/*form para New outcome oculto*/}
                   <div id="outcomesForm" className="is-hidden">
                     <form onSubmit={this.onSubmitOut}>
-
                       <div className="field">
                         <label className="label">Date</label>
                         <div className="control has-icons-left">
@@ -218,6 +217,7 @@ export default class Outcomes extends Component {
                         </div>
                       </div>
                       <div className="field">
+                        <div className="label">Residential wallet</div>
                         <div className="label">$ {this.state.residentialBalance}</div>
                       </div>
                       <div className="field">

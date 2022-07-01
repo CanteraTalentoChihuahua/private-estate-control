@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import UserTable from "../components/molecules/userTable";
 import Sidebar from "../components/molecules/Sidebar";
 import Title from "../components/atoms/Title";
+import Select from "react-select";
 import Navbar from "../components/molecules/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
@@ -13,9 +14,12 @@ import {
   faPlus,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
+const tkn = JSON.parse(localStorage.getItem("tkn"));
+axios.defaults.headers.common = { Authorization: "bearer " + tkn };
 export default class Houses extends Component {
   state = {
     houses: [],
+    users:[],
     newHouses: {
       address: "",
       occuppied: "",
@@ -31,8 +35,14 @@ export default class Houses extends Component {
     );
     this.setState({ houses: res.data });
   }
+  async getUsers() {
+    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
+    this.setState({ users: res.data });
+  }
   async componentDidMount() {
     this.getHouses();
+    this.getUsers();
+    console.log(this.state.users)
   }
   //Función para editar
   onEditar = (key) => {
@@ -136,34 +146,32 @@ export default class Houses extends Component {
   };
   onDeleteAlert = async (address) => {
     Swal.fire({
-      title: 'Are you sure you want to delete ' + address + '?',
+      title: "Are you sure you want to delete " + address + "?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, cancel!',
-      reverseButtons: true
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted!',
-            text: 'Your file has been deleted.',
-            showConfirmButton: false,
-            timer: 1500
-          })
-      } else if (
-          result.dismiss === Swal.DismissReason.cancel
-      ) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            showConfirmButton: false,
-            timer: 1500
-          })
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          icon: "error",
+          title: "Cancelled",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
-    }) 
-  }
+    });
+  };
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -171,6 +179,36 @@ export default class Houses extends Component {
     }
     return (
       <div>
+        <div id="modal-js-example" className="modal">
+          <div className="modal-background"></div>
+          <div className="modal-content">
+            <div className="box">
+              <Title title="Add resident" class="is-4"/>
+              <br/>
+              <Select
+                            name="idHouse"
+                            className=""
+                            onChange={this.onChangeSearchBar}
+                            options={this.state.users.map((user) => ({
+                              label: user.FirstName,
+                              value: user.IdUser
+                            }))}
+                          /><br/>
+            <div className="columns is-multiline container">
+              <div className="column is-6 has-text-centered">
+                <Link className="button is-success is-fullwidth">Save</Link>
+              </div>
+              <div className="column is-6 has-text-centered">
+                <Link className="button is-danger is-fullwidth">Cancel</Link>
+              </div>
+              <div className="column is-12 has-text-centered">
+                <Link className="button is-link is-light is-outlined">Create User</Link>
+              </div>
+            </div>
+            </div>
+          </div>
+          <button className="modal-close is-large" aria-label="close"></button>
+        </div>
         <Navbar />
         <section className="main-content columns is-multiline is-variable">
           <Sidebar />
@@ -262,7 +300,9 @@ export default class Houses extends Component {
                             </td>
                             <td>
                               <Link
-                                onClick={() => this.onDeleteAlert(house.Address)}
+                                onClick={() =>
+                                  this.onDeleteAlert(house.Address)
+                                }
                                 className="button"
                               >
                                 <FontAwesomeIcon icon={faTimes} />
