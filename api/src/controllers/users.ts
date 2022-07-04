@@ -83,7 +83,6 @@ export const deleteUserById = async (req: any, res: any) => {
         
     } catch (error) {
         res.status(500).send(error);
-        
     }
 
     // TODO: Same http responses as in get by id
