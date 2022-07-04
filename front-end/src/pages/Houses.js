@@ -19,7 +19,17 @@ axios.defaults.headers.common = { Authorization: "bearer " + tkn };
 export default class Houses extends Component {
   state = {
     houses: [],
-    users:[],
+    users: [],
+    newUsers: {
+      idResDev: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      password: "",
+      email: "",
+      faceId: "",
+      idHouse: "",
+    },
     newHouses: {
       address: "",
       occuppied: "",
@@ -36,13 +46,15 @@ export default class Houses extends Component {
     this.setState({ houses: res.data });
   }
   async getUsers() {
-    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/users/get");
+    const res = await axios.get(
+      "https://gestion-fraccionamiento.herokuapp.com/users/get"
+    );
     this.setState({ users: res.data });
   }
   async componentDidMount() {
     this.getHouses();
     this.getUsers();
-    console.log(this.state.users)
+    console.log(this.state.users);
   }
   //Función para editar
   onEditar = (key) => {
@@ -79,6 +91,7 @@ export default class Houses extends Component {
       $target.classList.toggle("is-hidden");
     });
   };
+  //Mostrar usuarios en el select
   showUsers = (id) => {
     const row = document.getElementById("usersTable" + id);
     row.classList.toggle("is-hidden");
@@ -90,6 +103,62 @@ export default class Houses extends Component {
         ...this.state.newHouses,
         [e.target.name]: e.target.value,
       },
+    });
+  };
+  //Capturando datos del formulario users
+  onChangeUsers = async (e) => {
+    await this.setState({
+      newUsers: {
+        ...this.state.newUsers,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+  //Abrir modal para add users
+  onAddModal = () => {
+    function openModal($el) {
+      $el.classList.add("is-active");
+    }
+
+    function closeModal($el) {
+      $el.classList.remove("is-active");
+    }
+
+    function closeAllModals() {
+      (document.querySelectorAll(".modal") || []).forEach(($modal) => {
+        closeModal($modal);
+      });
+    }
+
+    // Add a click event on buttons to open a specific modal
+    (document.querySelectorAll(".js-modal-create") || []).forEach(
+      ($trigger) => {
+        const modal = $trigger.dataset.target;
+        const $target = document.getElementById(modal);
+        openModal($target);
+      }
+    );
+
+    // Add a click event on various child elements to close the parent modal
+    (
+      document.querySelectorAll(
+        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close"
+      ) || []
+    ).forEach(($close) => {
+      const $target = $close.closest(".modal");
+      $close.addEventListener("click", () => {
+        closeModal($target);
+      });
+    });
+
+    // Add a keyboard event to close all modals
+    document.addEventListener("keydown", (event) => {
+      const e = event || window.event;
+
+      if (e.keyCode === 27) {
+        // Escape key
+        closeAllModals();
+      }
     });
   };
   //POST y PUT para crear houses
@@ -172,6 +241,48 @@ export default class Houses extends Component {
       }
     });
   };
+  addUser = () => {};
+  onCreateUser = async (e) => {
+    e.preventDefault();
+    if (this.state.edit) {
+      for (let i = 0; i < this.state.houses.length; i++) {
+        if (
+          (await this.state.houses[i].Address) === this.state.newUsers.idHouse
+        ) {
+          this.setState({
+            newUsers: {
+              ...this.state.newUsers,
+              idHouse: this.state.houses[i].IdHouse,
+            },
+          });
+        }
+      }
+      axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.idEdit,this.state.newUsers)
+        .then((res) => {
+          console.log(res);
+          this.getUsers();
+        })
+        .catch((exception) => {
+          console.log(exception.response);
+        });
+    } else {
+      await this.setState({
+        newUsers: {
+          ...this.state.newUsers,
+          idResDev: JSON.parse(localStorage.getItem("idResDev")),
+        },
+      });
+      console.log(this.state.newUsers);
+      axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post",this.state.newUsers)
+        .then((res) => {
+          console.log(res);
+          this.getUsers();
+        })
+        .catch((exception) => {
+          console.log(exception.response);
+        });
+    }
+  };
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -179,32 +290,277 @@ export default class Houses extends Component {
     }
     return (
       <div>
-        <div id="modal-js-example" className="modal">
+        {/*Código para el modelo add user*/}
+        <div id="modal-add" className="modal">
           <div className="modal-background"></div>
           <div className="modal-content">
             <div className="box">
-              <Title title="Add resident" class="is-4"/>
-              <br/>
+              <Title title="Add resident" class="is-4" />
+              <br />
               <Select
-                            name="idHouse"
-                            className=""
-                            onChange={this.onChangeSearchBar}
-                            options={this.state.users.map((user) => ({
-                              label: user.FirstName,
-                              value: user.IdUser
-                            }))}
-                          /><br/>
-            <div className="columns is-multiline container">
-              <div className="column is-6 has-text-centered">
-                <Link className="button is-success is-fullwidth">Save</Link>
-              </div>
-              <div className="column is-6 has-text-centered">
-                <Link className="button is-danger is-fullwidth">Cancel</Link>
-              </div>
-              <div className="column is-12 has-text-centered">
-                <Link className="button is-link is-light is-outlined">Create User</Link>
+                name="idHouse"
+                className=""
+                onChange={this.onChangeSearchBar}
+                options={this.state.users.map((user) => ({
+                  label: user.FirstName,
+                  value: user.IdUser,
+                }))}
+              />
+              <br />
+              <div className="columns is-multiline container">
+                <div className="column is-6 has-text-centered">
+                  <Link
+                    to="/houses"
+                    onClick={this.addUser}
+                    className="button is-success is-fullwidth"
+                  >
+                    Save
+                  </Link>
+                </div>
+                <div className="column is-6 has-text-centered">
+                  <Link
+                    to="/houses"
+                    className="b-close button is-danger is-fullwidth"
+                    aria-label="close"
+                  >
+                    Cancel
+                  </Link>
+                </div>
+                <div className="column is-12 has-text-centered">
+                  <Link
+                    to="/houses"
+                    data-target="modal-create"
+                    onClick={this.onAddModal}
+                    className="js-modal-create b-close button is-link is-light is-outlined"
+                  >
+                    Create User
+                  </Link>
+                </div>
               </div>
             </div>
+          </div>
+          <button className="modal-close is-large" aria-label="close"></button>
+        </div>
+        {/*Código para el modelo create user*/}
+        <div id="modal-create" className="modal">
+          <div className="modal-background"></div>
+          <div className="modal-content">
+            <div className="box">
+              <Title title="Create resident" class="is-4" />
+              <form onSubmit={this.onCreateUser}>
+                <div className="field">
+                  <label className="label">Name</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="firstName"
+                      type="text"
+                      id="firstName"
+                      placeholder="Bob"
+                      className="input"
+                      required
+                      value={this.state.newUsers.firstName}
+                      onChange={this.onChangeUsers}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Lastname</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="lastName"
+                      type="text"
+                      placeholder="Smith"
+                      className="input"
+                      required
+                      value={this.state.newUsers.lastName}
+                      onChange={this.onChangeUsers}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Phone number</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="phoneNumber"
+                      type="text"
+                      placeholder="6141234567"
+                      className="input"
+                      required
+                      value={this.state.newUsers.phoneNumber}
+                      onChange={this.onChangeUsers}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-mobile"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Email</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="email"
+                      type="email"
+                      placeholder="e.g. bobsmith@gmail.com"
+                      className="input"
+                      required
+                      value={this.state.newUsers.email}
+                      onChange={this.onChangeUsers}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-envelope"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Password</label>
+                  <div className="control has-icons-left">
+                    <input
+                      id="passwordInput"
+                      name="password"
+                      type="password"
+                      placeholder="*******"
+                      className="input"
+                      required
+                      value={this.state.newUsers.password}
+                      onChange={this.onChangeUsers}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-lock"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">FaceId</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="faceId"
+                      type="text"
+                      placeholder="TuCara"
+                      className="input"
+                      required
+                      value={this.state.newUsers.faceId}
+                      onChange={this.onChangeUsers}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-smile-plus"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <button type="submit" className="button is-success">
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <button className="modal-close is-large" aria-label="close"></button>
+        </div>
+        {/*Código para el modelo create user*/}
+        <div id="modal-update" className="modal">
+          <div className="modal-background"></div>
+          <div className="modal-content">
+            <div className="box">
+              <Title title="Update resident" class="is-4" />
+              <form>
+                <div className="field">
+                  <label className="label">Name</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="firstName"
+                      type="text"
+                      id="firstName"
+                      placeholder="Bob"
+                      className="input"
+                      required
+                      value={this.state.newUsers.firstName}
+                      onChange={this.onChange}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Lastname</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="lastName"
+                      type="text"
+                      placeholder="Smith"
+                      className="input"
+                      required
+                      value={this.state.newUsers.lastName}
+                      onChange={this.onChange}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Phone number</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="phoneNumber"
+                      type="text"
+                      placeholder="6141234567"
+                      className="input"
+                      required
+                      value={this.state.newUsers.phoneNumber}
+                      onChange={this.onChange}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-mobile"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Email</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="email"
+                      type="email"
+                      placeholder="e.g. bobsmith@gmail.com"
+                      className="input"
+                      required
+                      value={this.state.newUsers.email}
+                      onChange={this.onChange}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-envelope"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">FaceId</label>
+                  <div className="control has-icons-left">
+                    <input
+                      name="faceId"
+                      type="text"
+                      placeholder="TuCara"
+                      className="input"
+                      required
+                      value={this.state.newUsers.faceId}
+                      onChange={this.onChange}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-smile-plus"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <button type="submit" className="button is-success">
+                    Save
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
           <button className="modal-close is-large" aria-label="close"></button>
@@ -320,8 +676,6 @@ export default class Houses extends Component {
                               <UserTable
                                 idHouse={house.IdHouse}
                                 state={this.state}
-                                onEditar={this.onEditar}
-                                onDelete={this.onDelete}
                               />
                             </td>
                           </tr>
