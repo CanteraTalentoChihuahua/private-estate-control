@@ -21,7 +21,7 @@ export const getUsers = async (req: any, res: any) => {
 }
 
 export const createUser = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber = "", email, password, active = 1, faceId = "" } = req.body;
+    const { idResDev, firstName, lastName, phoneNumber = "", email, password, active = 1, faceId = "", idHouse } = req.body;
 
     try {
         const pool = await getConnection();
@@ -37,6 +37,15 @@ export const createUser = async (req: any, res: any) => {
             .input('faceId', sql.VarChar, faceId)
             .query(queries.createNewUser);
 
+        const allUsers = await pool?.request()
+            .input('email', sql.VarChar, email)
+            .query(queries.getUserByEmail);
+
+        const link = await pool?.request()
+            .input('idHouse', sql.Int, idHouse)
+            .input('idUser', sql.Int, allUsers?.recordset[0].IdUser)
+            .query(queriesReport.createUsersHousesRegister)
+        
         return res.status(201).json({ idResDev, firstName, lastName, phoneNumber, 
             email, password, active, faceId });
 
@@ -171,5 +180,54 @@ export const updateUserById = async (req: any, res: any) => {
     }
 
     // TODO: same http responses as previous todo mentioned
+
+}
+
+
+export const linkUserHouse = async (req: any, res: any) => {
+    const { idHouse } = req.body;
+    const { idUser } = req.params;
+
+    let index = 0;
+    let c = 0;
+
+    try {
+        const pool = await getConnection()
+    
+        const getReport = await pool?.request()
+        .query(queriesReport.getAllUsersHouses);
+            
+            while (getReport?.recordset[index]) {
+                // If both Ids are already in log, then it is true and C does not increment
+                if ((getReport?.recordset[index].IdHouse == idHouse && getReport?.recordset[index].IdUser == idUser ) != true) {
+                    c++;
+                }
+                // Index helps on making track of each record 
+                index++;
+            }
+
+            await pool?.request()
+            .input('idUser', sql.Int, idUser)
+            .input('idHouse', sql.Int, idHouse)
+            .query(queries.updateUsersById)
+
+        if ((c >= index) == true) {
+            await pool?.request()
+            .input('idHouse', sql.Int, idHouse)
+            .input('idUser', sql.Int, idUser)
+            .query(queriesReport.createUsersHousesRegister); 
+            console.log("Relationship done: " + c + " C - I " + index);
+        } else {
+            console.log("Unable to insert on users & houses relationship " + c + " C - I " + index);
+        }
+
+        res.status(200).json({ "Data linked": {
+            "IdHouse": idHouse, 
+            "IdUser": idUser
+        } });
+        
+    } catch (error) {
+        res.status(500).send(error);
+    }
 
 }

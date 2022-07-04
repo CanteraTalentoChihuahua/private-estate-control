@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, deleteUserById, getTotalUsers, getUserById, getUsers, unlinkUserById, updateUserById } from "../controllers/users";
+import { createUser, deleteUserById, getTotalUsers, getUserById, getUsers, linkUserHouse, unlinkUserById, updateUserById } from "../controllers/users";
 import { validateToken, validateSA } from "../middlewares/jwt";
 import {check} from 'express-validator';
 import { emailValidator, userValidator } from '../helpers/validators';
@@ -15,6 +15,12 @@ router.get("/get/:id", [
     check('id', 'La id no puede ir vacìa').not().isEmpty(),
     validator
 ], getUserById);
+
+// It'll require as param idUser
+router.put("/put/link/:id", [
+    check('id', 'La id de la casa no puede ir vacia').not().isEmpty(),
+    validator
+], linkUserHouse);
 
 router.post("/post",[
     check('idResDev', 'El id es obligatorio').not().isEmpty(),
@@ -42,7 +48,6 @@ router.delete("/unlink/:id", [
     check('idHouse', 'El id de la casa es obligatorio').not().isEmpty(),
     check('idHouse', 'La id de la casa debe ser un numero').isNumeric(),
     check('id').custom(userValidator),
-    check('idHouse').custom()
     validator
 ], unlinkUserById);
 
