@@ -1,7 +1,7 @@
 export default {
     getAllHouses: 'SELECT * FROM T_Houses',
     getShownInfo: `SELECT Address, Balance FROM T_Houses WHERE IdHouse = @id`,
-    getUserBasedOnHouse: `SELECT T_Users.LastName, T_Users.FirstName, T_Users.PhoneNumber, T_Users.Email
+    getUserBasedOnHouse: `SELECT T_Users.IdUser, T_Users.LastName, T_Users.FirstName, T_Users.PhoneNumber, T_Users.Email
     FROM T_Houses
     FULL JOIN T_UsersHouses
     ON T_UsersHouses.IdHouse = T_Houses.IdHouse
