@@ -8,6 +8,7 @@ export default class UserForm extends Component {
   state = {
     users: [],
   };
+  //Obtener usuarios por casa
   async getUsers() {
     const res = await axios.get(
       "https://gestion-fraccionamiento.herokuapp.com/registry/get/user/" +
@@ -15,84 +16,13 @@ export default class UserForm extends Component {
     );
     this.setState({ users: res.data });
   }
+  //Monar componentes
   async componentDidMount() {
     this.getUsers();
     //console.log(this.state.users);
   }
-  onUpdateModal = () => {
-    function openModal($el) {
-      $el.classList.add("is-active");
-    }
-    function closeModal($el) {
-      $el.classList.remove("is-active");
-    }
-    function closeAllModals() {
-      (document.querySelectorAll(".modal") || []).forEach(($modal) => {
-        closeModal($modal);
-      });
-    }
-    // Add a click event on buttons to open a specific modal
-    (document.querySelectorAll(".js-modal-update") || []).forEach(($trigger) => {
-      const modal = $trigger.dataset.target;
-      const $target = document.getElementById(modal);
-      openModal($target);
-    });
-    // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll(
-        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close") || []
-    ).forEach(($close) => {
-      const $target = $close.closest(".modal");
-      $close.addEventListener("click", () => {
-        closeModal($target);
-      });
-    });
-    // Add a keyboard event to close all modals
-    document.addEventListener("keydown", (event) => {
-      const e = event || window.event;
-      if (e.keyCode === 27) {
-        // Escape key
-        closeAllModals();
-      }
-    });
-  };
-  onAddModal = () => {
-    function openModal($el) {
-      $el.classList.add("is-active");
-    }
-    function closeModal($el) {
-      $el.classList.remove("is-active");
-    }
-    function closeAllModals() {
-      (document.querySelectorAll(".modal") || []).forEach(($modal) => {
-        closeModal($modal);
-      });
-    }
-    // Add a click event on buttons to open a specific modal
-    (document.querySelectorAll(".js-modal-add") || []).forEach(($trigger) => {
-      const modal = $trigger.dataset.target;
-      const $target = document.getElementById(modal);
-      openModal($target);
-    });
-    // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll(
-        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close") || []
-    ).forEach(($close) => {
-      const $target = $close.closest(".modal");
-      $close.addEventListener("click", () => {
-        closeModal($target);
-      });
-    });
-    // Add a keyboard event to close all modals
-    document.addEventListener("keydown", (event) => {
-      const e = event || window.event;
-      if (e.keyCode === 27) {
-        // Escape key
-        closeAllModals();
-      }
-    });
-  };
+  //Alerta de eliminacion
   onDeleteAlert = async (user) => {
-    console.log(user)
     Swal.fire({
       title: "Are you sure you want to delete " + user.FirstName + "?",
       text: "You won't be able to revert this!",
@@ -103,20 +33,26 @@ export default class UserForm extends Component {
       reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await axios.delete("https://gestion-fraccionamiento.herokuapp.com/users/delete/"+user.IdUser,user.IdUser)
+        await axios.delete("https://gestion-fraccionamiento.herokuapp.com/users/delete/"+user.IdUser)
         .then((res) => {
           console.log(res);
           this.getUsers();
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            showConfirmButton: false,
+            timer: 2000,
+          });
         })
         .catch((exception) => {
-          console.log(exception.response);
-        });
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          showConfirmButton: false,
-          timer: 1500,
+          Swal.fire({
+            icon: "error",
+            title: "Cancelled",
+            text: exception.response.data.errors[0].msg,
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
@@ -152,7 +88,7 @@ export default class UserForm extends Component {
                 <Link
                   to="/houses"
                   data-target="modal-update"
-                  onClick={this.onUpdateModal}
+                  onClick={()=>this.props.onUpdateModal(user)}
                   className="js-modal-update button"
                 >
                   <FontAwesomeIcon icon={faEdit} />
@@ -173,7 +109,7 @@ export default class UserForm extends Component {
               <Link
                 to="/houses"
                 data-target="modal-add"
-                onClick={this.onAddModal}
+                onClick={()=>this.props.onAddModal(this.props.idHouse)}
                 className="js-modal-add button is-light is-fullwidth has-text-info"
               >
                 <FontAwesomeIcon icon={faUserPlus} /> Add resident

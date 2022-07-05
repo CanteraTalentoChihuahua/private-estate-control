@@ -20,6 +20,8 @@ export default class Houses extends Component {
   state = {
     houses: [],
     users: [],
+    linkUser: "",
+    linkHouse:"",
     newUsers: {
       idResDev: "",
       firstName: "",
@@ -39,22 +41,24 @@ export default class Houses extends Component {
     edit: false,
     idEdit: "",
   };
+  //Obtener todas las casas
   async getHouses() {
     const res = await axios.get(
       "https://gestion-fraccionamiento.herokuapp.com/houses/get"
     );
     this.setState({ houses: res.data });
   }
+  //Obtener todos los usuarios
   async getUsers() {
     const res = await axios.get(
       "https://gestion-fraccionamiento.herokuapp.com/users/get"
     );
     this.setState({ users: res.data });
   }
+  //Creacion de componentes
   async componentDidMount() {
     this.getHouses();
     this.getUsers();
-    console.log(this.state.users);
   }
   //Función para editar
   onEditar = (key) => {
@@ -114,7 +118,45 @@ export default class Houses extends Component {
       },
     });
   };
-  //Abrir modal para add users
+  //Abrir modal para link user-house
+  onAddModalLink = async (idHouse) => {
+    await this.setState({linkHouse:idHouse});
+    function openModal($el) {
+      $el.classList.add("is-active");
+    }
+    function closeModal($el) {
+      $el.classList.remove("is-active");
+    }
+    function closeAllModals() {
+      (document.querySelectorAll(".modal") || []).forEach(($modal) => {
+        closeModal($modal);
+      });
+    }
+    // Add a click event on buttons to open a specific modal
+    (document.querySelectorAll(".js-modal-add") || []).forEach(($trigger) => {
+      const modal = $trigger.dataset.target;
+      const $target = document.getElementById(modal);
+      openModal($target);
+    });
+    // Add a click event on various child elements to close the parent modal
+    (document.querySelectorAll(
+        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close") || []
+    ).forEach(($close) => {
+      const $target = $close.closest(".modal");
+      $close.addEventListener("click", () => {
+        closeModal($target);
+      });
+    });
+    // Add a keyboard event to close all modals
+    document.addEventListener("keydown", (event) => {
+      const e = event || window.event;
+      if (e.keyCode === 27) {
+        // Escape key
+        closeAllModals();
+      }
+    });
+  };
+  //Abrir modal para create user
   onAddModal = () => {
     function openModal($el) {
       $el.classList.add("is-active");
@@ -155,6 +197,53 @@ export default class Houses extends Component {
     document.addEventListener("keydown", (event) => {
       const e = event || window.event;
 
+      if (e.keyCode === 27) {
+        // Escape key
+        closeAllModals();
+      }
+    });
+  };
+  //Abrir modal para update user
+  onUpdateModal = async (user) => {
+    console.log(user)
+    await this.setState({
+      newUsers:{
+        IdUser: user.IdUser,
+        firstName: user.FirstName,
+        lastName: user.LastName,
+        phoneNumber: user.PhoneNumber,
+      }
+    })
+    console.log(this.state.newUsers)
+    function openModal($el) {
+      $el.classList.add("is-active");
+    }
+    function closeModal($el) {
+      $el.classList.remove("is-active");
+    }
+    function closeAllModals() {
+      (document.querySelectorAll(".modal") || []).forEach(($modal) => {
+        closeModal($modal);
+      });
+    }
+    // Add a click event on buttons to open a specific modal
+    (document.querySelectorAll(".js-modal-update") || []).forEach(($trigger) => {
+      const modal = $trigger.dataset.target;
+      const $target = document.getElementById(modal);
+      openModal($target);
+    });
+    // Add a click event on various child elements to close the parent modal
+    (document.querySelectorAll(
+        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close") || []
+    ).forEach(($close) => {
+      const $target = $close.closest(".modal");
+      $close.addEventListener("click", () => {
+        closeModal($target);
+      });
+    });
+    // Add a keyboard event to close all modals
+    document.addEventListener("keydown", (event) => {
+      const e = event || window.event;
       if (e.keyCode === 27) {
         // Escape key
         closeAllModals();
@@ -213,6 +302,7 @@ export default class Houses extends Component {
         });
     }
   };
+  //Alert para eliminar users
   onDeleteAlert = async (address) => {
     Swal.fire({
       title: "Are you sure you want to delete " + address + "?",
@@ -241,48 +331,71 @@ export default class Houses extends Component {
       }
     });
   };
-  addUser = () => {};
+  //Axios para linkear user-house
+  addUser = () => {
+    console.log(this.state.linkHouse);
+    axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post/link/"+this.state.linkUser,this.state.linkHouse)
+    .then((res)=>{
+      console.log(res);
+      this.getUsers();
+      this.getHouses();
+    })
+    .catch((exception)=>{
+      console.log(exception.response);
+    })
+  };
+  //Capturando datos del select
+  onChangeSearchBar = async (e) => {
+    await this.setState({
+        linkUser: e.value,
+    });
+  };
+  //Axios para create user
   onCreateUser = async (e) => {
     e.preventDefault();
-    if (this.state.edit) {
-      for (let i = 0; i < this.state.houses.length; i++) {
-        if (
-          (await this.state.houses[i].Address) === this.state.newUsers.idHouse
-        ) {
-          this.setState({
-            newUsers: {
-              ...this.state.newUsers,
-              idHouse: this.state.houses[i].IdHouse,
-            },
-          });
-        }
-      }
-      axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.idEdit,this.state.newUsers)
-        .then((res) => {
-          console.log(res);
-          this.getUsers();
-        })
-        .catch((exception) => {
-          console.log(exception.response);
-        });
-    } else {
       await this.setState({
         newUsers: {
           ...this.state.newUsers,
           idResDev: JSON.parse(localStorage.getItem("idResDev")),
+          idHouse: this.state.linkHouse
         },
       });
       console.log(this.state.newUsers);
       axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post",this.state.newUsers)
         .then((res) => {
           console.log(res);
+          this.getHouses();
           this.getUsers();
         })
         .catch((exception) => {
           console.log(exception.response);
         });
-    }
   };
+  //Axios para update user
+  onUpdateUser = async (e) => {
+    e.preventDefault();
+    for (let i = 0; i < this.state.houses.length; i++) {
+      if (
+        (await this.state.houses[i].Address) === this.state.newUsers.idHouse
+      ) {
+        this.setState({
+          newUsers: {
+            ...this.state.newUsers,
+            idHouse: this.state.houses[i].IdHouse,
+          },
+        });
+      }
+    }
+    axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.newUsers.IdUser,this.state.newUsers)
+      .then((res) => {
+        console.log(res);
+        this.getHouses();
+        this.getUsers();
+      })
+      .catch((exception) => {
+        console.log(exception.response);
+      });
+  }
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -468,7 +581,7 @@ export default class Houses extends Component {
           <div className="modal-content">
             <div className="box">
               <Title title="Update resident" class="is-4" />
-              <form>
+              <form onSubmit={this.onUpdateUser}>
                 <div className="field">
                   <label className="label">Name</label>
                   <div className="control has-icons-left">
@@ -480,7 +593,7 @@ export default class Houses extends Component {
                       className="input"
                       required
                       value={this.state.newUsers.firstName}
-                      onChange={this.onChange}
+                      onChange={this.onChangeUsers}
                     />
                     <span className="icon is-small is-left">
                       <i className="fa fa-user"></i>
@@ -497,7 +610,7 @@ export default class Houses extends Component {
                       className="input"
                       required
                       value={this.state.newUsers.lastName}
-                      onChange={this.onChange}
+                      onChange={this.onChangeUsers}
                     />
                     <span className="icon is-small is-left">
                       <i className="fa fa-user"></i>
@@ -514,44 +627,10 @@ export default class Houses extends Component {
                       className="input"
                       required
                       value={this.state.newUsers.phoneNumber}
-                      onChange={this.onChange}
+                      onChange={this.onChangeUsers}
                     />
                     <span className="icon is-small is-left">
                       <i className="fa fa-mobile"></i>
-                    </span>
-                  </div>
-                </div>
-                <div className="field">
-                  <label className="label">Email</label>
-                  <div className="control has-icons-left">
-                    <input
-                      name="email"
-                      type="email"
-                      placeholder="e.g. bobsmith@gmail.com"
-                      className="input"
-                      required
-                      value={this.state.newUsers.email}
-                      onChange={this.onChange}
-                    />
-                    <span className="icon is-small is-left">
-                      <i className="fa fa-envelope"></i>
-                    </span>
-                  </div>
-                </div>
-                <div className="field">
-                  <label className="label">FaceId</label>
-                  <div className="control has-icons-left">
-                    <input
-                      name="faceId"
-                      type="text"
-                      placeholder="TuCara"
-                      className="input"
-                      required
-                      value={this.state.newUsers.faceId}
-                      onChange={this.onChange}
-                    />
-                    <span className="icon is-small is-left">
-                      <i className="fa fa-smile-plus"></i>
                     </span>
                   </div>
                 </div>
@@ -674,6 +753,8 @@ export default class Houses extends Component {
                               colSpan={3}
                             >
                               <UserTable
+                                onUpdateModal={this.onUpdateModal}
+                                onAddModal={this.onAddModalLink}
                                 idHouse={house.IdHouse}
                                 state={this.state}
                               />
