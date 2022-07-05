@@ -33,6 +33,7 @@ router.put("/put/:id", [
     check('idResDev', 'El id debe ser un numero').isNumeric(),
     check('firstName', 'El nombre es obligatorio').not().isEmpty(),
     check('lastName', 'El apellido es obligatorio').not().isEmpty(),
+    check('id').custom(userValidator),
     validator
 ],updateUserById);
 
