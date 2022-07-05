@@ -1,6 +1,5 @@
 // Face ID
 import { Router } from "express";
-import { facerecognition } from "../controllers/faceId";
 import express from "express";
 import * as path from 'path';
 
