@@ -21,7 +21,7 @@ export const getUsers = async (req: any, res: any) => {
 }
 
 export const createUser = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber = "", email, password, active = 1, faceId = "" } = req.body;
+    const { idResDev, firstName, lastName, phoneNumber = "", email, password, active = 1, faceId = "", idHouse } = req.body;
 
     try {
         const pool = await getConnection();
@@ -37,6 +37,15 @@ export const createUser = async (req: any, res: any) => {
             .input('faceId', sql.VarChar, faceId)
             .query(queries.createNewUser);
 
+        const allUsers = await pool?.request()
+            .input('email', sql.VarChar, email)
+            .query(queries.getUserByEmail);
+
+        const link = await pool?.request()
+            .input('idHouse', sql.Int, idHouse)
+            .input('idUser', sql.Int, allUsers?.recordset[0].IdUser)
+            .query(queriesReport.createUsersHousesRegister)
+        
         return res.status(201).json({ idResDev, firstName, lastName, phoneNumber, 
             email, password, active, faceId });
 
@@ -98,7 +107,11 @@ export const unlinkUserById = async (req: any, res: any) => {
         .input('idUser', sql.Int, idUser)
         .input('idHouse', sql.Int, idHouse)
         .query(queries.unlinkUserHouse)
-    
+
+        if (relationship?.rowsAffected[0] == 0) {
+            return res.status(500).send("No se pudo eliminar la relacion");
+        }
+
         res.sendStatus(200);
         
     } catch (error) {
@@ -120,7 +133,7 @@ export const getTotalUsers = async (req: any, res: any) => {
 }
 
 export const updateUserById = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber, email, password, active, faceId, idHouse, idUser } = req.body;
+    const { idResDev, firstName, lastName, phoneNumber, active = true, faceId = ""} = req.body;
     const { id } = req.params;
 
     let index = 0;
@@ -133,13 +146,32 @@ export const updateUserById = async (req: any, res: any) => {
         .input('firstName', sql.VarChar, firstName)
         .input('lastName', sql.VarChar, lastName)
         .input('phoneNumber', sql.VarChar, phoneNumber)
-        .input('email', sql.VarChar, email)
         //.input('password', sql.VarChar, bcryptjs.hashSync(password))
         .input('active', sql.Bit, active)
         .input('faceId', sql.VarChar, faceId)
         .input('id', sql.Int, id)
         .query(queries.updateUsersById)
 
+        res.status(200).json({ id, firstName, lastName, phoneNumber, idResDev });
+        
+    } catch (error) {
+        res.status(500).send(error);
+    }
+
+    // TODO: same http responses as previous todo mentioned
+
+}
+
+
+export const linkUserHouse = async (req: any, res: any) => {
+    const { idHouse } = req.body;
+    const { idUser } = req.params;
+
+    let index = 0;
+    let c = 0;
+
+    try {
+        const pool = await getConnection()
     
         const getReport = await pool?.request()
         .query(queriesReport.getAllUsersHouses);
@@ -154,7 +186,7 @@ export const updateUserById = async (req: any, res: any) => {
             }
 
         if ((c >= index) == true) {
-            const insertUsersHouses = await pool?.request()
+            await pool?.request()
             .input('idHouse', sql.Int, idHouse)
             .input('idUser', sql.Int, idUser)
             .query(queriesReport.createUsersHousesRegister); 
@@ -163,13 +195,13 @@ export const updateUserById = async (req: any, res: any) => {
             console.log("Unable to insert on users & houses relationship " + c + " C - I " + index);
         }
 
-        res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email,
-            password, active, faceId, idHouse, idUser });
+        res.status(200).json({ "Data linked": {
+            "IdHouse": idHouse, 
+            "IdUser": idUser
+        } });
         
     } catch (error) {
         res.status(500).send(error);
     }
-
-    // TODO: same http responses as previous todo mentioned
 
 }
