@@ -26,6 +26,10 @@ router.post("/post",[
     check('idResDev', 'El id debe ser un numero').isNumeric(),
     check('firstName', 'El nombre es obligatorio').not().isEmpty(),
     check('lastName', 'El apellido es obligatorio').not().isEmpty(),
+    check('idHouse', 'El id de la casa no puede ir vacio').not().isEmpty(),
+    check('idHouse', 'El id de la casa debe ser un numero').isNumeric(),
+    check('email', 'Debes insertar un correo valido').isEmail(),
+    check('email').custom(emailValidator),
     validator
 ], createUser);
 
