@@ -107,7 +107,11 @@ export const unlinkUserById = async (req: any, res: any) => {
         .input('idUser', sql.Int, idUser)
         .input('idHouse', sql.Int, idHouse)
         .query(queries.unlinkUserHouse)
-    
+
+        if (relationship?.rowsAffected[0] == 0) {
+            return res.status(500).send("No se pudo eliminar la relacion");
+        }
+
         res.sendStatus(200);
         
     } catch (error) {
@@ -129,7 +133,7 @@ export const getTotalUsers = async (req: any, res: any) => {
 }
 
 export const updateUserById = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber, email, password, active, faceId, idHouse, idUser } = req.body;
+    const { idResDev, firstName, lastName, phoneNumber, active = true, faceId = ""} = req.body;
     const { id } = req.params;
 
     let index = 0;
@@ -142,38 +146,13 @@ export const updateUserById = async (req: any, res: any) => {
         .input('firstName', sql.VarChar, firstName)
         .input('lastName', sql.VarChar, lastName)
         .input('phoneNumber', sql.VarChar, phoneNumber)
-        .input('email', sql.VarChar, email)
         //.input('password', sql.VarChar, bcryptjs.hashSync(password))
         .input('active', sql.Bit, active)
         .input('faceId', sql.VarChar, faceId)
         .input('id', sql.Int, id)
         .query(queries.updateUsersById)
 
-    
-        const getReport = await pool?.request()
-        .query(queriesReport.getAllUsersHouses);
-            
-            while (getReport?.recordset[index]) {
-                // If both Ids are already in log, then it is true and C does not increment
-                if ((getReport?.recordset[index].IdHouse == idHouse && getReport?.recordset[index].IdUser == idUser ) != true) {
-                    c++;
-                }
-                // Index helps on making track of each record 
-                index++;
-            }
-
-        if ((c >= index) == true) {
-            const insertUsersHouses = await pool?.request()
-            .input('idHouse', sql.Int, idHouse)
-            .input('idUser', sql.Int, idUser)
-            .query(queriesReport.createUsersHousesRegister); 
-            console.log("Relationship done: " + c + " C - I " + index);
-        } else {
-            console.log("Unable to insert on users & houses relationship " + c + " C - I " + index);
-        }
-
-        res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email,
-            password, active, faceId, idHouse, idUser });
+        res.status(200).json({ id, firstName, lastName, phoneNumber, idResDev });
         
     } catch (error) {
         res.status(500).send(error);
@@ -205,11 +184,6 @@ export const linkUserHouse = async (req: any, res: any) => {
                 // Index helps on making track of each record 
                 index++;
             }
-
-            await pool?.request()
-            .input('idUser', sql.Int, idUser)
-            .input('idHouse', sql.Int, idHouse)
-            .query(queries.updateUsersById)
 
         if ((c >= index) == true) {
             await pool?.request()

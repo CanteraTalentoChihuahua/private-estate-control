@@ -7,9 +7,9 @@ export default {
     deleteUser: `DELETE FROM T_Users WHERE IdUser = @id`,
     getTotalUsers: `SELECT COUNT(*) FROM T_Users`,
     updateUsersById: `UPDATE T_Users SET IdResDev = @idResDev, FirstName = @firstName, LastName = @lastName,
-    PhoneNumber = @phoneNumber, Email = @email, Active = @active, FaceID = @faceId
+    PhoneNumber = @phoneNumber, Active = @active, FaceID = @faceId
     WHERE IdUser = @id`,
-    unlinkUserHouse: `DELETE FROM T_UsersHouses WHERE IdUser = @idUser, IdHouse = @idHouse`,
+    unlinkUserHouse: `DELETE FROM T_UsersHouses WHERE IdUser = @idUser AND IdHouse = @idHouse`,
     emailVerification: `SELECT T_Users.IdUser
     FROM T_Users
     WHERE Email = @email`

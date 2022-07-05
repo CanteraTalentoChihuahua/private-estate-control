@@ -20,7 +20,7 @@ export const userValidator = async (id : number) => {
     .input('id', id)
     .query(queriesUsers.getUserById);
 
-    if (!(result?.rowsAffected.length == 0)) {
+    if (result?.recordset.length == 0) {
         throw new Error(`El usuario con el id: '${id}' no existe`);
     }
 }
@@ -28,6 +28,15 @@ export const userValidator = async (id : number) => {
 export const houseValidator = async (idHouse : number) => {
     const pool = await getConnection();
     const result = await pool?.request()
-    .input('idHouse', idHouse)
+    .input('id', idHouse)
     .query(queriesHouses.getHouseById);
+
+    if (result?.recordset.length == 0) {
+        throw new Error(`La casa con el id: '${idHouse}' no existe`);
+    }
+}
+
+export const relationshipValidator = async (idUser : number, idHouse : number) => {
+    console.log('estoy aqui');
+    throw new Error("asdasd"+ idUser);
 }
