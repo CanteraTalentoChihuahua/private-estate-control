@@ -177,7 +177,7 @@ export default class Houses extends Component {
           <div className="column box" style={{ marginRight: "14px" }}>
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
-                <div className="box has-background-white-ter">
+                <div className="box title" style={{ background: "#64c5b1" }}>
                   <Title title="Houses" class="is-2" />
                 </div>
               </div>

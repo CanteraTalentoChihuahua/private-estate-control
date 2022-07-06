@@ -8,6 +8,17 @@ min-height: 100%;
 flex-direction: column;*/
 }
 
+span
+{
+  color: #47b181;
+}
+
+ul
+{
+  color: red;
+  /*color: #144339;*/
+}
+
 @media screen and (max-width: 768px) {
 #menu-toggle:checked + .nav-menu {
     display: block;
