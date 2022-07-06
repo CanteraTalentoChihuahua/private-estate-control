@@ -9,7 +9,7 @@ export default class UserForm extends Component {
     users: [],
   };
   //Obtener usuarios por casa
-  async getUsers() {
+  async getUsersPerHouse() {
     const res = await axios.get(
       "https://gestion-fraccionamiento.herokuapp.com/registry/get/user/" +
         this.props.idHouse
@@ -18,8 +18,7 @@ export default class UserForm extends Component {
   }
   //Monar componentes
   async componentDidMount() {
-    this.getUsers();
-    //console.log(this.state.users);
+    await this.getUsersPerHouse()
   }
   //Alerta de eliminacion
   onDeleteAlert = async (user) => {

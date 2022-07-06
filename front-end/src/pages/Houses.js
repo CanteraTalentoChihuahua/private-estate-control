@@ -17,12 +17,17 @@ import {
 const tkn = JSON.parse(localStorage.getItem("tkn"));
 axios.defaults.headers.common = { Authorization: "bearer " + tkn };
 export default class Houses extends Component {
+  constructor(props){
+    super(props)
+    this.myRef=React.createRef()
+  }
   state = {
     houses: [],
     users: [],
     linkUser: "",
-    house:{
-    idHouse:""},
+    house: {
+      idHouse: "",
+    },
     newUsers: {
       idResDev: "",
       firstName: "",
@@ -47,6 +52,7 @@ export default class Houses extends Component {
     const res = await axios.get(
       "https://gestion-fraccionamiento.herokuapp.com/houses/get"
     );
+    console.log(this.myRef);
     this.setState({ houses: res.data });
   }
   //Obtener todos los usuarios
@@ -121,7 +127,7 @@ export default class Houses extends Component {
   };
   //Abrir modal para link user-house
   onAddModalLink = async (idHouseL) => {
-    await this.setState({house:{idHouse:idHouseL}});
+    await this.setState({ house: { idHouse: idHouseL } });
     function openModal($el) {
       $el.classList.add("is-active");
     }
@@ -140,8 +146,10 @@ export default class Houses extends Component {
       openModal($target);
     });
     // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll(
-        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close") || []
+    (
+      document.querySelectorAll(
+        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close"
+      ) || []
     ).forEach(($close) => {
       const $target = $close.closest(".modal");
       $close.addEventListener("click", () => {
@@ -207,14 +215,14 @@ export default class Houses extends Component {
   //Abrir modal para update user
   onUpdateModal = async (user) => {
     await this.setState({
-      newUsers:{
+      newUsers: {
         IdUser: user.IdUser,
         firstName: user.FirstName,
         lastName: user.LastName,
         phoneNumber: user.PhoneNumber,
-        idResDev: JSON.parse(localStorage.getItem("idResDev"))
-      }
-    })
+        idResDev: JSON.parse(localStorage.getItem("idResDev")),
+      },
+    });
     function openModal($el) {
       $el.classList.add("is-active");
     }
@@ -227,14 +235,18 @@ export default class Houses extends Component {
       });
     }
     // Add a click event on buttons to open a specific modal
-    (document.querySelectorAll(".js-modal-update") || []).forEach(($trigger) => {
-      const modal = $trigger.dataset.target;
-      const $target = document.getElementById(modal);
-      openModal($target);
-    });
+    (document.querySelectorAll(".js-modal-update") || []).forEach(
+      ($trigger) => {
+        const modal = $trigger.dataset.target;
+        const $target = document.getElementById(modal);
+        openModal($target);
+      }
+    );
     // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll(
-        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close") || []
+    (
+      document.querySelectorAll(
+        ".modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .b-close"
+      ) || []
     ).forEach(($close) => {
       const $target = $close.closest(".modal");
       $close.addEventListener("click", () => {
@@ -312,29 +324,33 @@ export default class Houses extends Component {
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "No, cancel!",
       reverseButtons: true,
-    }).then( async (result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        await axios.delete("https://gestion-fraccionamiento.herokuapp.com/houses/delete/"+house.IdHouse)
-        .then((res) => {
-          console.log(res);
-          this.getUsers();
-          Swal.fire({
-            icon: "success",
-            title: "Deleted!",
-            text: "The house has been deleted.",
-            showConfirmButton: false,
-            timer: 2000,
+        await axios
+          .delete(
+            "https://gestion-fraccionamiento.herokuapp.com/houses/delete/" +
+              house.IdHouse
+          )
+          .then((res) => {
+            console.log(res);
+            this.getUsers();
+            Swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: "The house has been deleted.",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          })
+          .catch((exception) => {
+            Swal.fire({
+              icon: "error",
+              title: "Delete cancelled",
+              text: exception.response.data.errors[0].msg,
+              showConfirmButton: false,
+              timer: 1500,
+            });
           });
-        })
-        .catch((exception) => {
-          Swal.fire({
-            icon: "error",
-            title: "Delete cancelled",
-            text: exception.response.data.errors[0].msg,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
           icon: "error",
@@ -347,68 +363,77 @@ export default class Houses extends Component {
   };
   //Axios para linkear user-house
   addUser = () => {
-    console.log("idHouse: "+this.state.house.idHouse);
-    console.log("idUser: "+this.state.linkUser);
-    axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post/link/"+this.state.linkUser,this.state.house)
-    .then((res)=>{
-      Swal.fire({
-        icon: "success",
-        title: "Linked!",
-        text: "The resident was linked!",
-        showConfirmButton: false,
-        timer: 2000,
+    console.log("idHouse: " + this.state.house.idHouse);
+    console.log("idUser: " + this.state.linkUser);
+    axios
+      .post(
+        "https://gestion-fraccionamiento.herokuapp.com/users/post/link/" +
+          this.state.linkUser,
+        this.state.house
+      )
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "Linked!",
+          text: "The resident was linked!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        this.getUsers();
+        this.getHouses();
+      })
+      .catch((exception) => {
+        Swal.fire({
+          icon: "error",
+          title: "Delete cancelled",
+          text: exception.response.data.errors[0].msg,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
-      this.getUsers();
-      this.getHouses();
-    })
-    .catch((exception)=>{
-      Swal.fire({
-        icon: "error",
-        title: "Delete cancelled",
-        text: exception.response.data.errors[0].msg,
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    })
   };
   //Capturando datos del select
   onChangeSearchBar = async (e) => {
     await this.setState({
-        linkUser: e.value,
+      linkUser: e.value,
     });
   };
   //Axios para create user
   onCreateUser = async (e) => {
     e.preventDefault();
-      await this.setState({
-        newUsers: {
-          ...this.state.newUsers,
-          idResDev: JSON.parse(localStorage.getItem("idResDev")),
-          idHouse: this.state.idHouse
-        },
-      });
-      console.log(this.state.newUsers);
-      axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post",this.state.newUsers)
-        .then((res) => {
-          Swal.fire({
-            icon: "success",
-            title: "Deleted!",
-            text: this.state.newUsers.firstName + " has been created.",
-            showConfirmButton: false,
-            timer: 2000,
-          });
-          this.getHouses();
-          this.getUsers();
-        })
-        .catch((exception) => {
-          Swal.fire({
-            icon: "error",
-            title: "Create cancelled",
-            text: exception.response.data.errors[0].msg,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+    await this.setState({
+      newUsers: {
+        ...this.state.newUsers,
+        idResDev: JSON.parse(localStorage.getItem("idResDev")),
+        idHouse: this.state.idHouse,
+      },
+    });
+    console.log(this.state.newUsers);
+    axios
+      .post(
+        "https://gestion-fraccionamiento.herokuapp.com/users/post",
+        this.state.newUsers
+      )
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: this.state.newUsers.firstName + " has been created.",
+          showConfirmButton: false,
+          timer: 2000,
         });
+        this.getHouses();
+        this.getUsers();
+      })
+      .catch((exception) => {
+        Swal.fire({
+          icon: "error",
+          title: "Create cancelled",
+          text: exception.response.data.errors[0].msg,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      });
   };
   //Axios para update user
   onUpdateUser = async (e) => {
@@ -425,8 +450,13 @@ export default class Houses extends Component {
         });
       }
     }
-    console.log(this.state.newUsers)
-    axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.newUsers.IdUser,this.state.newUsers)
+    console.log(this.state.newUsers);
+    axios
+      .put(
+        "https://gestion-fraccionamiento.herokuapp.com/users/put/" +
+          this.state.newUsers.IdUser,
+        this.state.newUsers
+      )
       .then((res) => {
         Swal.fire({
           icon: "success",
@@ -447,7 +477,7 @@ export default class Houses extends Component {
           timer: 1500,
         });
       });
-  }
+  };
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -466,7 +496,7 @@ export default class Houses extends Component {
                 name="idHouse"
                 onChange={this.onChangeSearchBar}
                 options={this.state.users.map((user) => ({
-                  label: user.FirstName,
+                  label: user.FirstName + " " + user.LastName,
                   value: user.IdUser,
                 }))}
               />
@@ -786,9 +816,7 @@ export default class Houses extends Component {
                             </td>
                             <td>
                               <Link
-                                onClick={() =>
-                                  this.onDeleteAlert(house)
-                                }
+                                onClick={() => this.onDeleteAlert(house)}
                                 className="button"
                               >
                                 <FontAwesomeIcon icon={faTimes} />
@@ -804,6 +832,7 @@ export default class Houses extends Component {
                               colSpan={3}
                             >
                               <UserTable
+                                ref={this.myRef}
                                 onUpdateModal={this.onUpdateModal}
                                 onAddModal={this.onAddModalLink}
                                 idHouse={house.IdHouse}
