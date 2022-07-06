@@ -3,8 +3,9 @@ import sql from "mssql";
 import queries from "../models/users";
 import queriesReport from "../models/reports";
 import bcryptjs from "bcryptjs";      
+import { request, response } from "express";
 
-export const getUsers = async (req: any, res: any) => {
+export const getUsers = async (req = request, res = response) => {
 
     try {
         const pool = await getConnection();
@@ -20,7 +21,7 @@ export const getUsers = async (req: any, res: any) => {
     }
 }
 
-export const createUser = async (req: any, res: any) => {
+export const createUser = async (req = request, res = response) => {
     const { idResDev, firstName, lastName, phoneNumber = "", email, password, active = 1, faceId = "", idHouse } = req.body;
 
     try {
@@ -56,7 +57,7 @@ export const createUser = async (req: any, res: any) => {
 
 }
 
-export const getUserById = async (req: any, res: any) => {
+export const getUserById = async (req = request, res = response) => {
     const { id } = req.params;
 
     try {
@@ -64,6 +65,12 @@ export const getUserById = async (req: any, res: any) => {
         const result = await pool?.request()
         .input('id', id)
         .query(queries.getUserById);
+
+        if ((result?.recordset.length == 0)) {
+            return res.status(400).json({
+                msg: `El usuario con el id: '${id}' no existe`
+            });
+        }
 
         res.status(200);
         res.send(result?.recordset[0]);
@@ -75,7 +82,7 @@ export const getUserById = async (req: any, res: any) => {
     //  TODO: Http responses => 403 forbidden; 404 not found
 }
 
-export const deleteUserById = async (req: any, res: any) => {
+export const deleteUserById = async (req = request, res = response) => {
     const { id } = req.params;
 
     try {
@@ -97,7 +104,7 @@ export const deleteUserById = async (req: any, res: any) => {
     // TODO: Same http responses as in get by id
 }
 
-export const unlinkUserById = async (req: any, res: any) => {
+export const unlinkUserById = async (req = request, res = response) => {
     const { idUser } = req.params;
     const { idHouse } = req.body;
 
@@ -122,7 +129,7 @@ export const unlinkUserById = async (req: any, res: any) => {
     // TODO: Same http responses as in get by id
 }
 
-export const getTotalUsers = async (req: any, res: any) => {
+export const getTotalUsers = async (req = request, res = response) => {
     const pool = await getConnection();
     const result = await pool?.request()
     .query(queries.getTotalUsers);
@@ -132,7 +139,7 @@ export const getTotalUsers = async (req: any, res: any) => {
     //TODO: Maybe not to be kept
 }
 
-export const updateUserById = async (req: any, res: any) => {
+export const updateUserById = async (req = request, res = response) => {
     const { idResDev, firstName, lastName, phoneNumber, active = true, faceId = ""} = req.body;
     const { id } = req.params;
 
@@ -163,7 +170,7 @@ export const updateUserById = async (req: any, res: any) => {
 }
 
 
-export const linkUserHouse = async (req: any, res: any) => {
+export const linkUserHouse = async (req = request, res = response) => {
     const { idHouse } = req.body;
     const { idUser } = req.params;
 
