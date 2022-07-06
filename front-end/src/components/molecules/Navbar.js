@@ -43,9 +43,9 @@ export default class Navbar extends Component {
   }
   render() {
     return (
-      <nav className="navbar is-dark has-shadow" role="navigation" aria-label="main navigation">
+      <nav className="navbar has-background-white-bis has-shadow" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
-            <div className="navbar-item"><Title title={this.state.residential} class="has-text-white"/></div>
+            <div className="navbar-item"><Title title={this.state.residential} class="has-text-black-bis"/></div>
             <span href="#"onClick={this.onBurger} role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
               <span></span>
               <span></span>

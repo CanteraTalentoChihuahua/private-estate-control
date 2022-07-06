@@ -87,7 +87,6 @@ export default class Incomes extends Component {
     });
   };
   onChangeSearchBar = async (e) => {
-    
     await this.setState({
       balance: e.balance,
       newIncomes: {
@@ -189,15 +188,15 @@ export default class Incomes extends Component {
         <Navbar />
         <section className="main-content columns is-multiline is-variable">
           <Sidebar />
-          <div className="column box" style={{ marginRight: "14px" }}>
+          <div className="column box has-background-white-ter is-fullheight" style={{ marginRight: "14px" }}>
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
-                <div className="box has-background-white-ter">
-                  <Title title="Incomes" class="is-2" />
+                <div className="box" style={{backgroundColor: "#64c5b1"}}>
+                  <Title title="Incomes" class="is-2 has-text-white-bis" />
                 </div>
               </div>
               <div className="column is-12">
-                <div className="box has-background-white-ter">
+                <div className="box has-background-white-bis">
                   <div className="columns mb-0">
                     <div className="column is-11">
                       <Title title="New Income" class="is-4" />
@@ -297,8 +296,8 @@ export default class Incomes extends Component {
               </div>
 
               <div className="column is-12">
-                <div className="box has-background-white-ter">
-                  <table className="table is-fullwidth has-background-white-ter is-hoverable">
+                <div className="box has-background-white-bis">
+                  <table className="table is-fullwidth has-background-white-bis is-hoverable">
                     <thead>
                       <tr>
                         <th>Date</th>
