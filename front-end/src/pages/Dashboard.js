@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Sidebar from "../components/molecules/Sidebar";
 import Titlee from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
+import "./estilo.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -63,10 +64,10 @@ export default class Dashboard extends Component {
           label: "Users who paid at time",
           data: scores,
           tension: 0.3,
-          borderColor: "#07689F",
+          borderColor: "#20c997",
           pointRadius: 6,
-          pointBackgroundColor: "#07689F",
-          backgroundColor: "rgb(7, 104, 159,0.4)",
+          pointBackgroundColor: "#00D1B2",
+          backgroundColor: "rgb(209, 231, 224, 0.7)",
         },
       ],
       labels,
@@ -86,20 +87,20 @@ export default class Dashboard extends Component {
         <Navbar />
         <section className="main-content columns is-multiline is-variable">
           <Sidebar />
-          <div className="column box" style={{ marginRight: "14px" }}>
+          <div className="column box has-background-white-ter" style={{ marginRight: "14px" }}>
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
-                <div className="box has-background-white-ter">
-                  <Titlee title="Dashboard" class="is-2" />
+                <div className="box titulo">
+                  <Titlee title="Dashboard" class="is-2 has-text-white" />
                 </div>
               </div>
               <div className="column is-9">
-                <div className="box has-background-white-ter">
+                <div className="box ">
                   <Line data={this.state.data} options={options} />
                 </div>
               </div>
               <div className="column is-3">
-                <div className="box has-background-white-ter">
+                <div className="box has-background-white">
                   <Titlee title="Transactions" class="is-3" />
                   {this.state.transactions.map((transaction) => (
                     <ul key={transaction.Id}>
