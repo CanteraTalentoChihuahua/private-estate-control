@@ -189,15 +189,15 @@ export default class Incomes extends Component {
         <Navbar />
         <section className="main-content columns is-multiline is-variable">
           <Sidebar />
-          <div className="column box" style={{ marginRight: "14px" }}>
+          <div className="column box has-background-white-ter" style={{ marginRight: "14px" }}>
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
-                <div className="box has-background-white-ter">
-                  <Title title="Incomes" class="is-2" />
+                <div className="box titulo">
+                  <Title title="Incomes" class="is-2 has-text-white" />
                 </div>
               </div>
               <div className="column is-12">
-                <div className="box has-background-white-ter">
+                <div className="box has-background-white">
                   <div className="columns mb-0">
                     <div className="column is-11">
                       <Title title="New Income" class="is-4" />
@@ -297,8 +297,8 @@ export default class Incomes extends Component {
               </div>
 
               <div className="column is-12">
-                <div className="box has-background-white-ter">
-                  <table className="table is-fullwidth has-background-white-ter is-hoverable">
+                <div className="box has-background-white">
+                  <table className="table is-fullwidth has-background-white is-hoverable">
                     <thead>
                       <tr>
                         <th>Date</th>
