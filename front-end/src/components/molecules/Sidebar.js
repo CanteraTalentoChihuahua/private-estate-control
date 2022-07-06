@@ -13,9 +13,9 @@ export default class Sidebar extends Component {
   render() {
     return (
       <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
-        <ul className="menu-list">
+        <ul className="menu-list has-background-white">
           <li>
-            <Link to="/dashboard">
+            <Link to="/dashboard" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faChartBar} />
               </span>{" "}
@@ -23,7 +23,7 @@ export default class Sidebar extends Component {
             </Link>
           </li>
           <li>
-            <Link to="/incomes">
+            <Link to="/incomes" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faMoneyCheckAlt} />
               </span>{" "}
@@ -31,7 +31,7 @@ export default class Sidebar extends Component {
             </Link>
           </li>
           <li>
-            <Link to="/outcomes">
+            <Link to="/outcomes" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faMoneyCheckAlt} />
               </span>{" "}
@@ -57,7 +57,7 @@ export default class Sidebar extends Component {
                         </ul>
                     </li>*/}
           <li>
-            <Link to="/houses">
+            <Link to="/houses" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faHome} />
               </span>{" "}
@@ -70,7 +70,7 @@ export default class Sidebar extends Component {
                         </a>
                     </li>*/}
           <li>
-            <Link to="/access">
+            <Link to="/access" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faLockOpen} />
               </span>{" "}

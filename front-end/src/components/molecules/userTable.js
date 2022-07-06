@@ -65,7 +65,7 @@ export default class UserForm extends Component {
   };
   render() {
     return (
-      <table className="table is-bordered is-fullwidth has-background-white-bis">
+      <table className="table is-bordered is-fullwidth has-background-white">
         <thead>
           <tr>
             <th>Name</th>
