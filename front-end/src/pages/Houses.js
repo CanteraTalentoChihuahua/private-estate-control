@@ -21,7 +21,8 @@ export default class Houses extends Component {
     houses: [],
     users: [],
     linkUser: "",
-    linkHouse:"",
+    house:{
+    idHouse:""},
     newUsers: {
       idResDev: "",
       firstName: "",
@@ -119,8 +120,8 @@ export default class Houses extends Component {
     });
   };
   //Abrir modal para link user-house
-  onAddModalLink = async (idHouse) => {
-    await this.setState({linkHouse:idHouse});
+  onAddModalLink = async (idHouseL) => {
+    await this.setState({house:{idHouse:idHouseL}});
     function openModal($el) {
       $el.classList.add("is-active");
     }
@@ -205,16 +206,15 @@ export default class Houses extends Component {
   };
   //Abrir modal para update user
   onUpdateModal = async (user) => {
-    console.log(user)
     await this.setState({
       newUsers:{
         IdUser: user.IdUser,
         firstName: user.FirstName,
         lastName: user.LastName,
         phoneNumber: user.PhoneNumber,
+        idResDev: JSON.parse(localStorage.getItem("idResDev"))
       }
     })
-    console.log(this.state.newUsers)
     function openModal($el) {
       $el.classList.add("is-active");
     }
@@ -302,29 +302,43 @@ export default class Houses extends Component {
         });
     }
   };
-  //Alert para eliminar users
-  onDeleteAlert = async (address) => {
+  //Alert para eliminar houses
+  onDeleteAlert = async (house) => {
     Swal.fire({
-      title: "Are you sure you want to delete " + address + "?",
+      title: "Are you sure you want to delete " + house.Address + "?",
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "No, cancel!",
       reverseButtons: true,
-    }).then((result) => {
+    }).then( async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          showConfirmButton: false,
-          timer: 1500,
+        await axios.delete("https://gestion-fraccionamiento.herokuapp.com/houses/delete/"+house.IdHouse)
+        .then((res) => {
+          console.log(res);
+          this.getUsers();
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "The house has been deleted.",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        })
+        .catch((exception) => {
+          Swal.fire({
+            icon: "error",
+            title: "Delete cancelled",
+            text: exception.response.data.errors[0].msg,
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
           icon: "error",
-          title: "Cancelled",
+          title: "Delete cancelled",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -333,15 +347,28 @@ export default class Houses extends Component {
   };
   //Axios para linkear user-house
   addUser = () => {
-    console.log(this.state.linkHouse);
-    axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post/link/"+this.state.linkUser,this.state.linkHouse)
+    console.log("idHouse: "+this.state.house.idHouse);
+    console.log("idUser: "+this.state.linkUser);
+    axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post/link/"+this.state.linkUser,this.state.house)
     .then((res)=>{
-      console.log(res);
+      Swal.fire({
+        icon: "success",
+        title: "Linked!",
+        text: "The resident was linked!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       this.getUsers();
       this.getHouses();
     })
     .catch((exception)=>{
-      console.log(exception.response);
+      Swal.fire({
+        icon: "error",
+        title: "Delete cancelled",
+        text: exception.response.data.errors[0].msg,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     })
   };
   //Capturando datos del select
@@ -357,18 +384,30 @@ export default class Houses extends Component {
         newUsers: {
           ...this.state.newUsers,
           idResDev: JSON.parse(localStorage.getItem("idResDev")),
-          idHouse: this.state.linkHouse
+          idHouse: this.state.idHouse
         },
       });
       console.log(this.state.newUsers);
       axios.post("https://gestion-fraccionamiento.herokuapp.com/users/post",this.state.newUsers)
         .then((res) => {
-          console.log(res);
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: this.state.newUsers.firstName + " has been created.",
+            showConfirmButton: false,
+            timer: 2000,
+          });
           this.getHouses();
           this.getUsers();
         })
         .catch((exception) => {
-          console.log(exception.response);
+          Swal.fire({
+            icon: "error",
+            title: "Create cancelled",
+            text: exception.response.data.errors[0].msg,
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
   };
   //Axios para update user
@@ -386,14 +425,27 @@ export default class Houses extends Component {
         });
       }
     }
+    console.log(this.state.newUsers)
     axios.put("https://gestion-fraccionamiento.herokuapp.com/users/put/"+this.state.newUsers.IdUser,this.state.newUsers)
       .then((res) => {
-        console.log(res);
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: "Your file has been updated.",
+          showConfirmButton: false,
+          timer: 2000,
+        });
         this.getHouses();
         this.getUsers();
       })
       .catch((exception) => {
-        console.log(exception.response);
+        Swal.fire({
+          icon: "error",
+          title: "Update cancelled",
+          text: exception.response.data.errors[0].msg,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   }
   render() {
@@ -412,7 +464,6 @@ export default class Houses extends Component {
               <br />
               <Select
                 name="idHouse"
-                className=""
                 onChange={this.onChangeSearchBar}
                 options={this.state.users.map((user) => ({
                   label: user.FirstName,
@@ -736,7 +787,7 @@ export default class Houses extends Component {
                             <td>
                               <Link
                                 onClick={() =>
-                                  this.onDeleteAlert(house.Address)
+                                  this.onDeleteAlert(house)
                                 }
                                 className="button"
                               >

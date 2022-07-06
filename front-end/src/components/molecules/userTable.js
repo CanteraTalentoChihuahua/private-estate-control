@@ -40,7 +40,7 @@ export default class UserForm extends Component {
           Swal.fire({
             icon: "success",
             title: "Deleted!",
-            text: "Your file has been deleted.",
+            text: "The user has been deleted.",
             showConfirmButton: false,
             timer: 2000,
           });
@@ -48,7 +48,7 @@ export default class UserForm extends Component {
         .catch((exception) => {
           Swal.fire({
             icon: "error",
-            title: "Cancelled",
+            title: "Delete cancelled",
             text: exception.response.data.errors[0].msg,
             showConfirmButton: false,
             timer: 1500,
@@ -57,7 +57,7 @@ export default class UserForm extends Component {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
           icon: "error",
-          title: "Cancelled",
+          title: "Delete cancelled",
           showConfirmButton: false,
           timer: 1500,
         });
