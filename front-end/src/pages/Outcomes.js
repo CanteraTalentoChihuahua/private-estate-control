@@ -245,7 +245,7 @@ export default class Outcomes extends Component {
                     <tbody>
                       {this.state.outcomes.map((outcome) => (
                         <tr key={outcome.IdOutcome}>
-                          <td>{outcome.Date}</td>
+                          <td>{outcome.Date.substring(0, 10)}</td>
                           <td>{outcome.Description}</td>
                           <td>{outcome.Amount}</td>
                           <td>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTimes, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTimes, faUnlink, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 export default class UserForm extends Component {
   state = {
@@ -72,8 +72,9 @@ export default class UserForm extends Component {
             <th>Lastname</th>
             <th>Phone</th>
             <th>Email</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th className="has-text-centered">Unlink</th>
+            <th className="has-text-centered">Edit</th>
+            <th className="has-text-centered">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -83,7 +84,15 @@ export default class UserForm extends Component {
               <td>{user.LastName}</td>
               <td>{user.PhoneNumber}</td>
               <td>{user.Email}</td>
-              <td>
+              <td className="has-text-centered">
+                <Link
+                  onClick={() => this.onUnlink()}
+                  className="button"
+                >
+                  <FontAwesomeIcon icon={faUnlink} />
+                </Link>
+              </td>
+              <td className="has-text-centered">
                 <Link
                   to="/houses"
                   data-target="modal-update"
@@ -93,7 +102,7 @@ export default class UserForm extends Component {
                   <FontAwesomeIcon icon={faEdit} />
                 </Link>
               </td>
-              <td>
+              <td className="has-text-centered">
                 <Link
                   onClick={() => this.onDeleteAlert(user)}
                   className="button"
@@ -104,7 +113,7 @@ export default class UserForm extends Component {
             </tr>
           ))}
           <tr>
-            <td colSpan={6} style={{ textAlign: "center" }} className="p-0">
+            <td colSpan={7} style={{ textAlign: "center" }} className="p-0">
               <Link
                 to="/houses"
                 data-target="modal-add"

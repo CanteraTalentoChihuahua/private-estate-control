@@ -64,7 +64,7 @@ export default class Login extends Component {
     //const tkn = JSON.parse(localStorage.getItem('tkn'));
     //console.log(tkn);
     return (
-      <section className="hero is-primary is-fullheight is-link">
+      <section className="hero is-primary is-fullheight" style={{backgroundColor: "#64c5b1"}}>
         <div className="hero-body">
           <div className="container">
             <div className="columns is-centered">
@@ -103,16 +103,18 @@ export default class Login extends Component {
                       </span>
                     </div>
                   </div>
-                  <div className="field">
+                  <div className="columns">
+                  <div className="field column is-6">
                     <label className="checkbox">
                       <input type="checkbox" />
-                      <span> Remember me</span>
+                      <span className="has-text-grey"> Remember me</span>
                     </label>
                   </div>
-                  <div className="password">
-                    <label className="checkbox forgotPassword">
+                  <div className="password column is-6">
+                    <label className="checkbox forgotPassword has-text-grey">
                       Forgot Password?
                     </label>
+                  </div>
                   </div>
                   <center>
                     <button

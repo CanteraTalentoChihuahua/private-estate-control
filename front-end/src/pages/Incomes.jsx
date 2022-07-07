@@ -12,6 +12,7 @@ import {
   faCalendarAlt,
   faFileAlt,
   faDollarSign,
+  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 export default class Incomes extends Component {
   state = {
@@ -188,7 +189,10 @@ export default class Incomes extends Component {
         <Navbar />
         <section className="main-content columns is-multiline is-variable">
           <Sidebar />
-          <div className="column box has-background-white-ter" style={{ marginRight: "14px" }}>
+          <div
+            className="column box has-background-white-ter"
+            style={{ marginRight: "14px" }}
+          >
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box titulo">
@@ -268,6 +272,27 @@ export default class Incomes extends Component {
                         </div>
                       </div>
                       <div className="field">
+                      <label className="label">Receipt</label>
+                        <div class="file has-name">
+                          <label class="file-label">
+                            <input
+                              class="file-input"
+                              type="file"
+                              name="receipt"
+                            />
+                            <span class="file-cta">
+                              <span class="file-icon">
+                              <FontAwesomeIcon icon={faFile} />
+                              </span>
+                              <span class="file-label">Choose a file…</span>
+                            </span>
+                            <span class="file-name">
+                              Receipt 2017-07-29 at 15.54.25.png
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="field">
                         <label className="label">Address</label>
                         <div className="control has-icons-left">
                           <Select
@@ -277,13 +302,14 @@ export default class Incomes extends Component {
                             options={this.state.houses.map((house) => ({
                               label: house.Address,
                               value: house.IdHouse,
-                              balance: house.Balance
+                              balance: house.Balance,
                             }))}
                           />
                         </div>
                       </div>
                       <div className="field">
-                        <label className="label">Balance: </label><label className="label">${this.state.balance}</label>
+                        <label className="label">Balance: </label>
+                        <label className="label">${this.state.balance}</label>
                       </div>
                       <div className="field">
                         <button type="submit" className="button is-success">
@@ -309,7 +335,7 @@ export default class Incomes extends Component {
                     <tbody>
                       {this.state.incomes.map((income) => (
                         <tr key={income.IdIncome}>
-                          <td>{income.Date}</td>
+                          <td>{income.Date.substring(0, 10)}</td>
                           <td>{income.Description}</td>
                           <td>{income.Amount}</td>
                           <td>
