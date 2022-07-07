@@ -10,7 +10,7 @@ router.get("/get", getIncomes);
 
 router.get("/get/:id", getIncomeById);
 
-router.post("/post", /*createIncome*/upload.single("image"));
+router.post("/post", upload.single("image"), createIncome);
 
 router.put("/put/:id", updateIncomeById);
 
