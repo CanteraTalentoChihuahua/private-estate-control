@@ -43,7 +43,7 @@ export default class Outcomes extends Component {
     this.getOutcomes();
   }
   onEditarOut = async (key) => {
-    this.onBurgerOut();
+    this.onBurgerOut(1);
     // eslint-disable-next-line
     this.state.edit = true;
     await this.setState({
@@ -60,7 +60,7 @@ export default class Outcomes extends Component {
     console.log(this.state.newOutcomes);
   };
   //Función para ocultar y mostrar el formulario outcomes
-  onBurgerOut = () => {
+  onBurgerOut = (edit) => {
     const $navbarBurgers = Array.prototype.slice.call(
       document.querySelectorAll(".outcome-form"),
       0
@@ -70,12 +70,24 @@ export default class Outcomes extends Component {
       // Get the target from the "data-target" attribute
       const target = el.dataset.target;
       const $target = document.getElementById(target);
-      if ($target.classList.value === "is-danger") {
-        el.classList.toggle("is-success");
+      if ($target.classList.value === "is-hidden") {
+        el.classList.add("is-success");
+        el.classList.remove("is-danger");
+        this.setState({
+          newOutcomes: {
+            idResDev: "",
+            date: "",
+            description: "",
+            amount: "",
+          }
+        })
       } else {
-        el.classList.toggle("is-danger");
+        el.classList.remove("is-success");
+        el.classList.add("is-danger");
       }
+      if(!(edit===1&&$target.classList.value==="")){
       $target.classList.toggle("is-hidden");
+      }
     });
   };
   //Capturando datos del formulario outcomes
@@ -153,7 +165,7 @@ export default class Outcomes extends Component {
                     </div>
                     <div className="column is-1">
                       <button
-                        onClick={this.onBurgerOut}
+                        onClick={()=>this.onBurgerOut(0)}
                         className="button icon outcome-form is-success"
                         data-target="outcomesForm"
                       >

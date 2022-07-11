@@ -45,7 +45,7 @@ export default class Incomes extends Component {
   }
   onEditarIn = async (key) => {
     if (!this.state.edit) {
-      this.onBurgerIn();
+      this.onBurgerIn(1);
     }
     // eslint-disable-next-line
     this.state.edit = true;
@@ -64,7 +64,7 @@ export default class Incomes extends Component {
     //console.log(this.state.newIncomes);
   };
   //Función para ocultar y mostrar el formulario incomes
-  onBurgerIn = () => {
+  onBurgerIn = (edit) => {
     const $navbarBurgers = Array.prototype.slice.call(
       document.querySelectorAll(".income-form"),
       0
@@ -74,8 +74,25 @@ export default class Incomes extends Component {
       // Get the target from the "data-target" attribute
       const target = el.dataset.target;
       const $target = document.getElementById(target);
-      el.classList.toggle("is-danger");
+      if ($target.classList.value === "is-hidden") {
+        el.classList.add("is-success");
+        el.classList.remove("is-danger");
+        this.setState({
+          newIncomes: {
+            idResDev: "",
+            idHouse: "",
+            date: "",
+            description: "",
+            amount: "",
+          }
+        })
+      } else {
+        el.classList.remove("is-success");
+        el.classList.add("is-danger");
+      }
+      if(!(edit===1&&$target.classList.value==="")){
       $target.classList.toggle("is-hidden");
+      }
     });
   };
   //Capturando datos del formulario incomes
@@ -206,7 +223,7 @@ export default class Incomes extends Component {
                     </div>
                     <div className="column is-1">
                       <button
-                        onClick={this.onBurgerIn}
+                        onClick={()=>this.onBurgerIn(0)}
                         className="button icon income-form is-success"
                         data-target="incomesForm"
                       >

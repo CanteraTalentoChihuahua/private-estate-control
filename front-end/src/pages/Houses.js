@@ -65,7 +65,7 @@ export default class Houses extends Component {
   }
   //Función para editar
   onEditar = (key) => {
-    this.onBurger();
+    this.onBurger(1);
     // eslint-disable-next-line
     this.state.edit = true;
     this.setState({
@@ -80,22 +80,32 @@ export default class Houses extends Component {
     });
   };
   //Función para ocultar y mostrar el formulario
-  onBurger = () => {
-    const $navbarBurgers = Array.prototype.slice.call(
-      document.querySelectorAll(".house-form"),
-      0
-    );
+  onBurger = (edit) => {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll(".house-form"),0);
     // Add a click event on each of them
     $navbarBurgers.forEach((el) => {
       // Get the target from the "data-target" attribute
       const target = el.dataset.target;
       const $target = document.getElementById(target);
-      if ($target.classList.value === "is-danger") {
-        el.classList.toggle("is-success");
+      console.log($target.classList.value)
+      if ($target.classList.value === "is-hidden") {
+        el.classList.add("is-success");
+        el.classList.remove("is-danger");
+        this.setState({
+          newHouses:{
+          address: "",
+          occuppied: "",
+          balance: "",
+          idResDev: JSON.parse(localStorage.getItem("idResDev")),
+          }
+        })
       } else {
-        el.classList.toggle("is-danger");
+        el.classList.remove("is-success");
+        el.classList.add("is-danger");
       }
+      if(!(edit===1&&$target.classList.value==="")){
       $target.classList.toggle("is-hidden");
+      }
     });
   };
   //Mostrar usuarios en el select
@@ -739,7 +749,7 @@ export default class Houses extends Component {
                     </div>
                     <div className="column is-1">
                       <button
-                        onClick={this.onBurger}
+                        onClick={()=>this.onBurger(0)}
                         className="button icon house-form is-success"
                         data-target="housesForm"
                       >
