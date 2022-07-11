@@ -64,8 +64,18 @@ export default class UserForm extends Component {
     });
   };
   //unlinkear user house
-  onUnlink= async (idUser) => {
-    await axios.delete("https://gestion-fraccionamiento.herokuapp.com/users/unlink/" + idUser,{ data: {idHouse:this.props.idHouse}})
+  onUnlink= async (user) => {
+    Swal.fire({
+      title: "Are you sure you want to unlink " + user.FirstName + "?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+    }).then(async (result) => {
+    if (result.isConfirmed) {
+    await axios.delete("https://gestion-fraccionamiento.herokuapp.com/users/unlink/" + user.IdUser,{ data: {idHouse:this.props.idHouse}})
     .then((res)=>{
       console.log(res)
       this.getUsers();
@@ -80,12 +90,21 @@ export default class UserForm extends Component {
     .catch((exception) => {
       Swal.fire({
         icon: "error",
-        title: "unlink cancelled",
+        title: "Unlink cancelled",
         text: exception.response.data.errors[0].msg,
         showConfirmButton: false,
         timer: 1500,
       });
     });
+  } else if (result.dismiss === Swal.DismissReason.cancel) {
+    Swal.fire({
+      icon: "error",
+      title: "Unlink cancelled",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+});
   }
   render() {
     return (
@@ -112,7 +131,7 @@ export default class UserForm extends Component {
               <td className="has-text-centered">
                 <Link
                   to="/houses"
-                  onClick={() => this.onUnlink(user.IdUser)}
+                  onClick={() => this.onUnlink(user)}
                   className="button"
                 >
                   <FontAwesomeIcon icon={faUnlink} />

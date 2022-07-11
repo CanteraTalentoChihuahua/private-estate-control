@@ -404,7 +404,6 @@ export default class Houses extends Component {
         idHouse: this.state.idHouse,
       },
     });
-    console.log(this.state.newUsers);
     axios
       .post(
         "https://gestion-fraccionamiento.herokuapp.com/users/post",
@@ -413,7 +412,7 @@ export default class Houses extends Component {
       .then((res) => {
         Swal.fire({
           icon: "success",
-          title: "Deleted!",
+          title: "Created!",
           text: this.state.newUsers.firstName + " has been created.",
           showConfirmButton: false,
           timer: 2000,
@@ -629,10 +628,17 @@ export default class Houses extends Component {
                     </span>
                   </div>
                 </div>
-                <div className="field">
-                  <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
+                <div className="columns">
+                <div className="field column is-6">
+                  <button type="submit" className="button is-fullwidth" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
                     Save
                   </button>
+                </div>
+                <div className="column is-6">
+                  <Link to="/houses" className="b-close button is-danger is-fullwidth" aria-label="close">
+                  Cancel
+                  </Link>
+                </div>
                 </div>
               </form>
             </div>
@@ -698,10 +704,17 @@ export default class Houses extends Component {
                     </span>
                   </div>
                 </div>
-                <div className="field">
-                  <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
+                <div className="columns">
+                <div className="field column is-6 has-text-centered">
+                  <button type="submit" className="button is-fullwidth" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
                     Save
                   </button>
+                </div>
+                <div className="column is-6 has-text-centered">
+                  <Link to="/houses" className="b-close button is-danger is-fullwidth" aria-label="close">
+                    Cancel
+                  </Link>
+                </div>
                 </div>
               </form>
             </div>
