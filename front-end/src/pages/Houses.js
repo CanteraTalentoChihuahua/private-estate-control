@@ -48,6 +48,7 @@ export default class Houses extends Component {
     const res = await axios.get(
       "https://gestion-fraccionamiento.herokuapp.com/houses/get"
     );
+    console.log(res.data)
     this.setState({ houses: res.data });
   }
   //Obtener todos los usuarios
@@ -790,6 +791,7 @@ export default class Houses extends Component {
                     <thead>
                       <tr>
                         <th>Address</th>
+                        <th>Balance</th>
                         <th>Edit</th>
                         <th>Delete</th>
                       </tr>
@@ -809,6 +811,12 @@ export default class Houses extends Component {
                                 <FontAwesomeIcon icon={faBars} />
                               </span>{" "}
                               {house.Address}
+                            </td>
+                            <td style={{
+                                verticalAlign: "middle",
+                                cursor: "pointer",
+                              }}>
+                              {house.Balance}
                             </td>
                             <td>
                               <Link

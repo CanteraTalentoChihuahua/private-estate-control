@@ -182,6 +182,7 @@ export default class Dashboard extends Component {
               </div>
               <div className="column is-9">
                 <div className="box">
+                  <Titlee title="Defaulter" class="is-4"/>
                   <table className="table is-fullwidth">
                     <thead>
                       <tr>
@@ -189,7 +190,7 @@ export default class Dashboard extends Component {
                         <th>Debt</th>
                       </tr>
                     </thead>
-                    {this.state.houses.map((house) => {
+                    {this.state.houses.map((house) => { if(house.Balance<0){
                       return (
                         <tbody>
                           <tr role="button" key={house.IdHouse}>
@@ -201,10 +202,10 @@ export default class Dashboard extends Component {
                             >
                               {house.Address}
                             </td>
-                            <td>$456</td>
+                            <td>{house.Balance}</td>
                           </tr>
                         </tbody>
-                      );
+                      );}
                     })}
                   </table>
                 </div>
