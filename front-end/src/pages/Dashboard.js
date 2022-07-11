@@ -102,14 +102,19 @@ export default class Dashboard extends Component {
               <div className="column is-3">
                 <div className="box has-background-white">
                   <Titlee title="Transactions" class="is-3" />
+                  <table className="table is-fullwidth has-background-white">
+                    <tbody>
                   {this.state.transactions.map((transaction) => (
-                    <ul key={transaction.Id}>
+                    <tr key={transaction.Id}>
+                      <td className="p-0">
                       <span className="icon has-text-danger">
                         <FontAwesomeIcon icon={faCircle} />
                       </span>{" "}
-                      {transaction.Description} ${transaction.Amount}
-                    </ul>
+                      {transaction.Description}</td><td className="p-0">${transaction.Amount}</td>
+                    </tr>
                   ))}
+                  </tbody>
+                  </table>
                 </div>
               </div>
             </div>

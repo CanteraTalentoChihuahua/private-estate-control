@@ -86,6 +86,8 @@ export default class Incomes extends Component {
         [e.target.name]: e.target.value,
       },
     });
+    console.log(e.target.value)
+    console.log(this.state.newIncomes)
   };
   onChangeSearchBar = async (e) => {
     await this.setState({
@@ -148,16 +150,13 @@ export default class Incomes extends Component {
               ...this.state.newIncomes,
               idHouse: this.state.houses[i].IdHouse,
               idResDev: JSON.parse(localStorage.getItem("idResDev")),
+              amount: parseInt(this.state.newIncomes.amount)
             },
           });
         }
       }
       console.log(this.state.newIncomes);
-      axios
-        .post(
-          "https://gestion-fraccionamiento.herokuapp.com/incomes/post",
-          this.state.newIncomes
-        )
+      axios.post("https://gestion-fraccionamiento.herokuapp.com/incomes/post",this.state.newIncomes)
         .then((res) => {
           console.log(res);
           this.getIncomes();
@@ -259,7 +258,7 @@ export default class Incomes extends Component {
                         <div className="control has-icons-left">
                           <input
                             name="amount"
-                            type="text"
+                            type="number"
                             placeholder="$500.00"
                             className="input"
                             required
@@ -312,8 +311,8 @@ export default class Incomes extends Component {
                         <label className="label">${this.state.balance}</label>
                       </div>
                       <div className="field">
-                        <button type="submit" className="button is-success">
-                          New income
+                        <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
+                          Save
                         </button>
                       </div>
                     </form>

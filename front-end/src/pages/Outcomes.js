@@ -222,8 +222,8 @@ export default class Outcomes extends Component {
                         <div className="label">$ {this.state.residentialBalance}</div>
                       </div>
                       <div className="field">
-                        <button type="submit" className="button is-success">
-                          New outcome
+                        <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
+                          Save
                         </button>
                       </div>
                     </form>

@@ -6,7 +6,7 @@ import { faEdit, faTimes, faUnlink, faUserPlus } from "@fortawesome/free-solid-s
 import Swal from "sweetalert2";
 export default class UserForm extends Component {
   state = {
-    users: [],
+    users: []
   };
   //Obtener usuarios por casa
   async getUsersPerHouse() {
@@ -63,6 +63,30 @@ export default class UserForm extends Component {
       }
     });
   };
+  //unlinkear user house
+  onUnlink= async (idUser) => {
+    await axios.delete("https://gestion-fraccionamiento.herokuapp.com/users/unlink/" + idUser,{ data: {idHouse:this.props.idHouse}})
+    .then((res)=>{
+      console.log(res)
+      this.getUsers();
+          Swal.fire({
+            icon: "success",
+            title: "Unlinked!",
+            text: "The user has been unlinked.",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+    })
+    .catch((exception) => {
+      Swal.fire({
+        icon: "error",
+        title: "unlink cancelled",
+        text: exception.response.data.errors[0].msg,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    });
+  }
   render() {
     return (
       <table className="table is-bordered is-fullwidth has-background-white">
@@ -77,6 +101,7 @@ export default class UserForm extends Component {
             <th className="has-text-centered">Delete</th>
           </tr>
         </thead>
+        {/*User table body*/}
         <tbody>
           {this.state.users.map((user) => (
             <tr key={user.IdUser}>
@@ -86,7 +111,8 @@ export default class UserForm extends Component {
               <td>{user.Email}</td>
               <td className="has-text-centered">
                 <Link
-                  onClick={() => this.onUnlink()}
+                  to="/houses"
+                  onClick={() => this.onUnlink(user.IdUser)}
                   className="button"
                 >
                   <FontAwesomeIcon icon={faUnlink} />
@@ -104,6 +130,7 @@ export default class UserForm extends Component {
               </td>
               <td className="has-text-centered">
                 <Link
+                  to="/houses"
                   onClick={() => this.onDeleteAlert(user)}
                   className="button"
                 >

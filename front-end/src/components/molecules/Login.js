@@ -68,8 +68,8 @@ export default class Login extends Component {
         <div className="hero-body">
           <div className="container">
             <div className="columns is-centered">
-              <div className="column is-5-tablet is-4-desktop is-4-widescreen">
-                <h1 className="title is-2">Welcome</h1>
+              <div className="column is-5-tablet is-4-desktop is-5-widescreen">
+                <h1 className="title is-2 has-text-centered">Welcome</h1>
                 <form onSubmit={this.onSubmit} className="box">
                   <div className="field">
                     <label className="label">Email</label>
@@ -103,7 +103,7 @@ export default class Login extends Component {
                       </span>
                     </div>
                   </div>
-                  <div className="columns">
+                  <div className="columns is-multiline">
                   <div className="field column is-6">
                     <label className="checkbox">
                       <input type="checkbox" />
@@ -116,12 +116,8 @@ export default class Login extends Component {
                     </label>
                   </div>
                   </div>
-                  <center>
-                    <button
-                      onClick={this.onButton}
-                      type="submit"
-                      className="button"
-                    >
+                  <center className="column">
+                    <button onClick={this.onButton} type="submit" className="button is-success is-light is-outlined">
                       Login
                     </button>
                   </center>

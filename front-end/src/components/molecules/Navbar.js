@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Title from "../atoms/Title";
+import "./Sidebar.css";
 export default class Navbar extends Component {
   state = {
     residential: []
@@ -55,54 +56,44 @@ export default class Navbar extends Component {
         <div id="navMenu" className="navbar-menu">
           <div className="navbar-end">
             {/* Comienzo de opciones invisibles */}
-            <Link
-              to="/dashboard"
-              className="navbar-item is-tab is-hidden-tablet"
-            >
+            <Link to="/dashboard" className="navbar-item is-tab is-hidden-tablet" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faChartBar} />
               </span>{" "}
               Dashboard
             </Link>
-            <Link
-              to="/transactions"
-              className="navbar-item is-tab is-hidden-tablet"
-            >
+            <Link to="/transactions" className="navbar-item is-tab is-hidden-tablet" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faMoneyCheckAlt} />
               </span>{" "}
               Transactions
             </Link>
-            <Link to="/users" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/users" className="navbar-item is-tab is-hidden-tablet" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faUsers} />
               </span>{" "}
               Users
             </Link>
-            <Link to="/houses" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/houses" className="navbar-item is-tab is-hidden-tablet" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faHome} />
               </span>{" "}
               Houses
             </Link>
-            <Link to="/access" className="navbar-item is-tab is-hidden-tablet">
+            <Link to="/access" className="navbar-item is-tab is-hidden-tablet" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faLockOpen} />
               </span>{" "}
               Access
             </Link>
             {/* Comienzo de opciones visibles */}
-            <Link to="/profile" className="navbar-item is-tab">
+            <Link to="/profile" className="navbar-item is-tab" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faUserCircle} />
               </span>{" "}
               <span className="is-hidden-widescreen">Profile</span>
             </Link>
-            <Link
-              onClick={this.logOut}
-              to="/login"
-              className="navbar-item is-tab"
-            >
+            <Link onClick={this.logOut} to="/login" className="navbar-item is-tab" style={{ color: "#144339" }}>
               <span className="icon">
                 <FontAwesomeIcon icon={faSignOutAlt} />
               </span>

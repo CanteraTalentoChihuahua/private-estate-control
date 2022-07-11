@@ -499,30 +499,17 @@ export default class Houses extends Component {
               <br />
               <div className="columns is-multiline container">
                 <div className="column is-6 has-text-centered">
-                  <Link
-                    to="/houses"
-                    onClick={this.addUser}
-                    className="button is-success is-fullwidth"
-                  >
+                  <Link to="/houses" onClick={this.addUser} className="button is-fullwidth" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
                     Save
                   </Link>
                 </div>
                 <div className="column is-6 has-text-centered">
-                  <Link
-                    to="/houses"
-                    className="b-close button is-danger is-fullwidth"
-                    aria-label="close"
-                  >
+                  <Link to="/houses" className="b-close button is-danger is-fullwidth" aria-label="close">
                     Cancel
                   </Link>
                 </div>
                 <div className="column is-12 has-text-centered">
-                  <Link
-                    to="/houses"
-                    data-target="modal-create"
-                    onClick={this.onAddModal}
-                    className="js-modal-create b-close button is-link is-light is-outlined"
-                  >
+                  <Link to="/houses" data-target="modal-create" onClick={this.onAddModal} className="js-modal-create b-close button is-link is-light is-outlined">
                     Create User
                   </Link>
                 </div>
@@ -643,7 +630,7 @@ export default class Houses extends Component {
                   </div>
                 </div>
                 <div className="field">
-                  <button type="submit" className="button is-success">
+                  <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
                     Save
                   </button>
                 </div>
@@ -712,7 +699,7 @@ export default class Houses extends Component {
                   </div>
                 </div>
                 <div className="field">
-                  <button type="submit" className="button is-success">
+                  <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
                     Save
                   </button>
                 </div>
@@ -767,7 +754,7 @@ export default class Houses extends Component {
                         </div>
                       </div>
                       <div className="field">
-                        <button type="submit" className="button is-success">
+                        <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
                           Save
                         </button>
                       </div>
@@ -812,6 +799,7 @@ export default class Houses extends Component {
                             </td>
                             <td>
                               <Link
+                                to="/houses"
                                 onClick={() => this.onDeleteAlert(house)}
                                 className="button"
                               >
