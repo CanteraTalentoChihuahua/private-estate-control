@@ -190,7 +190,8 @@ export default class Dashboard extends Component {
                         <th>Debt</th>
                       </tr>
                     </thead>
-                    {this.state.houses.map((house) => { if(house.Balance<0){
+                    {// eslint-disable-next-line
+                    this.state.houses.map((house) => { if(house.Balance<0){
                       return (
                         <tbody>
                           <tr role="button" key={house.IdHouse}>
