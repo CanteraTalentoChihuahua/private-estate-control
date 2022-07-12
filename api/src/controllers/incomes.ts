@@ -1,7 +1,6 @@
 import { getConnection } from "../conf/db";
 import sql from "mssql";
 import queries from "../models/incomes"
-import { upload } from "../middlewares/image";
 
 export const getIncomes = async (req: any, res: any) => {
 
@@ -20,11 +19,6 @@ export const getIncomes = async (req: any, res: any) => {
 export const createIncome = async (req: any) => {
     const { idResDev, idHouse, amount, description } = req.body;
 
-    // console.log(req);
-
-    // const receipt = upload.single("image");
-    // console.log(receipt);
-
     const d = new Date();
 
     const date = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
@@ -32,16 +26,12 @@ export const createIncome = async (req: any) => {
     console.log(idResDev + " " + idHouse + " " + amount);
 
     if (idResDev == null || idHouse == null || amount == null) {
-        console.log("Income not created");
-        // return res.status(400).json({ msg: 'Bad request. Missing some of these fields: IdResDev, IdHouse or Amount'});
         console.log('Bad request. Missing some of these fields: IdResDev, IdHouse or Amount');
     }
 
     if (description == null) {
         let description = "";
     }
-
-    console.log(date);
 
     try {
         let receipt = null;
@@ -56,12 +46,7 @@ export const createIncome = async (req: any) => {
             .input('receipt', sql.VarChar, receipt)
             .query(queries.createNewIncome);
 
-        // return res.status(201).json({ idResDev, idHouse, date, amount, description, receipt });
-        console.log("Todo bien");
-
     } catch (error) {
-        // res.status(500);
-        // res.send(error);
         console.log(error);
     }
 
@@ -115,7 +100,7 @@ export const updateIncomeById = async (req: any, res: any) => {
             .input('date', sql.Date, date)
             .input('amount', sql.Float, amount)
             .input('description', sql.VarChar, description)
-            .input('receipt', sql.Binary, receipt)
+            .input('receipt', sql.VarChar, receipt)
             .input('id', sql.Int, id)
             .query(queries.updateIncomesById)
 

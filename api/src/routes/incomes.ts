@@ -2,15 +2,13 @@ import { Router } from "express";
 import { createIncome, deleteIncomeById, getIncomeById, getIncomes, updateIncomeById } from "../controllers/incomes";
 import { upload } from "../middlewares/image";
 
-import { validateToken, validateSA } from "../middlewares/jwt";
-
 const router = Router();
 
 router.get("/get", getIncomes);
 
 router.get("/get/:id", getIncomeById);
 
-router.post("/post", /*createIncome*/upload.single("image"));
+router.post("/post", upload.single("image"), createIncome);
 
 router.put("/put/:id", updateIncomeById);
 
