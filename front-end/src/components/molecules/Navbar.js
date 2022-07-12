@@ -46,7 +46,7 @@ export default class Navbar extends Component {
     return (
       <nav className="navbar has-background-white-bis has-shadow" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
-            <div className="navbar-item"><Title title={this.state.residential} class="has-text-black-bis"/></div>
+            <div className="navbar-item"><Title title={this.state.residential} class="has-text-black-bis is-family-sans-serif"/></div>
             <span href="#"onClick={this.onBurger} role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
               <span></span>
               <span></span>

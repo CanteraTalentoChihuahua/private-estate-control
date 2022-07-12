@@ -154,21 +154,17 @@ export default class Outcomes extends Component {
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box titulo">
-                  <Title title="Outcomes" class="is-2 has-text-white" />
+                  <Title title="Outcomes" class="is-2 has-text-white is-family-sans-serif" />
                 </div>
               </div>
               <div className="column is-12">
                 <div className="box has-background-white">
                   <div className="columns mb-0">
                     <div className="column is-11">
-                      <Title title="New Outcome" class="is-4" />
+                      <Title title="New Outcome" class="is-4 is-family-sans-serif" />
                     </div>
                     <div className="column is-1">
-                      <button
-                        onClick={()=>this.onBurgerOut(0)}
-                        className="button icon outcome-form is-success"
-                        data-target="outcomesForm"
-                      >
+                      <button onClick={()=>this.onBurgerOut(0)} className="button icon outcome-form is-success" data-target="outcomesForm">
                         <FontAwesomeIcon id="icono" icon={faPlus} />
                       </button>
                     </div>
@@ -179,17 +175,7 @@ export default class Outcomes extends Component {
                       <div className="field">
                         <label className="label">Date</label>
                         <div className="control has-icons-left">
-                          <input
-                            name="date"
-                            type="date"
-                            min="2000-01-01"
-                            max="2099-12-31"
-                            placeholder="YYYY-MM-DD"
-                            required
-                            className="input"
-                            value={this.state.newOutcomes.date}
-                            onChange={this.onChangeOut}
-                          />
+                          <input name="date" type="date" min="2000-01-01" max="2099-12-31" placeholder="YYYY-MM-DD" required className="input" value={this.state.newOutcomes.date} onChange={this.onChangeOut}/>
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faCalendarAlt} />
                           </span>
@@ -198,15 +184,7 @@ export default class Outcomes extends Component {
                       <div className="field">
                         <label className="label">Description</label>
                         <div className="control has-icons-left">
-                          <input
-                            name="description"
-                            type="text"
-                            placeholder="Pago del agua"
-                            className="input"
-                            required
-                            value={this.state.newOutcomes.description}
-                            onChange={this.onChangeOut}
-                          />
+                          <input name="description" type="text" placeholder="Pago del agua" className="input" required value={this.state.newOutcomes.description} onChange={this.onChangeOut}/>
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faFileAlt} />
                           </span>
@@ -215,15 +193,7 @@ export default class Outcomes extends Component {
                       <div className="field">
                         <label className="label">Amount</label>
                         <div className="control has-icons-left">
-                          <input
-                            name="amount"
-                            type="text"
-                            placeholder="$2000.00"
-                            className="input"
-                            required
-                            value={this.state.newOutcomes.amount}
-                            onChange={this.onChangeOut}
-                          />
+                          <input name="amount" type="text" placeholder="$2000.00" className="input" required value={this.state.newOutcomes.amount} onChange={this.onChangeOut}/>
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faDollarSign} />
                           </span>
@@ -235,7 +205,7 @@ export default class Outcomes extends Component {
                       </div>
                       <div className="field">
                         <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
-                          Save
+                          <h2>Save</h2>
                         </button>
                       </div>
                     </form>
@@ -264,8 +234,7 @@ export default class Outcomes extends Component {
                             <Link
                               to={"/Outcomes/" + outcome.IdOutcome}
                               onClick={() => this.onEditarOut(outcome)}
-                              className="button"
-                            >
+                              className="button">
                               <FontAwesomeIcon icon={faEdit} />
                             </Link>
                           </td>

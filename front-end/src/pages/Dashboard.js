@@ -91,7 +91,7 @@ export default class Dashboard extends Component {
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box titulo">
-                  <Titlee title="Dashboard" class="is-2 has-text-white" />
+                  <Titlee title="Dashboard" class="is-2 has-text-white is-family-sans-serif" />
                 </div>
               </div>
               <div className="column is-9">
@@ -101,7 +101,7 @@ export default class Dashboard extends Component {
               </div>
               <div className="column is-3">
                 <div className="box has-background-white">
-                  <Titlee title="Transactions" class="is-3" />
+                  <Titlee title="Transactions" class="is-3 is-family-sans-serif" />
                   <table className="table is-fullwidth has-background-white">
                     <tbody>
                   {this.state.transactions.map((transaction) => (
@@ -113,10 +113,63 @@ export default class Dashboard extends Component {
                       {transaction.Description}</td><td className="p-0">${transaction.Amount}</td>
                     </tr>
                   ))}
-                  </tbody>
+                    </tbody>
                   </table>
                 </div>
               </div>
+
+              <div className="column is-3">
+                <div className="box has-background-success-light">
+                  <Titlee title="Incomes" class="is-4 is-family-sans-serif has-text-centered"/>
+                  <table className="table is-fullwidth has-background-success-light">
+                    <tbody>
+                      <h2 className="has-text-success has-text-centered">$9999.99</h2>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="column is-3">
+                <div className="box has-background-danger-light">
+                  <Titlee title="Outcomes" class="is-4 is-family-sans-serif has-text-centered"/>
+                  <table className="table is-fullwidth has-background-danger-light">
+                    <tbody>
+                      <h2 className="has-text-danger has-text-centered">$9999.99</h2>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="column is-3">
+                <div className="box has-background-white">
+                  <Titlee title="Balance" class="is-4 is-family-sans-serif has-text-centered"/>
+                  <table className="table is-fullwidth has-background-white">
+                    <tbody>
+                      <h2 className="has-text-centered">$9999.99</h2>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="column is-3">
+                <div className="box has-background-white">
+                  <Titlee title="Access" class="is-3 is-family-sans-serif"/>
+                  <table className="table is-fullwidth has-background-white">
+                    <tbody>
+                  {this.state.transactions.map((transaction) => (
+                    <tr key={transaction.Id}>
+                      <td className="p-0">
+                      <span className="icon has-text-link">
+                        <FontAwesomeIcon icon={faCircle} />
+                      </span>{" "}
+                      {transaction.Description}</td><td className="p-0">${transaction.Amount}</td>
+                    </tr>
+                  ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>

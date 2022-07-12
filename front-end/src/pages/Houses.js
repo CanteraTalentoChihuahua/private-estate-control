@@ -273,29 +273,16 @@ export default class Houses extends Component {
     e.preventDefault();
     if (this.state.edit) {
       axios
-        .put(
-          "https://gestion-fraccionamiento.herokuapp.com/houses/put/" +
-            this.state.idEdit,
-          this.state.newHouses
-        )
+        .put( "https://gestion-fraccionamiento.herokuapp.com/houses/put/" + this.state.idEdit, this.state.newHouses )
         .then((res) => {
           console.log(res);
           this.getHouses();
           this.onBurger();
           // eslint-disable-next-line
           this.state.edit = false;
-          this.setState({
-            newHouses: {
-              ...this.state.newHouses,
-              address: "",
-              occuppied: "",
-              balance: "",
-            },
-          });
+          this.setState({ newHouses: { ...this.state.newHouses, address: "", occuppied: "", balance: "", },});
         })
-        .catch((exception) => {
-          console.log(exception.response.data);
-        });
+        .catch((exception) => { console.log(exception.response.data); });
     } else {
       axios
         .post(
@@ -322,14 +309,7 @@ export default class Houses extends Component {
   };
   //Alert para eliminar houses
   onDeleteAlert = async (house) => {
-    Swal.fire({
-      title: "Are you sure you want to delete " + house.Address + "?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true,
+    Swal.fire({ title: "Are you sure you want to delete " + house.Address + "?", text: "You won't be able to revert this!", icon: "warning",  showCancelButton: true, confirmButtonText: "Yes, delete it!", cancelButtonText: "No, cancel!", reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
         await axios
@@ -340,30 +320,14 @@ export default class Houses extends Component {
           .then((res) => {
             console.log(res);
             this.getUsers();
-            Swal.fire({
-              icon: "success",
-              title: "Deleted!",
-              text: "The house has been deleted.",
-              showConfirmButton: false,
-              timer: 2000,
-            });
+            Swal.fire({ icon: "success", title: "Deleted!",
+              text: "The house has been deleted.", showConfirmButton: false, timer: 2000,});
           })
           .catch((exception) => {
-            Swal.fire({
-              icon: "error",
-              title: "Delete cancelled",
-              text: exception.response.data.errors[0].msg,
-              showConfirmButton: false,
-              timer: 1500,
-            });
+            Swal.fire({ icon: "error", title: "Delete cancelled", text: exception.response.data.errors[0].msg, showConfirmButton: false, timer: 1500,});
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          icon: "error",
-          title: "Delete cancelled",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        Swal.fire({icon: "error", title: "Delete cancelled", showConfirmButton: false, timer: 1500,});
       }
     });
   };
@@ -495,31 +459,24 @@ export default class Houses extends Component {
           <div className="modal-background"></div>
           <div className="modal-content">
             <div className="box">
-              <Title title="Add resident" class="is-4" />
-              <br />
-              <Select
-                name="idHouse"
-                onChange={this.onChangeSearchBar}
-                options={this.state.users.map((user) => ({
-                  label: user.FirstName + " " + user.LastName,
-                  value: user.IdUser,
-                }))}
-              />
-              <br />
+              <Title title="Add resident" class="is-4 is-family-sans-serif"/>
+              <br/>
+              <Select name="idHouse" onChange={this.onChangeSearchBar} options={this.state.users.map((user) => ({ label: user.FirstName + " " + user.LastName, value: user.IdUser, }))}/>
+              <br/>
               <div className="columns is-multiline container">
                 <div className="column is-6 has-text-centered">
                   <Link to="/houses" onClick={this.addUser} className="button is-fullwidth" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
-                    Save
+                    <h2>Save</h2>
                   </Link>
                 </div>
                 <div className="column is-6 has-text-centered">
                   <Link to="/houses" className="b-close button is-danger is-fullwidth" aria-label="close">
-                    Cancel
+                    <h2>Cancel</h2>
                   </Link>
                 </div>
                 <div className="column is-12 has-text-centered">
                   <Link to="/houses" data-target="modal-create" onClick={this.onAddModal} className="js-modal-create b-close button is-link is-light is-outlined">
-                    Create User
+                    <h2>Create User</h2>
                   </Link>
                 </div>
               </div>
@@ -532,38 +489,21 @@ export default class Houses extends Component {
           <div className="modal-background"></div>
           <div className="modal-content">
             <div className="box">
-              <Title title="Create resident" class="is-4" />
+              <Title title="Create resident" class="is-4 is-family-sans-serif" />
               <form onSubmit={this.onCreateUser}>
                 <div className="field">
                   <label className="label">Name</label>
                   <div className="control has-icons-left">
-                    <input
-                      name="firstName"
-                      type="text"
-                      id="firstName"
-                      placeholder="Bob"
-                      className="input"
-                      required
-                      value={this.state.newUsers.firstName}
-                      onChange={this.onChangeUsers}
-                    />
+                    <input name="firstName" type="text" id="firstName" placeholder="Bob" className="input" required value={this.state.newUsers.firstName} onChange={this.onChangeUsers}/>
                     <span className="icon is-small is-left">
                       <i className="fa fa-user"></i>
                     </span>
                   </div>
                 </div>
                 <div className="field">
-                  <label className="label">Lastname</label>
+                  <label className="label">Last Name</label>
                   <div className="control has-icons-left">
-                    <input
-                      name="lastName"
-                      type="text"
-                      placeholder="Smith"
-                      className="input"
-                      required
-                      value={this.state.newUsers.lastName}
-                      onChange={this.onChangeUsers}
-                    />
+                    <input name="lastName" type="text" placeholder="Smith" className="input" required value={this.state.newUsers.lastName} onChange={this.onChangeUsers}/>
                     <span className="icon is-small is-left">
                       <i className="fa fa-user"></i>
                     </span>
@@ -572,15 +512,7 @@ export default class Houses extends Component {
                 <div className="field">
                   <label className="label">Phone number</label>
                   <div className="control has-icons-left">
-                    <input
-                      name="phoneNumber"
-                      type="text"
-                      placeholder="6141234567"
-                      className="input"
-                      required
-                      value={this.state.newUsers.phoneNumber}
-                      onChange={this.onChangeUsers}
-                    />
+                    <input name="phoneNumber" type="text" placeholder="6141234567" className="input" required value={this.state.newUsers.phoneNumber} onChange={this.onChangeUsers}/>
                     <span className="icon is-small is-left">
                       <i className="fa fa-mobile"></i>
                     </span>
@@ -589,15 +521,7 @@ export default class Houses extends Component {
                 <div className="field">
                   <label className="label">Email</label>
                   <div className="control has-icons-left">
-                    <input
-                      name="email"
-                      type="email"
-                      placeholder="e.g. bobsmith@gmail.com"
-                      className="input"
-                      required
-                      value={this.state.newUsers.email}
-                      onChange={this.onChangeUsers}
-                    />
+                    <input name="email" type="email" placeholder="e.g. bobsmith@gmail.com" className="input" required value={this.state.newUsers.email} onChange={this.onChangeUsers}/>
                     <span className="icon is-small is-left">
                       <i className="fa fa-envelope"></i>
                     </span>
@@ -606,16 +530,7 @@ export default class Houses extends Component {
                 <div className="field">
                   <label className="label">Password</label>
                   <div className="control has-icons-left">
-                    <input
-                      id="passwordInput"
-                      name="password"
-                      type="password"
-                      placeholder="*******"
-                      className="input"
-                      required
-                      value={this.state.newUsers.password}
-                      onChange={this.onChangeUsers}
-                    />
+                    <input id="passwordInput" name="password" type="password" placeholder="*******" className="input" required value={this.state.newUsers.password} onChange={this.onChangeUsers}/>
                     <span className="icon is-small is-left">
                       <i className="fa fa-lock"></i>
                     </span>
@@ -624,15 +539,7 @@ export default class Houses extends Component {
                 <div className="field">
                   <label className="label">FaceId</label>
                   <div className="control has-icons-left">
-                    <input
-                      name="faceId"
-                      type="text"
-                      placeholder="TuCara"
-                      className="input"
-                      required
-                      value={this.state.newUsers.faceId}
-                      onChange={this.onChangeUsers}
-                    />
+                    <input name="faceId" type="text" placeholder="TuCara" className="input" required value={this.state.newUsers.faceId} onChange={this.onChangeUsers}/>
                     <span className="icon is-small is-left">
                       <i className="fa fa-smile-plus"></i>
                     </span>
@@ -641,12 +548,12 @@ export default class Houses extends Component {
                 <div className="columns">
                 <div className="field column is-6">
                   <button type="submit" className="button is-fullwidth" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
-                    Save
+                    <h2>Save</h2>
                   </button>
                 </div>
                 <div className="column is-6">
                   <Link to="/houses" className="b-close button is-danger is-fullwidth" aria-label="close">
-                  Cancel
+                    <h2>Cancel</h2>
                   </Link>
                 </div>
                 </div>
@@ -660,7 +567,7 @@ export default class Houses extends Component {
           <div className="modal-background"></div>
           <div className="modal-content">
             <div className="box">
-              <Title title="Update resident" class="is-4" />
+              <Title title="Update resident" class="is-4 is-family-sans-serif" />
               <form onSubmit={this.onUpdateUser}>
                 <div className="field">
                   <label className="label">Name</label>
@@ -717,12 +624,12 @@ export default class Houses extends Component {
                 <div className="columns">
                 <div className="field column is-6 has-text-centered">
                   <button type="submit" className="button is-fullwidth" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
-                    Save
+                    <h2>Save</h2>
                   </button>
                 </div>
                 <div className="column is-6 has-text-centered">
                   <Link to="/houses" className="b-close button is-danger is-fullwidth" aria-label="close">
-                    Cancel
+                    <h2>Cancel</h2>
                   </Link>
                 </div>
                 </div>
@@ -738,14 +645,14 @@ export default class Houses extends Component {
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box titulo">
-                  <Title title="Houses" class="is-2 has-text-white" />
+                  <Title title="Houses" class="is-2 has-text-white is-family-sans-serif" />
                 </div>
               </div>
               <div className="column is-12">
                 <div className="box has-background-white">
                   <div className="columns mb-0">
                     <div className="column is-11">
-                      <Title title="New House" class="is-4" />
+                      <Title title="New House" class="is-4 is-family-sans-serif" />
                     </div>
                     <div className="column is-1">
                       <button

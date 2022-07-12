@@ -205,28 +205,21 @@ export default class Incomes extends Component {
         <Navbar />
         <section className="main-content columns is-multiline is-variable">
           <Sidebar />
-          <div
-            className="column box has-background-white-ter"
-            style={{ marginRight: "14px" }}
-          >
+          <div className="column box has-background-white-ter" style={{ marginRight: "14px" }}>
             <div className="columns is-multiline" style={{ marginTop: "5px" }}>
               <div className="column is-12">
                 <div className="box titulo">
-                  <Title title="Incomes" class="is-2 has-text-white" />
+                  <Title title="Incomes" class="is-2 has-text-white is-family-sans-serif" />
                 </div>
               </div>
               <div className="column is-12">
                 <div className="box has-background-white">
                   <div className="columns mb-0">
                     <div className="column is-11">
-                      <Title title="New Income" class="is-4" />
+                      <Title title="New Income" class="is-4 is-family-sans-serif" />
                     </div>
                     <div className="column is-1">
-                      <button
-                        onClick={()=>this.onBurgerIn(0)}
-                        className="button icon income-form is-success"
-                        data-target="incomesForm"
-                      >
+                      <button onClick={()=>this.onBurgerIn(0)} className="button icon income-form is-success" data-target="incomesForm">
                         <FontAwesomeIcon id="icono" icon={faPlus} />
                       </button>
                     </div>
@@ -237,17 +230,7 @@ export default class Incomes extends Component {
                       <div className="field">
                         <label className="label">Date</label>
                         <div className="control has-icons-left">
-                          <input
-                            name="date"
-                            value={this.state.newIncomes.date}
-                            min="2000-01-01"
-                            max="2099-12-31"
-                            type="date"
-                            placeholder="YYYY-MM-DD"
-                            className="input"
-                            required
-                            onChange={this.onChangeIn}
-                          />
+                          <input name="date" value={this.state.newIncomes.date} min="2000-01-01" max="2099-12-31" type="date" placeholder="YYYY-MM-DD" className="input" required onChange={this.onChangeIn}/>
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faCalendarAlt} />
                           </span>
@@ -256,15 +239,7 @@ export default class Incomes extends Component {
                       <div className="field">
                         <label className="label">Description</label>
                         <div className="control has-icons-left">
-                          <input
-                            name="description"
-                            type="text"
-                            placeholder="House 74 Payment"
-                            className="input"
-                            required
-                            value={this.state.newIncomes.description}
-                            onChange={this.onChangeIn}
-                          />
+                          <input name="description" type="text" placeholder="House 74 Payment" className="input" required value={this.state.newIncomes.description} onChange={this.onChangeIn}/>
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faFileAlt} />
                           </span>
@@ -273,15 +248,7 @@ export default class Incomes extends Component {
                       <div className="field">
                         <label className="label">Amount</label>
                         <div className="control has-icons-left">
-                          <input
-                            name="amount"
-                            type="number"
-                            placeholder="$500.00"
-                            className="input"
-                            required
-                            value={this.state.newIncomes.amount}
-                            onChange={this.onChangeIn}
-                          />
+                          <input name="amount" type="number" placeholder="$500.00" className="input" required value={this.state.newIncomes.amount} onChange={this.onChangeIn}/>
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faDollarSign} />
                           </span>
@@ -291,11 +258,7 @@ export default class Incomes extends Component {
                       <label className="label">Receipt</label>
                         <div class="file has-name">
                           <label class="file-label">
-                            <input
-                              class="file-input"
-                              type="file"
-                              name="receipt"
-                            />
+                            <input class="file-input" type="file" name="receipt"/>
                             <span class="file-cta">
                               <span class="file-icon">
                               <FontAwesomeIcon icon={faFile} />
@@ -311,16 +274,7 @@ export default class Incomes extends Component {
                       <div className="field">
                         <label className="label">Address</label>
                         <div className="control has-icons-left">
-                          <Select
-                            name="idHouse"
-                            className=""
-                            onChange={this.onChangeSearchBar}
-                            options={this.state.houses.map((house) => ({
-                              label: house.Address,
-                              value: house.IdHouse,
-                              balance: house.Balance,
-                            }))}
-                          />
+                          <Select name="idHouse" className="" onChange={this.onChangeSearchBar} options={this.state.houses.map((house) => ({ label: house.Address, value: house.IdHouse, balance: house.Balance, }))}/>
                         </div>
                       </div>
                       <div className="field">
@@ -329,7 +283,7 @@ export default class Incomes extends Component {
                       </div>
                       <div className="field">
                         <button type="submit" className="button" style={{ backgroundColor: "#47b181", color: "#FFF" }}>
-                          Save
+                          <h2>Save</h2>
                         </button>
                       </div>
                     </form>
@@ -355,11 +309,7 @@ export default class Incomes extends Component {
                           <td>{income.Description}</td>
                           <td>{income.Amount}</td>
                           <td>
-                            <Link
-                              to={"/Incomes/" + income.IdIncome}
-                              onClick={() => this.onEditarIn(income)}
-                              className="button"
-                            >
+                            <Link to={"/Incomes/" + income.IdIncome} onClick={() => this.onEditarIn(income)} className="button">
                               <FontAwesomeIcon icon={faEdit} />
                             </Link>
                           </td>
