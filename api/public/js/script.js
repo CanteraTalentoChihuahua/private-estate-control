@@ -1,4 +1,5 @@
 const video = document.getElementById('videoInput');
+let halt = true;
 
 Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri('models'),
@@ -53,20 +54,30 @@ async function recognizeFaces() {
             const results = resizedDetections.map((d) => {
                 return faceMatcher.findBestMatch(d.descriptor)
             })
-            results.forEach( (result, i) => {
+            results.every( (result, i) => {
                 const box = resizedDetections[i].detection.box
                 const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
                 drawBox.draw(canvas)
+                if (halt) {
+                    return true;   
+                } else {
+                    return false;
+                }
             })
-            detections.forEach( fd => {
+            detections.every( fd => {
                 const bestMatch = faceMatcher.findBestMatch(fd.descriptor)
                 if (bestMatch.toString().includes("unknown")) {
                     console.log("ACCESS DENIED TO: " + bestMatch.toString())
                 } else {
                     console.log("OLD DATA: " + bestMatch.toString())
                     const newMatch = bestMatch.toString().replace(/[0-9\(\).]/g, '')
-                    console.log("ACCES GRANTED TO: " + newMatch)
+                    if (newMatch == 'Brayan Paul Salas ') {
+                      console.log("ACCES GRANTED TO: " + newMatch);
+                      halt = false;
+                      return false;
+                    }
                 }
+                return true;
             })
         }, 200)
         
