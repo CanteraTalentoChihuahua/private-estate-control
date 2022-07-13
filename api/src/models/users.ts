@@ -1,4 +1,6 @@
 export default {
+    getUserByName: `SELECT IdUser, FirstName + ' ' + LastName + ' ' AS 'FullName' FROM T_Users WHERE FirstName + ' ' + LastName + ' ' = @faceName`,
+    accessEntry: `INSERT INTO T_Accesses (IdUser, Date) VALUES (@idUser, @date)`,
     getAllUsers: 'SELECT * FROM T_Users ORDER BY LastName',
     createNewUser: `INSERT INTO T_Users (IdResDev, FirstName, LastName, PhoneNumber, Email, Password, Active, FaceID, Role) 
     VALUES (@idResDev, @firstName, @lastName, @phoneNumber, @email, @password, @active, @faceId, 3)`,

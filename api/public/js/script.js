@@ -1,4 +1,8 @@
+import sql from "../../node_modules/@types/mssql/index";
+
 const video = document.getElementById('videoInput');
+const userByName = `SELECT IdUser, FirstName + ' ' + LastName + ' ' AS 'FullName' FROM T_Users WHERE FirstName + ' ' + LastName + ' ' = @faceName`;
+const accessRegister = `INSERT INTO T_Accesses (IdUser, Date) VALUES (@idUser, @date)`;
 let halt = true;
 
 Promise.all([
@@ -6,14 +10,6 @@ Promise.all([
     faceapi.nets.faceLandmark68Net.loadFromUri('models'),
     faceapi.nets.ssdMobilenetv1.loadFromUri('models') //heavier/accurate version of tiny face detector
 ]).then(start)
-
-function startVideo(){
-    navigator.mediaDevices.getUserMedia(
-        { video: true }
-    ).then(function (stream){
-        video.srcObject = stream;
-    })
-};
 
 function start() {
     document.body.append('Models Loaded\n')
@@ -51,6 +47,10 @@ async function recognizeFaces() {
 
             canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
 
+            console.log("CURRENT HALT 1: " + halt);
+
+            if (halt) {
+
             const results = resizedDetections.map((d) => {
                 return faceMatcher.findBestMatch(d.descriptor)
             })
@@ -58,11 +58,7 @@ async function recognizeFaces() {
                 const box = resizedDetections[i].detection.box
                 const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
                 drawBox.draw(canvas)
-                if (halt) {
-                    return true;   
-                } else {
-                    return false;
-                }
+                return true;
             })
             detections.every( fd => {
                 const bestMatch = faceMatcher.findBestMatch(fd.descriptor)
@@ -74,16 +70,20 @@ async function recognizeFaces() {
                     if (newMatch == 'Brayan Paul Salas ') {
                       console.log("ACCES GRANTED TO: " + newMatch);
                       halt = false;
+                      console.log("CURRENT HALT 2: " + halt);
                       return false;
                     }
                 }
                 return true;
             })
+            } else { 
+                console.log("FACE ID DONE, REDIRECTING...")
+                loadFromDatabase(newMatch);
+            } 
         }, 200)
         
     })
 }
-
 
 function loadLabeledImages() {
     //const labels = ['Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
@@ -101,4 +101,49 @@ function loadLabeledImages() {
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         })
     )
+}
+
+async function getConnection() {
+    try {
+        const pool = await sql.connect(
+            {
+                user: process.env.USER,
+                password: process.env.PASSWORD,
+                server: process.env.SERVER,
+                port: Number(process.env.DBPORT),
+                database: process.env.DATABASE,
+                options: {
+                    encrypt: false,
+                    trustServerCertificate: false
+                }
+            }
+        )
+        return pool;
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+async function loadFromDatabase(faceName){
+    let setDate = '2022-07-13'
+    try {
+        const pool = await getConnection();
+        const match = await pool?.request()
+            .input('faceName', faceName)
+            .query(userByName)
+
+        if (faceName == match?.recordset[0].FullName) {
+            console.log("Access log registered")
+            return await pool?.request()
+                .input('idUser', match?.recordset[0].IdUser)
+                .input('date', setDate)
+                .query(accessRegister)
+        } else {
+            return console.log("Not a user or face with that name registered")
+        } 
+
+    } catch (error) {
+        return console.log(error)
+    }
 }
