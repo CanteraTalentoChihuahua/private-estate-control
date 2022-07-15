@@ -7,13 +7,14 @@ import * as swaggerDoc from "./swagger.json";
 import authRoutes from "./routes/auth";
 import accountRoutes from "./routes/account";
 import dashboardRoutes from "./routes/dashboard";
+import filterRoutes from "./routes/filter";
 import housesRoutes from "./routes/houses";
 import expensesRoutes from "./routes/expenses";
 import usersRoutes from "./routes/users";
 import accessRoutes from "./routes/access";
 import outcomesRoutes from "./routes/outcomes";
 import incomesRoutes from "./routes/incomes";
-//import facerecognitionRoutes from "./routes/facerecognition";
+
 import residentials from "./routes/residentials";
 import registryRoutes from "./routes/registry";
 
@@ -40,7 +41,7 @@ app.use('/access', accessRoutes);
 app.use('/account', accountRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/expenses', expensesRoutes);
-//app.use('/facerecognition', facerecognitionRoutes);
+
 app.use('/houses', housesRoutes);
 app.use('/incomes', incomesRoutes);
 app.use('/login', authRoutes);
