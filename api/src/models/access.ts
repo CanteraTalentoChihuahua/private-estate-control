@@ -9,5 +9,6 @@ export default {
         END as AccessType,
     T_Accesses.Date
     FROM T_Accesses
-    INNER JOIN T_Users ON T_Accesses.IdUser = T_Users.IdUser`
+    INNER JOIN T_Users ON T_Accesses.IdUser = T_Users.IdUser
+    ORDER BY T_Accesses.Date;`
 }
