@@ -14,9 +14,9 @@ import usersRoutes from "./routes/users";
 import accessRoutes from "./routes/access";
 import outcomesRoutes from "./routes/outcomes";
 import incomesRoutes from "./routes/incomes";
-
 import residentials from "./routes/residentials";
 import registryRoutes from "./routes/registry";
+import platesRoutes from "./routes/plates";
 
 dotenv.config();
 
@@ -41,11 +41,11 @@ app.use('/access', accessRoutes);
 app.use('/account', accountRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/expenses', expensesRoutes);
-
 app.use('/houses', housesRoutes);
 app.use('/incomes', incomesRoutes);
 app.use('/login', authRoutes);
 app.use('/outcomes', outcomesRoutes);
+app.use('/plates', platesRoutes);
 app.use('/registry', registryRoutes);
 app.use('/residentials', residentials);
 app.use('/users', usersRoutes);
