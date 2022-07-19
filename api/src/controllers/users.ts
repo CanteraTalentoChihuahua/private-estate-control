@@ -3,8 +3,9 @@ import sql from "mssql";
 import queries from "../models/users";
 import queriesReport from "../models/reports";
 import bcryptjs from "bcryptjs";      
+import { request, response } from "express";
 
-export const getUsers = async (req: any, res: any) => {
+export const getUsers = async (req = request, res = response) => {
 
     try {
         const pool = await getConnection();
@@ -20,20 +21,8 @@ export const getUsers = async (req: any, res: any) => {
     }
 }
 
-export const createUser = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber, email, password, active = 1, faceId } = req.body;
-
-    if (idResDev == null || firstName == null || lastName == null || email == null || password == null) {
-        console.log("User not created");
-        return res.status(400).json({ msg: 'Bad request. Missing some of these fields: IdResDev, FirstName, LastName, Email, Password' });
-    }
-
-    if (phoneNumber == null) {
-        let phoneNumber = "";
-    }
-    if (faceId == null) {
-        let faceId = "";
-    }
+export const createUser = async (req = request, res = response) => {
+    const { idResDev, firstName, lastName, phoneNumber = "", email, password, active = 1, faceId = "", idHouse } = req.body;
 
     try {
         const pool = await getConnection();
@@ -49,6 +38,15 @@ export const createUser = async (req: any, res: any) => {
             .input('faceId', sql.VarChar, faceId)
             .query(queries.createNewUser);
 
+        const allUsers = await pool?.request()
+            .input('email', sql.VarChar, email)
+            .query(queries.getUserByEmail);
+
+        const link = await pool?.request()
+            .input('idHouse', sql.Int, idHouse)
+            .input('idUser', sql.Int, allUsers?.recordset[0].IdUser)
+            .query(queriesReport.createUsersHousesRegister)
+        
         return res.status(201).json({ idResDev, firstName, lastName, phoneNumber, 
             email, password, active, faceId });
 
@@ -59,7 +57,7 @@ export const createUser = async (req: any, res: any) => {
 
 }
 
-export const getUserById = async (req: any, res: any) => {
+export const getUserById = async (req = request, res = response) => {
     const { id } = req.params;
 
     try {
@@ -67,6 +65,12 @@ export const getUserById = async (req: any, res: any) => {
         const result = await pool?.request()
         .input('id', id)
         .query(queries.getUserById);
+
+        if ((result?.recordset.length == 0)) {
+            return res.status(400).json({
+                msg: `El usuario con el id: '${id}' no existe`
+            });
+        }
 
         res.status(200);
         res.send(result?.recordset[0]);
@@ -78,7 +82,7 @@ export const getUserById = async (req: any, res: any) => {
     //  TODO: Http responses => 403 forbidden; 404 not found
 }
 
-export const deleteUserById = async (req: any, res: any) => {
+export const deleteUserById = async (req = request, res = response) => {
     const { id } = req.params;
 
     try {
@@ -95,13 +99,12 @@ export const deleteUserById = async (req: any, res: any) => {
         
     } catch (error) {
         res.status(500).send(error);
-        
     }
 
     // TODO: Same http responses as in get by id
 }
 
-export const unlinkUserById = async (req: any, res: any) => {
+export const unlinkUserById = async (req = request, res = response) => {
     const { idUser } = req.params;
     const { idHouse } = req.body;
 
@@ -111,7 +114,11 @@ export const unlinkUserById = async (req: any, res: any) => {
         .input('idUser', sql.Int, idUser)
         .input('idHouse', sql.Int, idHouse)
         .query(queries.unlinkUserHouse)
-    
+
+        if (relationship?.rowsAffected[0] == 0) {
+            return res.status(500).send("No se pudo eliminar la relacion");
+        }
+
         res.sendStatus(200);
         
     } catch (error) {
@@ -122,7 +129,7 @@ export const unlinkUserById = async (req: any, res: any) => {
     // TODO: Same http responses as in get by id
 }
 
-export const getTotalUsers = async (req: any, res: any) => {
+export const getTotalUsers = async (req = request, res = response) => {
     const pool = await getConnection();
     const result = await pool?.request()
     .query(queries.getTotalUsers);
@@ -132,8 +139,8 @@ export const getTotalUsers = async (req: any, res: any) => {
     //TODO: Maybe not to be kept
 }
 
-export const updateUserById = async (req: any, res: any) => {
-    const { idResDev, firstName, lastName, phoneNumber, email, password, active, faceId, idHouse, idUser } = req.body;
+export const updateUserById = async (req = request, res = response) => {
+    const { idResDev, firstName, lastName, phoneNumber, active = true, faceId = ""} = req.body;
     const { id } = req.params;
 
     let index = 0;
@@ -146,13 +153,32 @@ export const updateUserById = async (req: any, res: any) => {
         .input('firstName', sql.VarChar, firstName)
         .input('lastName', sql.VarChar, lastName)
         .input('phoneNumber', sql.VarChar, phoneNumber)
-        .input('email', sql.VarChar, email)
         //.input('password', sql.VarChar, bcryptjs.hashSync(password))
         .input('active', sql.Bit, active)
         .input('faceId', sql.VarChar, faceId)
         .input('id', sql.Int, id)
         .query(queries.updateUsersById)
 
+        res.status(200).json({ id, firstName, lastName, phoneNumber, idResDev });
+        
+    } catch (error) {
+        res.status(500).send(error);
+    }
+
+    // TODO: same http responses as previous todo mentioned
+
+}
+
+
+export const linkUserHouse = async (req = request, res = response) => {
+    const { idHouse } = req.body;
+    const { idUser } = req.params;
+
+    let index = 0;
+    let c = 0;
+
+    try {
+        const pool = await getConnection()
     
         const getReport = await pool?.request()
         .query(queriesReport.getAllUsersHouses);
@@ -167,7 +193,7 @@ export const updateUserById = async (req: any, res: any) => {
             }
 
         if ((c >= index) == true) {
-            const insertUsersHouses = await pool?.request()
+            await pool?.request()
             .input('idHouse', sql.Int, idHouse)
             .input('idUser', sql.Int, idUser)
             .query(queriesReport.createUsersHousesRegister); 
@@ -176,13 +202,13 @@ export const updateUserById = async (req: any, res: any) => {
             console.log("Unable to insert on users & houses relationship " + c + " C - I " + index);
         }
 
-        res.status(200).json({ idResDev, firstName, lastName, phoneNumber, email,
-            password, active, faceId, idHouse, idUser });
+        res.status(200).json({ "Data linked": {
+            "IdHouse": idHouse, 
+            "IdUser": idUser
+        } });
         
     } catch (error) {
         res.status(500).send(error);
     }
-
-    // TODO: same http responses as previous todo mentioned
 
 }

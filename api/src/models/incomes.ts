@@ -1,4 +1,7 @@
 export default {
+    getHouseIncome: 'SELECT Balance FROM T_Houses WHERE IdHouse = @idHouse',
+    updateHouseBalance: `UPDATE T_Houses SET Balance = @finalBalance
+    WHERE IdHouse = @idHouse`,
     getAllIncomes: 'SELECT * FROM T_Incomes',
     createNewIncome: `INSERT INTO T_Incomes (IdResDev, IdHouse, Date, Amount, Description, Receipt) 
     VALUES (@idResDev, @idHouse, @date, @amount, @description, @receipt)`,
