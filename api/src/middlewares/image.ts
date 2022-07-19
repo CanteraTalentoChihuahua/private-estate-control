@@ -4,10 +4,10 @@ import { createIncome } from "../controllers/incomes";
 const path = "uploads/";            //TODO: Change path to the path of the server where the receipts will be stored
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function (req: any, file: any, cb: any) {
         cb(null, path)
     },
-    filename: function (req, file, cb) {
+    filename: function (req: any, file: any, cb: any) {
         console.log(file);
         console.log(req.body);
         let name = `${Date.now()}_${file.originalname}`;
