@@ -86,11 +86,10 @@ async function recognizeFaces() {
 
 async function loadLabeledImages() {
     //const labels = ['Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
-    //const labels = ['Arnoldo Valdez', 'Arturo Balsimelli', 'Brayan Paul Salas', 'Javier Medrano' , 'Karol Gutierrez'] // Webcam
+    const labels = ['Arnoldo Valdez', 'Arturo Balsimelli', 'Brayan Paul Salas', 'Javier Medrano' , 'Karol Gutierrez'] // Webcam
     console.log(fetchPeople());
-    if (fetchPeople) {
         return Promise.all(
-            fetchPeople.map(async (label)=>{
+            labels.map(async (label)=>{
                 const descriptions = []
                 for(let i=1; i<=2; i++) {
                     const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`)
@@ -102,7 +101,6 @@ async function loadLabeledImages() {
                 return new faceapi.LabeledFaceDescriptors(label, descriptions)
             })
         )
-    }
 }
 
 async function fetchAsync(url) {

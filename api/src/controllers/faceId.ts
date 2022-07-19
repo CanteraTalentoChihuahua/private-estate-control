@@ -1,10 +1,10 @@
 import { getConnection } from "../conf/db";
+import sql from "mssql";
 
 const userByName = `SELECT IdUser, FirstName + ' ' + LastName AS 'FullName' FROM T_Users WHERE FirstName + ' ' + LastName = @faceName`;
-const accessRegister = `INSERT INTO T_Accesses (IdUser, Date) VALUES (@idUser, @date)`;
+const accessRegister = `INSERT INTO T_Accesses (IdUser, Date, IsFaceRecon) VALUES (@idUser, @date, 1)`;
 
 export async function loadPeople(req: any, res: any){
-    let setDate = '2022-07-13'
     const fName = `SELECT FirstName + ' ' + LastName AS 'FullName' FROM T_Users`;
     let i = 0;
     let arr = [];
@@ -33,7 +33,8 @@ export const loadFromDatabase = async (req: any, res: any) => {
     let finalName = name.slice(0, -1)
     const resp = {response: finalName}
 
-    let setDate = '2022-07-13'
+    const d = new Date();
+    const date = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 
     try {
         const pool = await getConnection();
@@ -43,10 +44,10 @@ export const loadFromDatabase = async (req: any, res: any) => {
 
         if (finalName == match?.recordset[0].FullName) {
             await pool?.request()
-                .input('idUser', match?.recordset[0].IdUser)
-                .input('date', setDate)
+                .input('idUser', sql.Int, match?.recordset[0].IdUser)
+                .input('date', sql.DateTime2, date)
                 .query(accessRegister)
-            console.log("Access log registered")
+            console.log("Access log registered" + date)
             return res.json({response: match?.recordset[0].FullName});
         } else {
             return console.log("Not a user or face with that name registered")
