@@ -5,7 +5,7 @@ let urlMatch = "";
 Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri('models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('models'),
-    faceapi.nets.ssdMobilenetv1.loadFromUri('models') //heavier/accurate version of tiny face detector
+    faceapi.nets.ssdMobilenetv1.loadFromUri('models')
 ]).then(start)
 
 function start() {
@@ -87,14 +87,15 @@ async function recognizeFaces() {
 async function loadLabeledImages() {
     //const labels = ['Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
     const labels = ['Arnoldo Valdez', 'Arturo Balsimelli', 'Brayan Paul Salas', 'Javier Medrano' , 'Karol Gutierrez'] // Webcam
-    console.log(fetchPeople());
+    //const labels = await fetchPeople('http://localhost:2000/face-id/fetch/people')
+    console.log(labels);
         return Promise.all(
             labels.map(async (label)=>{
                 const descriptions = []
                 for(let i=1; i<=2; i++) {
                     const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`)
                     const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                    console.log("CHECK WE " + label + i + JSON.stringify(detections))
+                    //console.log("CHECK WE " + label + i + JSON.stringify(detections))
                     descriptions.push(detections.descriptor)
                 }
                 document.body.append(label+' Faces Loaded | ')
@@ -109,13 +110,8 @@ async function fetchAsync(url) {
     console.log(data);
 }
 
-async function fetchPeople() {
-    let responsePeople = await fetch('http://localhost:2000/face-id/fetch/people');
+const fetchPeople = async (urlPeople) => {
+    let responsePeople = await fetch(urlPeople);
     let objPeople = await responsePeople.json();
-    let labelsPeople = [];
-    for (let index = 0; index < objPeople.length; index++) {
-        const element = objPeople[index];
-        labelsPeople.push(element.FullName);
-    }
-    return labelsPeople;
+    return objPeople;
 }

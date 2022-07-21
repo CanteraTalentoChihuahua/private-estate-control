@@ -4,7 +4,7 @@ import sql from "mssql";
 const userByName = `SELECT IdUser, FirstName + ' ' + LastName AS 'FullName' FROM T_Users WHERE FirstName + ' ' + LastName = @faceName`;
 const accessRegister = `INSERT INTO T_Accesses (IdUser, Date, IsFaceRecon) VALUES (@idUser, @date, 1)`;
 
-export async function loadPeople(req: any, res: any){
+export const loadPeople = async (req: any, res: any) => {
     const fName = `SELECT FirstName + ' ' + LastName AS 'FullName' FROM T_Users`;
     let i = 0;
     let arr = [];
@@ -13,13 +13,11 @@ export async function loadPeople(req: any, res: any){
         const pool = await getConnection();
         const getPeople = await pool?.request()
             .query(fName)
-        
         while (getPeople?.recordset[i]) {
-            arr.push(getPeople?.recordset[i]);
+            arr.push(getPeople?.recordset[i].FullName);
             i++;
         }
-
-        return arr;
+        return res.send(arr);
 
     } catch (error) {
         return console.log(error)
@@ -47,7 +45,6 @@ export const loadFromDatabase = async (req: any, res: any) => {
                 .input('idUser', sql.Int, match?.recordset[0].IdUser)
                 .input('date', sql.DateTime2, date)
                 .query(accessRegister)
-            console.log("Access log registered" + date)
             return res.json({response: match?.recordset[0].FullName});
         } else {
             return console.log("Not a user or face with that name registered")
