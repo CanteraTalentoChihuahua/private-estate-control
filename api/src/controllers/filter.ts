@@ -9,12 +9,22 @@ export const filter = async (req: any, res: any) => {
 
         const pool = await getConnection();
 
+        console.log(req.body);
+
         switch (req.body.filter) {
             case "dates":
+
+                let initialdate = String.raw`'` + req.body.iniDate + String.raw`'`;
+                let finaldate = String.raw`'` + req.body.endDate + String.raw`'`;
+
                 const resDates = await pool?.request()
-                    .input('iniDate', sql.VarChar, req.body.iniDate)
-                    .input('endDate', sql.VarChar, req.body.endDate)
+                    .input('iniDate', initialdate)
+                    .input('endDate', finaldate)
                     .query(queries.dates);
+
+                console.log(queries.dates);
+
+                res.send(resDates);
                 break;
 
             case "datesDesc":
@@ -22,6 +32,8 @@ export const filter = async (req: any, res: any) => {
                     .input('iniDate', sql.VarChar, req.body.iniDate)
                     .input('endDate', sql.VarChar, req.body.endDate)
                     .query(queries.dates);
+
+                res.send(resDatesDesc);
                 break;
 
             case "datesAsc":
@@ -29,6 +41,8 @@ export const filter = async (req: any, res: any) => {
                     .input('iniDate', sql.VarChar, req.body.iniDate)
                     .input('endDate', sql.VarChar, req.body.endDate)
                     .query(queries.dates);
+
+                res.send(resDatesAsc);
                 break;
 
             case "DespDesc":
@@ -36,6 +50,7 @@ export const filter = async (req: any, res: any) => {
                     .query(queries.dateDesc);
 
                 res.send(resDespDesc?.recordset[0]);
+
                 break;
 
             case "DespAsc":
@@ -60,6 +75,7 @@ export const filter = async (req: any, res: any) => {
                 break;
 
             default:
+                res.send("There is not a filter for that" + req.body.filter);
                 break;
         }
 

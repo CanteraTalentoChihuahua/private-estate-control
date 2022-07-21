@@ -18,6 +18,7 @@ import incomesRoutes from "./routes/incomes";
 import residentials from "./routes/residentials";
 import registryRoutes from "./routes/registry";
 import imagesRoutes from "./routes/image";
+import filter from "./models/filter";
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ app.use('/account', accountRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/expenses', expensesRoutes);
 //app.use('/facerecognition', facerecognitionRoutes);
+app.use('/filter', filterRoutes);
 app.use('/houses', housesRoutes);
 app.use('/incomes', incomesRoutes);
 app.use('/login', authRoutes);
