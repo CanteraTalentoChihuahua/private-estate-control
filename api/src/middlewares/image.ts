@@ -8,12 +8,7 @@ const storage = multer.diskStorage({
         cb(null, path)
     },
     filename: function (req: any, file: any, cb: any) {
-        console.log(file);
-        console.log(req.body);
-        let name = `${Date.now()}_${file.originalname}`;
-        const pathname = path + name;
-        req.body.path = pathname;
-        createIncome(req);
+        let name = `${req.body.prefix}_${file.originalname}`;
         cb(null, name)
     }
 })
