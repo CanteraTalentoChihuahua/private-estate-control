@@ -16,14 +16,13 @@ export const getIncomes = async (req: any, res: any) => {
     }
 }
 
-export const createIncome = async (req: any) => {
+export const createIncome = async (req: any, res: any) => {
     const { idResDev, idHouse, amount, description } = req.body;
 
     const d = new Date();
-
     const date = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 
-    console.log(idResDev + " " + idHouse + " " + amount);
+    // console.log(idResDev + " " + idHouse + " " + amount);
 
     if (idResDev == null || idHouse == null || amount == null) {
         console.log('Bad request. Missing some of these fields: IdResDev, IdHouse or Amount');
@@ -34,7 +33,7 @@ export const createIncome = async (req: any) => {
     }
 
     try {
-        let receipt = null;
+        const fname = `${req.body.prefix}_${req.body.filename}`;
         const pool = await getConnection();
 
         const result = await pool?.request()
@@ -43,11 +42,25 @@ export const createIncome = async (req: any) => {
             .input('date', sql.Date, date)
             .input('amount', sql.Float, amount)
             .input('description', sql.VarChar, description)
-            .input('receipt', sql.VarChar, receipt)
+            .input('receipt', sql.VarChar, fname)
             .query(queries.createNewIncome);
+
+        const resultbal = await pool?.request()
+            .input('id', sql.Int, idHouse)
+            .query(queries.getABalance);
+
+        const newbal = Number(resultbal?.recordset[0].Balance) + Number(amount);
+
+        const resultupd = await pool?.request()
+            .input('balance', sql.Float, newbal)
+            .input('id', sql.Int, idHouse)
+            .query(queries.updateHouseBal);
+
+        res.status(200).send("todobien");
 
     } catch (error) {
         console.log(error);
+        res.send(error);
     }
 
 }
