@@ -1,5 +1,5 @@
 export default {
-    dates: `SELECT * FROM T_Incomes WHERE Date BETWEEN '@iniDate' AND '@endDate'`,
+    dates: "SELECT * FROM T_Incomes WHERE Date BETWEEN @iniDate AND @endDate",
     datesDesc: `SELECT * FROM T_Incomes WHERE Date BETWEEN @iniDate AND @endDate ORDER BY Date DESC`,
     datesAsc: `SELECT * FROM T_Incomes WHERE Date BETWEEN @iniDate AND @endDate ORDER BY Date`,
     despDesc: `SELECT * FROM T_Incomes ORDER BY Description DESC`,
