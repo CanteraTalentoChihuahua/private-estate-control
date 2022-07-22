@@ -16,14 +16,12 @@ export const getIncomes = async (req: any, res: any) => {
     }
 }
 
-export const createIncome = async (req: any) => {
+export const createIncome = async (req: any, res: any) => {
     const { idResDev, idHouse, amount, description } = req.body;
 
     const d = new Date();
 
     const date = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-
-    console.log(idResDev + " " + idHouse + " " + amount);
 
     if (idResDev == null || idHouse == null || amount == null) {
         console.log('Bad request. Missing some of these fields: IdResDev, IdHouse or Amount');
@@ -37,17 +35,20 @@ export const createIncome = async (req: any) => {
         let receipt = null;
         const pool = await getConnection();
 
+        let fullname = req.body.prefix + "_" + req.body.imgName;
+
         const result = await pool?.request()
             .input('idResDev', sql.Int, idResDev)
             .input('idHouse', sql.Int, idHouse)
             .input('date', sql.Date, date)
             .input('amount', sql.Float, amount)
             .input('description', sql.VarChar, description)
-            .input('receipt', sql.VarChar, receipt)
+            .input('receipt', sql.VarChar, fullname)
             .query(queries.createNewIncome);
-
+            
     } catch (error) {
         console.log(error);
+        res.status(500);
     }
 
 }
