@@ -14,11 +14,10 @@ import usersRoutes from "./routes/users";
 import accessRoutes from "./routes/access";
 import outcomesRoutes from "./routes/outcomes";
 import incomesRoutes from "./routes/incomes";
-//import facerecognitionRoutes from "./routes/facerecognition";
 import residentials from "./routes/residentials";
 import registryRoutes from "./routes/registry";
-import imagesRoutes from "./routes/image";
 import filter from "./models/filter";
+import platesRoutes from "./routes/plates";
 
 dotenv.config();
 
@@ -43,16 +42,15 @@ app.use('/access', accessRoutes);
 app.use('/account', accountRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/expenses', expensesRoutes);
-//app.use('/facerecognition', facerecognitionRoutes);
 app.use('/filter', filterRoutes);
 app.use('/houses', housesRoutes);
 app.use('/incomes', incomesRoutes);
 app.use('/login', authRoutes);
 app.use('/outcomes', outcomesRoutes);
+app.use('/plates', platesRoutes);
 app.use('/registry', registryRoutes);
 app.use('/residentials', residentials);
 app.use('/users', usersRoutes);
-app.use('/images', imagesRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.listen(PORT, host, () => {

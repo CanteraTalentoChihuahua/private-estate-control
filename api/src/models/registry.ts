@@ -10,7 +10,6 @@ export default {
     T_Users.IdUser = T_UsersHouses.IdUser
     WHERE T_Houses.IdHouse = @id
     ORDER BY ISNULL(LastName, 'zzz') ASC`,
-    
     createHouse: `INSERT INTO T_Houses (Address, Occuppied, Balance, IdResDev) 
     VALUES (@address, @occuppied, @balance, @idResDev)`,
     getHouseById: `SELECT * FROM T_Houses WHERE IdHouse = @id`,
