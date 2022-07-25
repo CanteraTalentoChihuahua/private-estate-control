@@ -86,17 +86,22 @@ async function recognizeFaces() {
 
 async function loadLabeledImages() {
     //const labels = ['Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
-    const labels = ['Arnoldo Valdez', 'Arturo Balsimelli', 'Brayan Paul Salas', 'Javier Medrano' , 'Karol Gutierrez'] // Webcam
-    //const labels = await fetchPeople('http://localhost:2000/face-id/fetch/people')
+    //const labels = ['Arnoldo Valdez', 'Arturo Balsimelli', 'Brayan Paul Salas', 'Javier Medrano' , 'Karol Gutierrez'] // Webcam
+    const labels = await fetchPeople('http://localhost:2000/face-id/fetch/people')
     console.log(labels);
         return Promise.all(
             labels.map(async (label)=>{
                 const descriptions = []
                 for(let i=1; i<=2; i++) {
-                    const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`)
-                    const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                    //console.log("CHECK WE " + label + i + JSON.stringify(detections))
-                    descriptions.push(detections.descriptor)
+                    try {
+                        const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`)
+                        const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+                        //console.log("CHECK WE " + label + i + JSON.stringify(detections))
+                        descriptions.push(detections.descriptor)
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    
                 }
                 document.body.append(label+' Faces Loaded | ')
                 return new faceapi.LabeledFaceDescriptors(label, descriptions)
