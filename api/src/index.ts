@@ -1,23 +1,23 @@
-import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import express from "express";
 import swaggerUi from "swagger-ui-express";
 
 import * as swaggerDoc from "./swagger.json";
-import authRoutes from "./routes/auth";
+import accessRoutes from "./routes/access";
 import accountRoutes from "./routes/account";
+import authRoutes from "./routes/auth";
 import dashboardRoutes from "./routes/dashboard";
+import expensesRoutes from "./routes/expenses";
+import faceId from "./routes/faceId";
 import filterRoutes from "./routes/filter";
 import housesRoutes from "./routes/houses";
-import expensesRoutes from "./routes/expenses";
-import usersRoutes from "./routes/users";
-import accessRoutes from "./routes/access";
-import outcomesRoutes from "./routes/outcomes";
 import incomesRoutes from "./routes/incomes";
+import outcomesRoutes from "./routes/outcomes";
+import platesRoutes from "./routes/plates";
 import residentials from "./routes/residentials";
 import registryRoutes from "./routes/registry";
-import filter from "./models/filter";
-import platesRoutes from "./routes/plates";
+import usersRoutes from "./routes/users";
 
 dotenv.config();
 
@@ -42,6 +42,7 @@ app.use('/access', accessRoutes);
 app.use('/account', accountRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/expenses', expensesRoutes);
+app.use('/face-id', faceId);
 app.use('/filter', filterRoutes);
 app.use('/houses', housesRoutes);
 app.use('/incomes', incomesRoutes);
