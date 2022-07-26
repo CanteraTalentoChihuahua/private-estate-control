@@ -1,14 +1,11 @@
-import sql from "../../node_modules/@types/mssql/index";
-
 const video = document.getElementById('videoInput');
-const userByName = `SELECT IdUser, FirstName + ' ' + LastName + ' ' AS 'FullName' FROM T_Users WHERE FirstName + ' ' + LastName + ' ' = @faceName`;
-const accessRegister = `INSERT INTO T_Accesses (IdUser, Date) VALUES (@idUser, @date)`;
 let halt = true;
+let urlMatch = "";
 
 Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri('models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('models'),
-    faceapi.nets.ssdMobilenetv1.loadFromUri('models') //heavier/accurate version of tiny face detector
+    faceapi.nets.ssdMobilenetv1.loadFromUri('models')
 ]).then(start)
 
 function start() {
@@ -30,7 +27,6 @@ async function recognizeFaces() {
     console.log(labeledDescriptors)
     const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.55)
 
-
     video.addEventListener('play', async () => {
         console.log('Playing')
         const canvas = faceapi.createCanvasFromMedia(video)
@@ -38,19 +34,18 @@ async function recognizeFaces() {
 
         const displaySize = { width: video.width, height: video.height }
         faceapi.matchDimensions(canvas, displaySize)
-        
 
         setInterval(async () => {
             const detections = await faceapi.detectAllFaces(video).withFaceLandmarks().withFaceDescriptors()
-
+        
             const resizedDetections = faceapi.resizeResults(detections, displaySize)
-
+        
             canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-
+        
             console.log("CURRENT HALT 1: " + halt);
-
+        
             if (halt) {
-
+        
             const results = resizedDetections.map((d) => {
                 return faceMatcher.findBestMatch(d.descriptor)
             })
@@ -62,12 +57,13 @@ async function recognizeFaces() {
             })
             detections.every( fd => {
                 const bestMatch = faceMatcher.findBestMatch(fd.descriptor)
+                const newMatch = bestMatch.toString().replace(/[0-9\(\).]/g, '')
+                urlMatch = newMatch.replaceAll(" ", "_")
                 if (bestMatch.toString().includes("unknown")) {
                     console.log("ACCESS DENIED TO: " + bestMatch.toString())
                 } else {
                     console.log("OLD DATA: " + bestMatch.toString())
-                    const newMatch = bestMatch.toString().replace(/[0-9\(\).]/g, '')
-                    if (newMatch == 'Brayan Paul Salas ') {
+                    if (newMatch != 'unknown') {
                       console.log("ACCES GRANTED TO: " + newMatch);
                       halt = false;
                       console.log("CURRENT HALT 2: " + halt);
@@ -77,73 +73,50 @@ async function recognizeFaces() {
                 return true;
             })
             } else { 
+                halt = true;
                 console.log("FACE ID DONE, REDIRECTING...")
-                loadFromDatabase(newMatch);
+                fetchAsync(`http://localhost:2000/face-id/fetch/${urlMatch}`);
             } 
-        }, 200)
+        }, 2000)
+        
+        clearInterval()
         
     })
 }
 
-function loadLabeledImages() {
+async function loadLabeledImages() {
     //const labels = ['Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
-    const labels = ['Arnoldo Valdez', 'Arturo Balsimelli', 'Brayan Paul Salas', 'Javier Medrano' , 'Karol Gutierrez'] // Webcam
-    return Promise.all(
-        labels.map(async (label)=>{
-            const descriptions = []
-            for(let i=1; i<=2; i++) {
-                const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`)
-                const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                console.log("CHECK WE " + label + i + JSON.stringify(detections))
-                descriptions.push(detections.descriptor)
-            }
-            document.body.append(label+' Faces Loaded | ')
-            return new faceapi.LabeledFaceDescriptors(label, descriptions)
-        })
-    )
-}
-
-async function getConnection() {
-    try {
-        const pool = await sql.connect(
-            {
-                user: process.env.USER,
-                password: process.env.PASSWORD,
-                server: process.env.SERVER,
-                port: Number(process.env.DBPORT),
-                database: process.env.DATABASE,
-                options: {
-                    encrypt: false,
-                    trustServerCertificate: false
+    //const labels = ['Arnoldo Valdez', 'Arturo Balsimelli', 'Brayan Paul Salas', 'Javier Medrano' , 'Karol Gutierrez'] // Webcam
+    const labels = await fetchPeople('http://localhost:2000/face-id/fetch/people')
+    console.log(labels);
+        return Promise.all(
+            labels.map(async (label)=>{
+                const descriptions = []
+                for(let i=1; i<=2; i++) {
+                    try {
+                        const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`)
+                        const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+                        //console.log("CHECK WE " + label + i + JSON.stringify(detections))
+                        descriptions.push(detections.descriptor)
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    
                 }
-            }
+                document.body.append(label+' Faces Loaded | ')
+                return new faceapi.LabeledFaceDescriptors(label, descriptions)
+            })
         )
-        return pool;
-    } catch (error) {
-        console.log(error);
-    }
-
 }
 
-async function loadFromDatabase(faceName){
-    let setDate = '2022-07-13'
-    try {
-        const pool = await getConnection();
-        const match = await pool?.request()
-            .input('faceName', faceName)
-            .query(userByName)
+async function fetchAsync(url) {
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log(data);
+}
 
-        if (faceName == match?.recordset[0].FullName) {
-            console.log("Access log registered")
-            return await pool?.request()
-                .input('idUser', match?.recordset[0].IdUser)
-                .input('date', setDate)
-                .query(accessRegister)
-        } else {
-            return console.log("Not a user or face with that name registered")
-        } 
-
-    } catch (error) {
-        return console.log(error)
-    }
+const fetchPeople = async (urlPeople) => {
+    let responsePeople = await fetch(urlPeople);
+    let objPeople = await responsePeople.json();
+    return objPeople;
 }

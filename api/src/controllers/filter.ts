@@ -10,56 +10,66 @@ export const filter = async (req: any, res: any) => {
         const pool = await getConnection();
 
         switch (req.body.filter) {
-            case "dates":
+            case 1:
+
                 const resDates = await pool?.request()
-                    .input('iniDate', sql.VarChar, req.body.iniDate)
-                    .input('endDate', sql.VarChar, req.body.endDate)
+                    .input('iniDate', sql.Date, "'" + req.body.iniDate + "'")
+                    .input('endDate', sql.Date, "'" + req.body.endDate + "'")
                     .query(queries.dates);
+                // .query("SELECT * FROM T_Incomes WHERE Date BETWEEN '" + req.body.iniDate + "' AND '" + req.body.endDate + "'");
+
+                res.send(resDates?.recordset);
                 break;
 
-            case "datesDesc":
+            case 2:
                 const resDatesDesc = await pool?.request()
-                    .input('iniDate', sql.VarChar, req.body.iniDate)
-                    .input('endDate', sql.VarChar, req.body.endDate)
-                    .query(queries.dates);
+                    .input('iniDate', sql.Date, "'" + req.body.iniDate + "'")
+                    .input('endDate', sql.Date, "'" + req.body.endDate + "'")
+                    .query(queries.datesDesc);
+
+                res.send(resDatesDesc?.recordset);
                 break;
 
-            case "datesAsc":
+            case 3:
                 const resDatesAsc = await pool?.request()
-                    .input('iniDate', sql.VarChar, req.body.iniDate)
-                    .input('endDate', sql.VarChar, req.body.endDate)
-                    .query(queries.dates);
+                    .input('iniDate', sql.Date, "'" + req.body.iniDate + "'")
+                    .input('endDate', sql.Date, "'" + req.body.endDate + "'")
+                    .query(queries.datesAsc);
+
+                res.send(resDatesAsc?.recordset);
                 break;
 
-            case "DespDesc":
+            case 4:
                 const resDespDesc = await pool?.request()
-                    .query(queries.dateDesc);
+                    .query(queries.despDesc);
 
-                res.send(resDespDesc?.recordset[0]);
+                res.send(resDespDesc?.recordset);
+
                 break;
 
-            case "DespAsc":
+            case 5:
                 const resDespAsc = await pool?.request()
                     .query(queries.despAsc);
 
-                res.send(resDespAsc?.recordset[0]);
+                res.send(resDespAsc?.recordset);
                 break;
 
-            case "dateDesc":
+            case 6:
                 const resDateDesc = await pool?.request()
                     .query(queries.dateDesc);
 
-                res.send(resDateDesc?.recordset[0]);
+                res.send(resDateDesc?.recordset);
                 break;
 
-            case "dateAsc":
+            case 7:
                 const resDateAsc = await pool?.request()
                     .query(queries.dateAsc);
 
-                res.send(resDateAsc?.recordset[0]);
+                res.send(resDateAsc?.recordset);
                 break;
 
             default:
+                res.send("There is not a filter for that" + req.body.filter);
                 break;
         }
 
