@@ -20,7 +20,6 @@ export const createIncome = async (req: any, res: any) => {
     const { idResDev, idHouse, amount, description } = req.body;
 
     const d = new Date();
-
     const date = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 
     if (idResDev == null || idHouse == null || amount == null) {
@@ -32,7 +31,7 @@ export const createIncome = async (req: any, res: any) => {
     }
 
     try {
-        let receipt = null;
+        const fname = `${req.body.prefix}_${req.body.filename}`;
         const pool = await getConnection();
 
         let fullname = req.body.prefix + "_" + req.body.imgName;
@@ -43,12 +42,25 @@ export const createIncome = async (req: any, res: any) => {
             .input('date', sql.Date, date)
             .input('amount', sql.Float, amount)
             .input('description', sql.VarChar, description)
-            .input('receipt', sql.VarChar, fullname)
+            .input('receipt', sql.VarChar, fname)
             .query(queries.createNewIncome);
-            
+
+        const resultbal = await pool?.request()
+            .input('id', sql.Int, idHouse)
+            .query(queries.getABalance);
+
+        const newbal = Number(resultbal?.recordset[0].Balance) + Number(amount);
+
+        const resultupd = await pool?.request()
+            .input('balance', sql.Float, newbal)
+            .input('id', sql.Int, idHouse)
+            .query(queries.updateHouseBal);
+
+        res.status(200).send("todobien");
+
     } catch (error) {
         console.log(error);
-        res.status(500);
+        res.send(error);
     }
 
 }

@@ -37,14 +37,7 @@ export const getLogin = async (req: any, res: any) => {
 
 export const authLogin = async (req: any, res: any, next: NextFunction) => {
 
-    const { email } = req.body;
-    const { password } = req.body;
-
-    console.log(req.body);
-
-    const { name, data } = req.body.pic;
-
-    console.log(name, data);
+    const { email, password } = req.body;
 
     let message;
 
@@ -66,6 +59,9 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
             .query(queries.getIdResDev);
 
         const idResUser = idRes?.recordset[0].IdResDev;
+        const IdUser = idRes?.recordset[0].IdUser;
+
+        console.log(IdUser);
 
         const noemails = (result?.recordset)?.length;
 
@@ -100,7 +96,7 @@ export const authLogin = async (req: any, res: any, next: NextFunction) => {
 
         console.log("Current logged user role: " + readRole);
 
-        return res.json({ salute: message = bearer, idResDev: idResUser });
+        return res.json({ salute: message = bearer, idResDev: idResUser, IdUser: IdUser });
 
     } catch (error) {
         res.status(406);

@@ -9,5 +9,7 @@ export default {
     deleteIncome: `DELETE FROM T_Incomes WHERE IdIncome = @id`,
     updateIncomesById: `UPDATE T_Incomes SET IdResDev = @idResDev, IdHouse = @idHouse, Date = @date,
     Amount = @amount, Description = @description, Receipt = @receipt
-    WHERE IdIncome = @id`
+    WHERE IdIncome = @id`,
+    updateHouseBal: `UPDATE T_Houses SET Balance = @balance WHERE IdHouse = @id`,
+    getABalance: `SELECT Balance FROM T_Houses WHERE IdHouse = @id`
 }

@@ -6,5 +6,6 @@ export default {
     deleteOutcome: `DELETE FROM T_Outcomes WHERE IdOutcome = @id`,
     updateOutcomesById: `UPDATE T_Outcomes SET IdResDev = @idResDev, Description = @description, date = @date,
     Amount = @amount
-    WHERE IdOutcome = @id`
+    WHERE IdOutcome = @id`,
+    getAllBalances: `SELECT SUM(Balance)  AS TotBal FROM T_Houses`
 }

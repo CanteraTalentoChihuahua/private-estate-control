@@ -1,5 +1,4 @@
 import multer from "multer";
-import { createIncome } from "../controllers/incomes";
 
 const path = "uploads/";            //TODO: Change path to the path of the server where the receipts will be stored
 
