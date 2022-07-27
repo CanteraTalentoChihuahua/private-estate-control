@@ -86,3 +86,16 @@ export const test = async (req: any, res: any) => {
     }
 
 }
+
+export const test2 = async (req: any, res: any) => {
+
+    try {
+        console.log(req.body);
+        res.status(200).send("Jala bien perron apoco no?");
+
+    } catch (error) {
+        res.status(500);
+        res.send(error);
+    }
+
+}
