@@ -14,8 +14,6 @@ export const test = async (req: any, res: any) => {
         // sends a message to the Python script via stdin
         pyshell.send('carro.jpeg'); //change this to req.body.image or something (this is the image to be looked up for plates)
 
-        const fulljson = "";
-
         pyshell.on('message', async function (resp) {
             resp = resp.replace(/ /g, '');
             if (resp.substr(0, 8) == String.raw`'plate':`) {

@@ -1,6 +1,7 @@
 import { getConnection } from "../conf/db";
 import sql from "mssql";
 import queries from "../models/incomes"
+import { request } from "http";
 
 export const getIncomes = async (req: any, res: any) => {
 
@@ -36,6 +37,47 @@ export const createIncome = async (req: any, res: any) => {
 
         let fullname = req.body.prefix + "_" + req.body.imgName;
 
+        const resbalhouse = await pool?.request()
+            .input('idHouse', sql.Int, idHouse)
+            .query(queries.getHouseIncome);
+
+        if (Number(resbalhouse?.recordset[0].Balance) < Number(0)) {
+
+            const result = await pool?.request()
+                .input('idResDev', sql.Int, idResDev)
+                .input('idHouse', sql.Int, idHouse)
+                .input('date', sql.Date, date)
+                .input('amount', sql.Float, amount)
+                .input('description', sql.VarChar, description)
+                .input('receipt', sql.VarChar, fname)
+                .query(queries.createNewIncome);
+
+            const newbal = Number(resbalhouse?.recordset[0].Balance) + Number(amount);
+
+            const newbalhouse = pool?.request()
+                .input('id', sql.Int, idHouse)
+                .input('balance', sql.Float, newbal)
+                .query(queries.updateHouseBal);
+
+            const balres = pool?.request()
+                .input('id', sql.Int, idResDev)
+                .query(queries.getResBal);
+
+            console.log((await balres)?.recordset[0]);
+
+            const newbalresidential = Number((await balres)?.recordset[0].TotalBalance) + Number(amount);
+
+            console.log(newbalresidential);
+
+            const newbalres = pool?.request()
+                .input('id', sql.Int, idResDev)
+                .input('totalBalance', sql.Float, newbalresidential)
+                .query(queries.updateResBal);
+
+            res.status(200).send("Jala al 100");
+            return;
+        }
+
         const result = await pool?.request()
             .input('idResDev', sql.Int, idResDev)
             .input('idHouse', sql.Int, idHouse)
@@ -56,7 +98,7 @@ export const createIncome = async (req: any, res: any) => {
             .input('id', sql.Int, idHouse)
             .query(queries.updateHouseBal);
 
-        res.status(200).send("todobien");
+        res.status(200).send("Todo bien");
 
     } catch (error) {
         console.log(error);

@@ -11,5 +11,7 @@ export default {
     Amount = @amount, Description = @description, Receipt = @receipt
     WHERE IdIncome = @id`,
     updateHouseBal: `UPDATE T_Houses SET Balance = @balance WHERE IdHouse = @id`,
-    getABalance: `SELECT Balance FROM T_Houses WHERE IdHouse = @id`
+    getABalance: `SELECT Balance FROM T_Houses WHERE IdHouse = @id`,
+    getResBal: `SELECT TotalBalance FROM T_Residentials WHERE IdResDev = @id`,
+    updateResBal: `UPDATE T_Residentials SET TotalBalance = @TotalBalance WHERE IdResDev = @id`
 }
