@@ -7,5 +7,6 @@ export default {
     updateOutcomesById: `UPDATE T_Outcomes SET IdResDev = @idResDev, Description = @description, date = @date,
     Amount = @amount
     WHERE IdOutcome = @id`,
-    getAllBalances: `SELECT SUM(Balance)  AS TotBal FROM T_Houses`
+    getTotBal: `SELECT TotalBalance FROM T_Residentials WHERE IdResDev = @id`,
+    updateResBal: `UPDATE T_Residentials SET TotalBalance = @TotalBalance WHERE IdResDev = @id`
 }

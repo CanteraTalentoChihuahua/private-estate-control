@@ -33,7 +33,8 @@ export const createOutcome = async (req: any, res: any) => {
         const pool = await getConnection();
 
         const bal = await pool?.request()
-            .query(queries.getAllBalances);
+            .input('id', sql.Int, idResDev)
+            .query(queries.getTotBal);
 
         if (Number(bal?.recordset[0]) < Number(amount)) {
             throw ("Not enough money to do this");
@@ -45,6 +46,13 @@ export const createOutcome = async (req: any, res: any) => {
             .input('date', sql.Date, date)
             .input('amount', sql.Float, amount)
             .query(queries.createNewOutcome);
+
+        const newbalance = Number(bal?.recordset[0]) - Number(amount);
+
+        const newbal = await pool?.request()
+            .input('id', sql.Int, idResDev)
+            .input('TotalBalance', sql.Float, newbalance)
+            .query(queries.updateResBal);
 
         return res.status(201).json({ idResDev, description, date, amount });
 
