@@ -63,16 +63,20 @@ export const createIncome = async (req: any, res: any) => {
                 .input('id', sql.Int, idResDev)
                 .query(queries.getResBal);
 
-            console.log((await balres)?.recordset[0]);
-
-            const newbalresidential = Number((await balres)?.recordset[0].TotalBalance) + Number(amount);
-
-            console.log(newbalresidential);
-
-            const newbalres = pool?.request()
-                .input('id', sql.Int, idResDev)
-                .input('totalBalance', sql.Float, newbalresidential)
-                .query(queries.updateResBal);
+            if (Number(newbal) > 0) {
+                const newbalresidential = Number((await balres)?.recordset[0].TotalBalance) + Number(amount) - Number(newbal);
+                const newbalres = pool?.request()
+                    .input('id', sql.Int, idResDev)
+                    .input('totalBalance', sql.Float, newbalresidential)
+                    .query(queries.updateResBal);
+            }
+            else {
+                const newbalresidential = Number((await balres)?.recordset[0].TotalBalance) + Number(amount);
+                const newbalres = pool?.request()
+                    .input('id', sql.Int, idResDev)
+                    .input('totalBalance', sql.Float, newbalresidential)
+                    .query(queries.updateResBal);
+            }
 
             res.status(200).send("Jala al 100");
             return;
