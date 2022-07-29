@@ -1,6 +1,6 @@
 // Houses
 import { Router } from "express";
-import { createHouse, deleteHouseById, getHouseById, getHouses, updateHouseById } from "../controllers/houses";
+import { createHouse, deleteHouseById, getHouseById, getHouses, payment, updateHouseById } from "../controllers/houses";
 
 const router = Router();
 
@@ -13,5 +13,7 @@ router.post("/post", createHouse);
 router.put("/put/:id", updateHouseById);
 
 router.delete("/delete/:id", deleteHouseById);
+
+router.post("/payment", payment);
 
 export default router;
