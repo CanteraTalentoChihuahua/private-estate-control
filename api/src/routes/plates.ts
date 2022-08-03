@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { test } from "../controllers/plates";
+import { test, image } from "../controllers/plates";
 import { upload } from "../middlewares/plates";
 
 //import { validateToken, validateSA } from "../middlewares/jwt";
@@ -10,7 +10,7 @@ router.get("/get", test);
 
 router.post("/post", upload.single("image"));
 
-// router.post("/post", createOutcome);
+router.get("/", image);
 
 // router.put("/put/:id", updateOutcomeById);
 

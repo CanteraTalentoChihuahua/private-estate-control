@@ -3,6 +3,9 @@ import { getConnection } from '../conf/db';
 import sql from "mssql";
 import levenshtein from "levenshtein";
 import queries from "../models/plates"
+
+import fs from "fs";
+import request from "request";
 import plates from '../models/plates';
 import { each } from 'jquery';
 
@@ -84,3 +87,14 @@ export const test = async (req: any, res: any) => {
     }
 
 }
+
+export const image = async (req: any, res: any) => {
+
+    request.head(req.body.url, function (err: any, res: any, body: any) {
+        console.log('content-type:', res.headers['content-type']);
+        console.log('content-length:', res.headers['content-length']);
+
+        request(req.body.url).pipe(fs.createWriteStream(req.body.filename));
+    });
+}
+

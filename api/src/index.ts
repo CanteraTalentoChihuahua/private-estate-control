@@ -2,6 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
+import bodyParser from "body-parser";
 
 import * as swaggerDoc from "./swagger.json";
 import accessRoutes from "./routes/access";

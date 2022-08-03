@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { filter } from "../controllers/filter";
+import { filters } from "../controllers/filter";
 
 const router = Router();
 
-router.get("/", filter);
+router.post("/", filters);
 
 // router.get("/listpersons", listpersons);
 

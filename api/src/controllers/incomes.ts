@@ -35,8 +35,6 @@ export const createIncome = async (req: any, res: any) => {
         const fname = `${req.body.prefix}_${req.body.filename}`;
         const pool = await getConnection();
 
-        let fullname = req.body.prefix + "_" + req.body.imgName;
-
         const resbalhouse = await pool?.request()
             .input('idHouse', sql.Int, idHouse)
             .query(queries.getHouseIncome);
@@ -117,7 +115,7 @@ export const getIncomeById = async (req: any, res: any) => {
     try {
         const pool = await getConnection();
         const result = await pool?.request()
-            .input('id', id)
+            .input('iduser', id)
             .query(queries.getIncomeById);
 
         res.status(200);

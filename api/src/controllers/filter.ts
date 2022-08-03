@@ -1,22 +1,24 @@
 import { getConnection } from "../conf/db";
 import sql from "mssql";
-import queries from "../models/filter"
-import { request } from "http";
+import queries from "../models/filter";
+import { Request, Response } from "express";
 
-export const filter = async (req: any, res: any) => {
+export const filters = async (req: Request, res: Response) => {
+
+    console.log(req);
+    const { filter, iniDate, endDate } = req.body;
+    console.log("Filter = ", filter, " iniDate = ", iniDate, " endDate = ", endDate);
 
     try {
-
         const pool = await getConnection();
 
-        switch (req.body.filter) {
+        switch (filter) {
             case 1:
 
                 const resDates = await pool?.request()
-                    .input('iniDate', sql.Date, "'" + req.body.iniDate + "'")
-                    .input('endDate', sql.Date, "'" + req.body.endDate + "'")
+                    .input('iniDate', sql.Date, "'" + iniDate + "'")
+                    .input('endDate', sql.Date, "'" + endDate + "'")
                     .query(queries.dates);
-                // .query("SELECT * FROM T_Incomes WHERE Date BETWEEN '" + req.body.iniDate + "' AND '" + req.body.endDate + "'");
 
                 res.send(resDates?.recordset);
                 break;
@@ -69,7 +71,7 @@ export const filter = async (req: any, res: any) => {
                 break;
 
             default:
-                res.send("There is not a filter for that" + req.body.filter);
+                res.send("There is not a filter for that " + req.body.filter);
                 break;
         }
 
