@@ -18,7 +18,7 @@ export default class Navbar extends Component {
     residential: []
   }
   async getResidential() {
-    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/residentials/get/"+JSON.parse(localStorage.getItem("idResDev")),JSON.parse(localStorage.getItem("idResDev")));
+    const res = await axios.get("https://gestion-fraccionamiento.herokuapp.com/residentials/get/"+JSON.parse(localStorage.getItem("idResDev")));
     await this.setState({ residential: res.data.Name });
   }
   async componentDidMount() {
