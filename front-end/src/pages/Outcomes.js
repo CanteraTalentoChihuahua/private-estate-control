@@ -71,8 +71,8 @@ export default class Outcomes extends Component {
       const target = el.dataset.target;
       const $target = document.getElementById(target);
       if ($target.classList.value === "is-hidden") {
-        el.classList.add("is-success");
-        el.classList.remove("is-danger");
+        el.classList.remove("is-success");
+        el.classList.add("is-danger");
         this.setState({
           newOutcomes: {
             idResDev: "",
@@ -82,8 +82,8 @@ export default class Outcomes extends Component {
           }
         })
       } else {
-        el.classList.remove("is-success");
-        el.classList.add("is-danger");
+        el.classList.add("is-success");
+        el.classList.remove("is-danger");
       }
       if(!(edit===1&&$target.classList.value==="")){
       $target.classList.toggle("is-hidden");

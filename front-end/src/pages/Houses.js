@@ -89,8 +89,8 @@ export default class Houses extends Component {
       const $target = document.getElementById(target);
       console.log($target.classList.value)
       if ($target.classList.value === "is-hidden") {
-        el.classList.add("is-success");
-        el.classList.remove("is-danger");
+        el.classList.remove("is-success");
+        el.classList.add("is-danger");
         this.setState({
           newHouses:{
           address: "",
@@ -100,8 +100,8 @@ export default class Houses extends Component {
           }
         })
       } else {
-        el.classList.remove("is-success");
-        el.classList.add("is-danger");
+        el.classList.add("is-success");
+        el.classList.remove("is-danger");
       }
       if(!(edit===1&&$target.classList.value==="")){
       $target.classList.toggle("is-hidden");

@@ -14,6 +14,7 @@ import {
   faDollarSign,
   faFile,
 } from "@fortawesome/free-solid-svg-icons";
+import { faPaypal } from "@fortawesome/free-brands-svg-icons";
 export default class Incomes extends Component {
   state = {
     filters: { filter: 1, iniDate: "2020-01-01", endDate: "2024-12-31" },
@@ -88,8 +89,8 @@ export default class Incomes extends Component {
       const target = el.dataset.target;
       const $target = document.getElementById(target);
       if ($target.classList.value === "is-hidden") {
-        el.classList.add("is-success");
-        el.classList.remove("is-danger");
+        el.classList.remove("is-success");
+        el.classList.add("is-danger");
         this.setState({
           newIncomes: {
             idResDev: "",
@@ -100,8 +101,8 @@ export default class Incomes extends Component {
           },
         });
       } else {
-        el.classList.remove("is-success");
-        el.classList.add("is-danger");
+        el.classList.add("is-success");
+        el.classList.remove("is-danger");
       }
       if (!(edit === 1 && $target.classList.value === "")) {
         $target.classList.toggle("is-hidden");
@@ -353,7 +354,9 @@ export default class Incomes extends Component {
                               className="file-input"
                               type="file"
                               name="image"
-                              onChange={(e) => {this.onChangeImage(e);}}
+                              onChange={(e) => {
+                                this.onChangeImage(e);
+                              }}
                             />
                             <span className="file-cta">
                               <span className="file-icon">
@@ -386,14 +389,29 @@ export default class Incomes extends Component {
                         <label className="label">Balance: </label>
                         <label className="label">${this.state.balance}</label>
                       </div>
-                      <div className="field">
-                        <button
-                          type="submit"
-                          className="button"
-                          style={{ backgroundColor: "#47b181", color: "#FFF" }}
-                        >
-                          <h2>Save</h2>
-                        </button>
+                      <div className="columns">
+                        <div className="column is-10">
+                          <div className="field">
+                            <button
+                              type="submit"
+                              className="button"
+                              style={{
+                                backgroundColor: "#47b181",
+                                color: "#FFF",
+                              }}
+                            >
+                              <h2>Save</h2>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="column is-2">
+                            <Link
+                              type="submit"
+                              className="button is-link is-outlined">
+                                <FontAwesomeIcon icon={faPaypal}/>
+                              <span>Paypal</span>
+                            </Link>
+                        </div>
                       </div>
                     </form>
                   </div>
@@ -470,7 +488,17 @@ export default class Incomes extends Component {
                           <td>{income.Date.substring(0, 10)}</td>
                           <td>{income.Description}</td>
                           <td>{income.Amount}</td>
-                          <td><a href={"https://gestion-fraccionamiento.herokuapp.com/incomes/images/"+income.Receipt} class="button is-small is-fullwidth">{income.Receipt}</a></td>
+                          <td>
+                            <a
+                              href={
+                                "https://gestion-fraccionamiento.herokuapp.com/incomes/images?imgName=" +
+                                income.Receipt
+                              }
+                              class="button is-small is-fullwidth"
+                            >
+                              {income.Receipt}
+                            </a>
+                          </td>
                           <td>
                             <Link
                               to={"/Incomes/" + income.IdIncome}

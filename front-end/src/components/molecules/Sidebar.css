@@ -12,12 +12,10 @@ min-height: 100%;
 /*display: flex;
 flex-direction: column;*/
 }
-
 .icon
 {
   color: #47b181;
 }
-
 @media screen and (max-width: 768px) {
 #menu-toggle:checked + .nav-menu {
     display: block;
