@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Title from "../components/atoms/Title";
 import Navbar from "../components/molecules/Navbar";
 import Sidebar from "../components/molecules/Sidebar";
+import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
@@ -42,7 +43,7 @@ export default class Incomes extends Component {
         this.state.filters
       )
       .then((res) => {
-        console.log(res);
+        console.log(this.props.match.params.msg);
         this.setState({ incomes: res.data });
       });
 
@@ -55,6 +56,13 @@ export default class Incomes extends Component {
 
   async componentDidMount() {
     this.getIncomes();
+    if(this.props.match.params.msg==="success"){
+      Swal.fire({ icon: "success", title: "Success!",
+              text: "The payment was success, Register it!", showConfirmButton: false, timer: 2000,});
+    }else if(this.props.match.params.msg==="cancelled"){
+      Swal.fire({ icon: "error", title: "Cancelled!",
+              text: "The payment was cancelled", showConfirmButton: false, timer: 2000,});
+    }
   }
 
   onEditarIn = async (key) => {
@@ -248,6 +256,17 @@ export default class Incomes extends Component {
         });
     }
   };
+  onPaypal=async(e)=>{
+    axios
+        .post("https://gestion-fraccionamiento.herokuapp.com/payment/create-order")
+        .then((res) => {
+          console.log(res)
+          window.location.assign(res.data.links[1].href);
+        })
+        .catch((exception) => {
+          console.log(exception.response);
+        });
+  }
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
     if (tkn == null) {
@@ -406,6 +425,7 @@ export default class Incomes extends Component {
                         </div>
                         <div className="column is-2">
                             <Link
+                              onClick={this.onPaypal}
                               type="submit"
                               className="button is-link is-outlined">
                                 <FontAwesomeIcon icon={faPaypal}/>
