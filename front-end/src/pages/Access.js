@@ -51,7 +51,7 @@ export default class Access extends Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.entries.map((entry) => (
+                      {this.state.entries.slice(0,15).map((entry) => (
                         <tr key={entry.IdEntry}>
                           <td>{entry.FullName}</td>
                           <td>{entry.AccessType}</td>

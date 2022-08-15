@@ -521,7 +521,7 @@ export default class Incomes extends Component {
                           </td>
                           <td>
                             <Link
-                              to={"/Incomes/" + income.IdIncome}
+                              to={"/Incomes/"}
                               onClick={() => this.onEditarIn(income)}
                               className="button"
                             >
