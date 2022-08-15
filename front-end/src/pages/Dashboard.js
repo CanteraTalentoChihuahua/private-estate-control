@@ -47,36 +47,23 @@ const options = {
   fill: true,
 };
 
+function TransactionsIcon(IncOut) {
+  console.log(IncOut)
+  if (IncOut.IncOut==="1") {
+    return(<span className="icon has-text-success">
+    <FontAwesomeIcon icon={faCircle} />
+  </span>);
+  }
+return(<span className="icon has-text-danger">
+<FontAwesomeIcon icon={faCircle} />
+</span>);
+}
+
 export default class Dashboard extends Component {
   state = {
-    transactions: [
-      { Description: "Pago del agua", Amount: 20563 },
-      { Description: "Pago de la luz", Amount: 16754 },
-      { Description: "Pago del agua", Amount: 20563 },
-      { Description: "Pago de la luz", Amount: 16754 },
-      { Description: "Pago del agua", Amount: 20563 },
-      { Description: "Pago de la luz", Amount: 16754 },
-      { Description: "Pago del agua", Amount: 20563 },
-      { Description: "Pago de la luz", Amount: 16754 },
-      { Description: "Pago del agua", Amount: 20563 },
-      { Description: "Pago de la luz", Amount: 16754 },
-      { Description: "Pago del agua", Amount: 20563 },
-    ],
+    transactions: [],
     //Show 12 entries
-    entries: [
-      { id: 0, time: "12:05" },
-      { id: 1, time: "12:15" },
-      { id: 2, time: "12:25" },
-      { id: 3, time: "12:35" },
-      { id: 4, time: "12:45" },
-      { id: 5, time: "12:55" },
-      { id: 6, time: "1:20" },
-      { id: 7, time: "2:27" },
-      { id: 8, time: "3:15" },
-      { id: 9, time: "4:59" },
-      { id: 8, time: "5:15" },
-      { id: 9, time: "5:38" },
-    ],
+    entries: [],
     //Data from the chart
     data: {
       datasets: [
@@ -94,13 +81,21 @@ export default class Dashboard extends Component {
     },
     //Show 9 houses
     houses: [],
+    totalIn:"",
+    totalOut:""
   };
   //Obtener todas las casas
   async getHouses() {
-    const res = await axios.get(
-      "https://gestion-fraccionamiento.herokuapp.com/houses/get"
-    );
-    this.setState({ houses: res.data });
+    await axios.get("https://gestion-fraccionamiento.herokuapp.com/houses/get"
+    ).then((res)=>{this.setState({ houses: res.data });})
+    await axios.get("https://gestion-fraccionamiento.herokuapp.com/incomes/allincome"
+    ).then((res)=>{this.setState({ totalIn: res.data });})
+    await axios.get("https://gestion-fraccionamiento.herokuapp.com/outcomes/alloutcome"
+    ).then((res)=>{this.setState({ totalOut: res.data });})
+    await axios.get("https://gestion-fraccionamiento.herokuapp.com/transactions/"+JSON.parse(localStorage.getItem("idResDev"))
+    ).then((res)=>{this.setState({ transactions: res.data }); console.log(res)})
+    await axios.get("https://gestion-fraccionamiento.herokuapp.com/access/get"
+    ).then((res)=>{this.setState({ entries: res.data }); })
   }
   async componentDidMount() {
     this.getHouses();
@@ -108,8 +103,6 @@ export default class Dashboard extends Component {
   //chequeo del Token
   render() {
     const tkn = JSON.parse(localStorage.getItem("tkn"));
-    const idResDev = JSON.parse(localStorage.getItem("idResDev"));
-    console.log(idResDev);
     if (tkn == null) {
       this.props.history.push("/login");
     }
@@ -129,29 +122,27 @@ export default class Dashboard extends Component {
                 </div>
               </div>
               <div className="column is-9">
-                <div className="box ">
+                <Link style={{boxShadow:"0 .5em 1em -.125em rgba(10,10,10,.1),0 0 0 0px #485fc7"}} to="houses" className="box ">
                   <Line data={this.state.data} options={options} />
-                </div>
+                </Link>
               </div>
               <div className="column is-3">
-                <div className="box has-background-white">
+                <Link style={{boxShadow:"0 .5em 1em -.125em rgba(10,10,10,.1),0 0 0 0px #485fc7"}} to="/incomes" className="box has-background-white">
                   <Titlee title="Transactions" class="is-3 is-family-sans-serif" />
                   <table className="table is-fullwidth has-background-white">
                     <tbody>
                       {this.state.transactions.map((transaction) => (
-                        <tr key={transaction.Id}>
+                        <tr>
                           <td className="p-0">
-                            <span className="icon has-text-danger">
-                              <FontAwesomeIcon icon={faCircle} />
-                            </span>{" "}
-                            {transaction.Description}
+                            <TransactionsIcon IncOut={transaction.IncOut}/>                              
+                            {" "+transaction.Date.substring(0, 10)}
                           </td>
                           <td className="p-0">${transaction.Amount}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </Link>
               </div>
               <div className="column is-4">
                 <Link to="/incomes" style={{boxShadow:"0 .5em 1em -.125em rgba(10,10,10,.1),0 0 0 0px #485fc7"}}
@@ -159,7 +150,7 @@ export default class Dashboard extends Component {
                 >
                   <Titlee title="INCOMES" class="is-3  has-text-success" />
                   <br />
-                  <h2 class="subtitle is-2  has-text-success">$20,000</h2>
+                  <h2 class="subtitle is-2  has-text-success">${this.state.totalIn.totalincome}</h2>
                 </Link>
               </div>
               <div className="column is-4">
@@ -168,7 +159,7 @@ export default class Dashboard extends Component {
                 >
                   <Titlee title="OUTCOMES" class="is-3 has-text-danger" />
                   <br />
-                  <h2 class="subtitle is-2 has-text-danger">$20,000</h2>
+                  <h2 class="subtitle is-2 has-text-danger">${this.state.totalOut.totaloutcome}</h2>
                 </Link>
               </div>
               <div className="column is-4">
@@ -177,11 +168,11 @@ export default class Dashboard extends Component {
                 >
                   <Titlee title="BALANCE" class="is-3 has-text-link" />
                   <br />
-                  <h2 class="subtitle is-2 has-text-link">$20,000</h2>
+                  <h2 class="subtitle is-2 has-text-link">${this.state.totalIn.totalincome-this.state.totalOut.totaloutcome}</h2>
                 </Link>
               </div>
               <div className="column is-9">
-                <div className="box">
+                <Link to="/houses" style={{boxShadow:"0 .5em 1em -.125em rgba(10,10,10,.1),0 0 0 0px #485fc7"}} className="box">
                   <Titlee title="Defaulter" class="is-4"/>
                   <table className="table is-fullwidth">
                     <thead>
@@ -209,27 +200,27 @@ export default class Dashboard extends Component {
                       );}
                     })}
                   </table>
-                </div>
+                </Link>
               </div>
               <div className="column is-3">
-                <div className="box">
+                <Link style={{boxShadow:"0 .5em 1em -.125em rgba(10,10,10,.1),0 0 0 0px #485fc7"}} to="/access" className="box">
                   <Titlee title="Entries" class="is-3" />
                   <table className="table is-fullwidth">
                     <tbody>
-                      {this.state.entries.map((entry) => (
+                      {this.state.entries.slice(0,8).map((entry) => (
                         <tr key={entry.Id}>
                           <td className="p-0">
-                            <span className="icon has-text-danger">
+                            <span className="icon has-text-link">
                               <FontAwesomeIcon icon={faCircle} />
                             </span>{" "}
-                            {entry.time}
+                            {entry.Date.substring(0,10)}
                           </td>
-                          <td className="p-0"> Door opened</td>
+                          <td className="p-0">{entry.FullName}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </Link>
               </div>
             </div>
           </div>
